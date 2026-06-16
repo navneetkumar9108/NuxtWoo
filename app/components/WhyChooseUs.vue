@@ -33,12 +33,12 @@ const servicesData = [
         container: ' sm:p-0',
       }"
     >
-      <div className="flex items-center gap-8 p-8 rounded-lg bg-white">
-        <img :src="service.src" className="w-[60px] h-[60px]" />
+      <div class="flex items-center gap-8 p-8 rounded-lg bg-white">
+        <img :src="service.src" class="w-[60px] h-[60px]" />
 
-        <div className="">
-          <h3 className="text-xl font-semibold">{{ service.title }}</h3>
-          <p className="text-sm ">{{ service.description }}</p>
+        <div class="">
+          <h3 class="text-xl font-semibold">{{ service.title }}</h3>
+          <p class="text-sm">{{ service.description }}</p>
         </div>
       </div>
     </UPageCard>

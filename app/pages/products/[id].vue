@@ -50,14 +50,14 @@ const discount = computed(() => {
   );
 });
 
-const breadcrumbs = computed(() => [
-  { label: "Home", to: "/" },
-  {
-    label: product.value?.category,
-    to: `/products/${route.params.id}`,
-  },
-  { label: product.value?.name },
-]);
+// const breadcrumbs = computed(() => [
+//   { label: "Home", to: "/" },
+//   {
+//     label: product.value?.category,
+//     to: `/products/${route.params.id}`,
+//   },
+//   { label: product.value?.name },
+// ]);
 
 const tabs = [
   { label: "Description", slot: "description" },
