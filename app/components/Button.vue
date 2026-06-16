@@ -1,0 +1,9 @@
+<script setup></script>
+
+<template>
+  <div>
+    <UButton>Button</UButton>
+  </div>
+</template>
+
+<style scoped></style>
