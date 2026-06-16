@@ -1,6 +1,6 @@
 <script setup>
 const { data: products } = await useFetch("https://fakestoreapi.com/products");
-console.log(products);
+const topProducts = computed(() => (products.value || []).slice(0, 5));
 </script>
 <template>
   <UContainer>
@@ -9,11 +9,7 @@ console.log(products);
       <UButton variant="link" color="primary" to="/products">View All</UButton>
     </div>
     <div class="grid grid-cols-5 gap-8">
-      <div
-        v-for="product in products.slice(0, 5)"
-        :key="product.id"
-        class="relative"
-      >
+      <div v-for="product in topProducts" :key="product.id" class="relative">
         <UBadge
           v-if="product.discount"
           color="error"

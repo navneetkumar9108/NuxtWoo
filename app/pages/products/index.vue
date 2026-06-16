@@ -19,7 +19,7 @@ const { data: categories } = await useFetch(
 );
 
 const filteredProducts = computed(() => {
-  let result = [...products.value.products];
+  let result = [...(products.value?.products || [])];
 
   if (selectedCategories.value.length) {
     result = result.filter((p) =>
