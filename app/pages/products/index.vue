@@ -5,6 +5,7 @@ const itemsPerPage = 12;
 const selectedCategories = ref([]);
 const priceRange = ref([0, 1000]);
 const selectedRating = ref();
+const route = useRoute();
 
 const skip = computed(() => (currentPage.value - 1) * itemsPerPage);
 const {
@@ -18,8 +19,14 @@ const { data: categories } = await useFetch(
   "https://dummyjson.com/products/category-list",
 );
 
+const activeCategory = computed(() => route.query.category || "");
+
 const filteredProducts = computed(() => {
   let result = [...(products.value?.products || [])];
+
+  if (activeCategory.value) {
+    result = result.filter((p) => p.category === activeCategory.value);
+  }
 
   if (selectedCategories.value.length) {
     result = result.filter((p) =>
@@ -59,12 +66,22 @@ const items = [
     icon: "i-lucide-star",
   },
 ];
+
+const formatCategory = (category) => {
+  return category
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+};
 </script>
 <template>
   <UContainer>
     <div class="py-10">
       <div class="mb-8">
-        <h1 class="text-3xl font-bold">All Products</h1>
+        <!-- <h1 class="text-3xl font-bold">All Products</h1> -->
+        <h1 class="text-3xl font-bold">
+          {{ activeCategory ? formatCategory(activeCategory) : "All Products" }}
+        </h1>
         <p class="text-muted mt-1">{{ filteredProducts.length }} results</p>
       </div>
 
@@ -76,12 +93,19 @@ const items = [
                 <h2 class="font-semibold text-lg">Filters</h2>
               </template>
 
-              <UAccordion :items="items" type="multiple">
+              <UAccordion
+                :items="
+                  activeCategory
+                    ? items.filter((i) => i.label !== 'Category')
+                    : items
+                "
+                type="multiple"
+              >
                 <template #body="{ item }">
                   <!-- Category -->
                   <div v-if="item.label === 'Category'" class="space-y-3">
                     <UCheckboxGroup
-                      :items="categories"
+                      :items="categories || []"
                       :key="category"
                       v-model="selectedCategories"
                       :label="category"
@@ -131,8 +155,8 @@ const items = [
                 </template>
               </UAccordion>
             </UCard>
-            <UPageGrid class="lg:grid-cols-4 h-fit gap-6">
-              <UPageCard
+            <UPageGrid class="lg:grid-cols-3 h-fit gap-6">
+              <!-- <UPageCard
                 v-for="product in paginatedProducts"
                 :key="product.id"
                 :title="product.title"
@@ -187,6 +211,77 @@ const items = [
                     <span class="text-sm font-semibold"
                       >₹ {{ product.price }}</span
                     >
+                  </div>
+                </template>
+              </UPageCard> -->
+
+              <UPageCard
+                v-for="product in paginatedProducts"
+                :key="product.id"
+                :to="`/products/${product.id}`"
+                class="overflow-hidden transition-transform duration-300 hover:-translate-y-1"
+                :ui="{
+                  root: 'bg-white',
+                  container: 'sm:p-0',
+                  wrapper: 'items-stretch',
+                  body: 'p-0',
+                  leading: 'flex',
+                }"
+              >
+                <template #leading>
+                  <NuxtImg
+                    :src="product.thumbnail"
+                    :alt="product.title"
+                    class="w-full h-48 object-contain"
+                  />
+                </template>
+
+                <template #body>
+                  <div class="p-4 flex flex-col gap-2">
+                    <h2 class="font-bold text-gray-800 line-clamp-1">
+                      {{ product.title }}
+                    </h2>
+                    <p class="text-sm text-gray-500">{{ product.category }}</p>
+
+                    <!-- Stars -->
+                    <div class="flex items-center gap-1">
+                      <span
+                        v-for="i in 5"
+                        :key="i"
+                        class="relative text-xl text-gray-300"
+                      >
+                        ★
+                        <span
+                          v-if="i <= Math.floor(product.rating)"
+                          class="absolute inset-0 text-yellow-400"
+                          >★</span
+                        >
+                        <span
+                          v-else-if="
+                            i === Math.floor(product.rating) + 1 &&
+                            product.rating % 1 >= 0.5
+                          "
+                          class="absolute inset-0 text-yellow-400 overflow-hidden"
+                          style="width: 50%"
+                          >★</span
+                        >
+                      </span>
+                      <span class="text-sm text-gray-500"
+                        >({{ product.rating }})</span
+                      >
+                    </div>
+
+                    <p class="text-lg font-bold text-gray-900">
+                      ₹ {{ product.price }}
+                    </p>
+
+                    <UButton
+                      block
+                      color="neutral"
+                      class="hover:bg-green-500 transition-colors mt-1"
+                    >
+                      Add to Cart
+                    </UButton>
                   </div>
                 </template>
               </UPageCard>

@@ -1,20 +1,25 @@
 <script setup>
+const router = useRouter();
 const selectedCategory = ref("");
 
 const { data: categories } = await useFetch(
   "https://dummyjson.com/products/category-list",
 );
 
-const selectCategory = (category) => {
-  selectedCategory.value = category;
-  console.log("Clicked:", category);
-  console.log(selectedCategory.value);
-};
+// const selectCategory = (category) => {
+//   selectedCategory.value = category;
+//   console.log("Clicked:", category);
+//   console.log(selectedCategory.value);
+// };
 const formatCategory = (category) => {
   return category
     .split("-")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
+};
+
+const selectCategory = (category) => {
+  router.push({ path: "/products", query: { category } });
 };
 // const categories = [
 //   { src: "/images/Clothing.jpg", alt: "Clothing" },

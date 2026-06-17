@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 
+html {
+    scroll-behavior: smooth;
+}
 body {
     background: var(--color-gray-100);
     color: black;
