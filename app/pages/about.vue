@@ -1,4 +1,9 @@
-<script setup></script>
+<script setup>
+useSeoMeta({
+  title: "About",
+  ogTitle: "About",
+});
+</script>
 
 <template>
   <div>

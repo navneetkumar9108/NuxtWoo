@@ -1,11 +1,24 @@
 <script setup>
-const sortBy = ref("featured");
-const currentPage = ref(1);
-const itemsPerPage = 12;
-const selectedCategories = ref([]);
-const priceRange = ref([0, 1000]);
-const selectedRating = ref();
 const route = useRoute();
+const router = useRouter();
+
+useSeoMeta({
+  title: "Products",
+  ogTitle: "Products",
+});
+
+// --- Initialize all filters from URL query (fixes reload reset) ---
+const sortBy = ref(route.query.sort || "featured");
+const currentPage = ref(Number(route.query.page) || 1);
+const itemsPerPage = 12;
+const selectedCategories = ref(
+  route.query.categories ? route.query.categories.split(",") : [],
+);
+const priceRange = ref([
+  Number(route.query.minPrice) || 0,
+  Number(route.query.maxPrice) || 1000,
+]);
+const selectedRating = ref(route.query.rating || undefined);
 
 const skip = computed(() => (currentPage.value - 1) * itemsPerPage);
 const {
@@ -19,20 +32,32 @@ const { data: categories } = await useFetch(
   "https://dummyjson.com/products/category-list",
 );
 
+console.log(products.value);
+// category coming from the Categories page (?category=beauty)
 const activeCategory = computed(() => route.query.category || "");
+
+// when activeCategory arrives from the Categories page, pre-select it
+// in the sidebar checkbox group. The URL cleanup (removing 'category'
+// and writing 'categories') happens in the single watch below so the
+// two router.replace calls don't race each other.
+watchEffect(() => {
+  if (
+    activeCategory.value &&
+    !selectedCategories.value.includes(activeCategory.value)
+  ) {
+    selectedCategories.value = [activeCategory.value];
+  }
+});
 
 const filteredProducts = computed(() => {
   let result = [...(products.value?.products || [])];
-
-  if (activeCategory.value) {
-    result = result.filter((p) => p.category === activeCategory.value);
-  }
 
   if (selectedCategories.value.length) {
     result = result.filter((p) =>
       selectedCategories.value.includes(p.category),
     );
   }
+
   result = result.filter(
     (p) => p.price >= priceRange.value[0] && p.price <= priceRange.value[1],
   );
@@ -47,10 +72,39 @@ const filteredProducts = computed(() => {
   return result;
 });
 
+watch([selectedCategories, priceRange, selectedRating, sortBy], () => {
+  currentPage.value = 1;
+});
+
 const paginatedProducts = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage;
   return filteredProducts.value.slice(start, start + itemsPerPage);
 });
+
+// --- Keep URL in sync with filters so reload doesn't clear them ---
+// (also clears the old 'category' param from the Categories page,
+// in the SAME router.replace call so it doesn't race with this one)
+watch(
+  [selectedCategories, priceRange, selectedRating, sortBy, currentPage],
+  () => {
+    router.replace({
+      query: {
+        ...route.query,
+        category: undefined,
+        categories: selectedCategories.value.length
+          ? selectedCategories.value.join(",")
+          : undefined,
+        minPrice: priceRange.value[0] ? priceRange.value[0] : undefined,
+        maxPrice:
+          priceRange.value[1] !== 1000 ? priceRange.value[1] : undefined,
+        rating: selectedRating.value || undefined,
+        sort: sortBy.value !== "featured" ? sortBy.value : undefined,
+        page: currentPage.value !== 1 ? currentPage.value : undefined,
+      },
+    });
+  },
+  { deep: true },
+);
 
 const items = [
   {
@@ -78,9 +132,12 @@ const formatCategory = (category) => {
   <UContainer>
     <div class="py-10">
       <div class="mb-8">
-        <!-- <h1 class="text-3xl font-bold">All Products</h1> -->
         <h1 class="text-3xl font-bold">
-          {{ activeCategory ? formatCategory(activeCategory) : "All Products" }}
+          {{
+            selectedCategories.length === 1
+              ? formatCategory(selectedCategories[0])
+              : "All Products"
+          }}
         </h1>
         <p class="text-muted mt-1">{{ filteredProducts.length }} results</p>
       </div>
@@ -88,28 +145,18 @@ const formatCategory = (category) => {
       <div class="flex gap-8">
         <div class="flex-1 min-w-0">
           <UPageGrid class="lg:grid-cols-[25%_auto]">
-            <UCard class="h-fit bg-transparent sticky top-18">
+            <UCard class="h-fit bg-neutral ring-primary sticky top-18">
               <template #header>
                 <h2 class="font-semibold text-lg">Filters</h2>
               </template>
 
-              <UAccordion
-                :items="
-                  activeCategory
-                    ? items.filter((i) => i.label !== 'Category')
-                    : items
-                "
-                type="multiple"
-              >
+              <UAccordion :items="items" type="multiple" cl>
                 <template #body="{ item }">
                   <!-- Category -->
                   <div v-if="item.label === 'Category'" class="space-y-3">
                     <UCheckboxGroup
                       :items="categories || []"
-                      :key="category"
                       v-model="selectedCategories"
-                      :label="category"
-                      :value="category"
                       :ui="{
                         label: 'text-black font-normal',
                       }"
@@ -155,96 +202,82 @@ const formatCategory = (category) => {
                 </template>
               </UAccordion>
             </UCard>
-            <UPageGrid class="lg:grid-cols-3 h-fit gap-6">
-              <!-- <UPageCard
-                v-for="product in paginatedProducts"
-                :key="product.id"
-                :title="product.title"
-                :description="product.category"
-                :to="`/products/${product.id}`"
-                :ui="{
-                  root: 'bg-gray-200 hover:bg-gray-200',
-                  body: ' flex-0',
-                  leading: 'flex',
-                }"
-              >
-                <template #leading>
-                  <NuxtImg
-                    :src="product.thumbnail"
-                    :alt="product.name"
-                    class="w-full h-48 object-contain rounded-lg"
-                  />
-                </template>
-
-                <template #body>
-                  <div
-                    class="flex flex-col items-start h-full justify-between mt-2"
-                  >
-                    <div class="flex items-center gap-1">
-                      <span
-                        v-for="i in 5"
-                        :key="i"
-                        class="relative text-xl text-gray-300"
-                      >
-                        ★
-                        <span
-                          v-if="i <= Math.floor(product.rating)"
-                          class="absolute inset-0 text-yellow-400"
-                          >★</span
-                        >
-                        <span
-                          v-else-if="
-                            i === Math.floor(product.rating) + 1 &&
-                            product.rating.rate % 1 >= 0.5
-                          "
-                          class="absolute inset-0 text-yellow-400 overflow-hidden"
-                          style="width: 50%"
-                          >★</span
-                        >
-                      </span>
-                      <span class="text-gray-500">({{ product.rating }})</span>
-                    </div>
-
-                    <span class="text-sm font-semibold">{{
-                      product.category
-                    }}</span>
-                    <span class="text-sm font-semibold"
-                      >₹ {{ product.price }}</span
-                    >
-                  </div>
-                </template>
-              </UPageCard> -->
-
+            <UPageGrid class="h-fit">
               <UPageCard
                 v-for="product in paginatedProducts"
                 :key="product.id"
                 :to="`/products/${product.id}`"
-                class="overflow-hidden transition-transform duration-300 hover:-translate-y-1"
+                highlight
+                highlightColor="success"
+                class="overflow-hidden"
                 :ui="{
-                  root: 'bg-white',
+                  root: 'bg-neutral hover:shadow-lg hover:bg-neutral ring',
                   container: 'sm:p-0',
                   wrapper: 'items-stretch',
+                  header: 'mb-0 relative',
                   body: 'p-0',
                   leading: 'flex',
                 }"
               >
-                <template #leading>
+                <template #header>
                   <NuxtImg
                     :src="product.thumbnail"
                     :alt="product.title"
                     class="w-full h-48 object-contain"
                   />
+                  <!-- <UBadge
+                    label="new"
+                    color="error"
+                    variant="subtle"
+                    class="absolute top-2 backdrop-blur-xl bg-error/50 text-black"
+                  >
+                  </UBadge> -->
+                  <UBadge
+                    color="error"
+                    variant="subtle"
+                    class="absolute right-2 top-2 backdrop-blur-xl bg-error/50 text-black"
+                  >
+                    <span>{{ product.discountPercentage }} %</span>
+                  </UBadge>
+                  <UBadge
+                    color="primary"
+                    variant="subtle"
+                    class="absolute left-2 bottom-2 backdrop-blur-xl bg-white/50 text-black"
+                  >
+                    <div class="flex items-center gap-2">
+                      <span>{{ product.rating }}</span>
+                      <UIcon name="i-lucide-star" class="size-3" />
+                      <USeparator
+                        orientation="vertical"
+                        size="xs"
+                        class="h-3"
+                      />
+                      <span>{{ 5 }}</span>
+                    </div>
+                  </UBadge>
                 </template>
+                <!-- <template #leading>
+                  <NuxtImg
+                    :src="product.thumbnail"
+                    :alt="product.title"
+                    class="w-full h-48 object-contain"
+                  />
+                </template> -->
 
                 <template #body>
-                  <div class="p-4 flex flex-col gap-2">
-                    <h2 class="font-bold text-gray-800 line-clamp-1">
-                      {{ product.title }}
-                    </h2>
-                    <p class="text-sm text-gray-500">{{ product.category }}</p>
+                  <div class="p-2 flex flex-col gap-1">
+                    <div class="leading-tight">
+                      <h2 class="font-bold text-gray-800 line-clamp-1">
+                        {{ product.brand ? product.brand : "No Brand" }}
+                      </h2>
+                      <p class="text-sm text-gray-500">{{ product.title }}</p>
+                    </div>
 
+                    <p class="text-lg font-bold text-gray-900">
+                      ₹ {{ product.price }}
+                    </p>
                     <!-- Stars -->
-                    <div class="flex items-center gap-1">
+                    <!-- <div class="flex items-center gap-1">
                       <span
                         v-for="i in 5"
                         :key="i"
@@ -269,19 +302,15 @@ const formatCategory = (category) => {
                       <span class="text-sm text-gray-500"
                         >({{ product.rating }})</span
                       >
-                    </div>
+                    </div> -->
 
-                    <p class="text-lg font-bold text-gray-900">
-                      ₹ {{ product.price }}
-                    </p>
-
-                    <UButton
+                    <!-- <UButton
                       block
                       color="neutral"
                       class="hover:bg-green-500 transition-colors mt-1"
                     >
                       Add to Cart
-                    </UButton>
+                    </UButton> -->
                   </div>
                 </template>
               </UPageCard>

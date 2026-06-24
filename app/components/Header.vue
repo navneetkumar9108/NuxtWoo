@@ -20,6 +20,8 @@ const items = ref([
 
 const search = ref("");
 const cartCount = ref(3);
+
+const sidebarOpen = ref(false);
 </script>
 
 <template>
@@ -128,5 +130,35 @@ const cartCount = ref(3);
       </div>
       <!-- </div> -->
     </UContainer>
+    <!-- Mobile Sidebar -->
+    <div
+      v-show="sidebarOpen"
+      class="fixed top-0 right-0 bottom-0 w-64 bg-white z-50 shadow-lg flex flex-col pt-20 px-6 gap-5 md:hidden"
+    >
+      <UButton
+        icon="i-lucide-x"
+        color="neutral"
+        variant="ghost"
+        class="absolute top-4 right-4"
+        @click="sidebarOpen = false"
+      />
+
+      <NuxtLink
+        v-for="item in items"
+        :key="item.to"
+        :to="item.to"
+        @click="sidebarOpen = false"
+        class="text-gray-700 font-medium"
+      >
+        {{ item.label }}
+      </NuxtLink>
+    </div>
+
+    <!-- Backdrop -->
+    <div
+      v-if="sidebarOpen"
+      @click="sidebarOpen = false"
+      class="fixed inset-0 bg-black/30 z-40 md:hidden"
+    ></div>
   </header>
 </template>

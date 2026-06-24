@@ -1,7 +1,8 @@
 <script setup>
-import HeroSection from "~/components/HeroSection.vue";
-import ShopByCategory from "~/components/ShopByCategory.vue";
-import WhyChooseUs from "~/components/WhyChooseUs.vue";
+useSeoMeta({
+  title: "Home",
+  ogTitle: "Home",
+});
 </script>
 
 <template>

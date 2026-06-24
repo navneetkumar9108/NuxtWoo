@@ -1,41 +1,11 @@
-<template>
-  <UContainer class="py-16 max-w-2xl">
-    <h1 class="text-3xl font-bold mb-2">Contact Us</h1>
-    <p class="text-gray-500 mb-8">We'll get back to you soon.</p>
-
-    <UForm :state="state" class="space-y-6" @submit="onSubmit">
-      <UFormField label="Full Name" name="name" :error="errors.name">
-        <UInput v-model="state.name" placeholder="John Doe" class="w-full" />
-      </UFormField>
-
-      <UFormField label="Email" name="email" :error="errors.email">
-        <UInput
-          v-model="state.email"
-          type="email"
-          placeholder="john@example.com"
-          class="w-full"
-        />
-      </UFormField>
-
-      <UFormField label="Message" name="message" :error="errors.message">
-        <UTextarea
-          v-model="state.message"
-          placeholder="Your message..."
-          :rows="5"
-          class="w-full"
-        />
-      </UFormField>
-
-      <UButton type="submit" size="lg" :loading="loading" block>
-        Send Message
-      </UButton>
-    </UForm>
-  </UContainer>
-</template>
-
-<script setup lang="ts">
+<script setup>
 const loading = ref(false);
 const toast = useToast();
+
+useSeoMeta({
+  title: "Contact",
+  ogTitle: "Contact",
+});
 
 const state = reactive({
   name: "",
@@ -91,3 +61,37 @@ async function onSubmit() {
   }
 }
 </script>
+<template>
+  <UContainer class="py-16 max-w-2xl">
+    <h1 class="text-3xl font-bold mb-2">Contact Us</h1>
+    <p class="text-gray-500 mb-8">We'll get back to you soon.</p>
+
+    <UForm :state="state" class="space-y-6" @submit="onSubmit">
+      <UFormField label="Full Name" name="name" :error="errors.name">
+        <UInput v-model="state.name" placeholder="John Doe" class="w-full" />
+      </UFormField>
+
+      <UFormField label="Email" name="email" :error="errors.email">
+        <UInput
+          v-model="state.email"
+          type="email"
+          placeholder="john@example.com"
+          class="w-full"
+        />
+      </UFormField>
+
+      <UFormField label="Message" name="message" :error="errors.message">
+        <UTextarea
+          v-model="state.message"
+          placeholder="Your message..."
+          :rows="5"
+          class="w-full"
+        />
+      </UFormField>
+
+      <UButton type="submit" size="lg" :loading="loading" block>
+        Send Message
+      </UButton>
+    </UForm>
+  </UContainer>
+</template>

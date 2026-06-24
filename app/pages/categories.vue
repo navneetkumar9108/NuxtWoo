@@ -1,4 +1,8 @@
 <script setup>
+useSeoMeta({
+  title: "Categories",
+  ogTitle: "Categories",
+});
 const router = useRouter();
 const selectedCategory = ref("");
 
