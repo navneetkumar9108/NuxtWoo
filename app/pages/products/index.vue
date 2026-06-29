@@ -21,6 +21,8 @@ const priceRange = ref([
 const selectedRating = ref(route.query.rating || undefined);
 
 const skip = computed(() => (currentPage.value - 1) * itemsPerPage);
+// const { data: products, pending, error } = await useFetch("/api/product");
+// console.log("products", products.value);
 const {
   data: products,
   pending,
@@ -32,7 +34,6 @@ const { data: categories } = await useFetch(
   "https://dummyjson.com/products/category-list",
 );
 
-console.log(products.value);
 // category coming from the Categories page (?category=beauty)
 const activeCategory = computed(() => route.query.category || "");
 
@@ -144,13 +145,13 @@ const formatCategory = (category) => {
 
       <div class="flex gap-8">
         <div class="flex-1 min-w-0">
-          <UPageGrid class="lg:grid-cols-[25%_auto]">
+          <UPageGrid class="lg:grid-cols-[22%_auto] gap-4">
             <UCard class="h-fit bg-neutral ring-primary sticky top-18">
               <template #header>
                 <h2 class="font-semibold text-lg">Filters</h2>
               </template>
 
-              <UAccordion :items="items" type="multiple" cl>
+              <UAccordion :items="items" type="multiple">
                 <template #body="{ item }">
                   <!-- Category -->
                   <div v-if="item.label === 'Category'" class="space-y-3">
@@ -202,121 +203,14 @@ const formatCategory = (category) => {
                 </template>
               </UAccordion>
             </UCard>
-            <UPageGrid class="h-fit">
-              <UPageCard
+            <UPageGrid class="h-fit gap-2 lg:grid-cols-4">
+              <CardProductCard
                 v-for="product in paginatedProducts"
                 :key="product.id"
-                :to="`/products/${product.id}`"
-                highlight
-                highlightColor="success"
-                class="overflow-hidden"
-                :ui="{
-                  root: 'bg-neutral hover:shadow-lg hover:bg-neutral ring',
-                  container: 'sm:p-0',
-                  wrapper: 'items-stretch',
-                  header: 'mb-0 relative',
-                  body: 'p-0',
-                  leading: 'flex',
-                }"
-              >
-                <template #header>
-                  <NuxtImg
-                    :src="product.thumbnail"
-                    :alt="product.title"
-                    class="w-full h-48 object-contain"
-                  />
-                  <!-- <UBadge
-                    label="new"
-                    color="error"
-                    variant="subtle"
-                    class="absolute top-2 backdrop-blur-xl bg-error/50 text-black"
-                  >
-                  </UBadge> -->
-                  <UBadge
-                    color="error"
-                    variant="subtle"
-                    class="absolute right-2 top-2 backdrop-blur-xl bg-error/50 text-black"
-                  >
-                    <span>{{ product.discountPercentage }} %</span>
-                  </UBadge>
-                  <UBadge
-                    color="primary"
-                    variant="subtle"
-                    class="absolute left-2 bottom-2 backdrop-blur-xl bg-white/50 text-black"
-                  >
-                    <div class="flex items-center gap-2">
-                      <span>{{ product.rating }}</span>
-                      <UIcon name="i-lucide-star" class="size-3" />
-                      <USeparator
-                        orientation="vertical"
-                        size="xs"
-                        class="h-3"
-                      />
-                      <span>{{ 5 }}</span>
-                    </div>
-                  </UBadge>
-                </template>
-                <!-- <template #leading>
-                  <NuxtImg
-                    :src="product.thumbnail"
-                    :alt="product.title"
-                    class="w-full h-48 object-contain"
-                  />
-                </template> -->
-
-                <template #body>
-                  <div class="p-2 flex flex-col gap-1">
-                    <div class="leading-tight">
-                      <h2 class="font-bold text-gray-800 line-clamp-1">
-                        {{ product.brand ? product.brand : "No Brand" }}
-                      </h2>
-                      <p class="text-sm text-gray-500">{{ product.title }}</p>
-                    </div>
-
-                    <p class="text-lg font-bold text-gray-900">
-                      ₹ {{ product.price }}
-                    </p>
-                    <!-- Stars -->
-                    <!-- <div class="flex items-center gap-1">
-                      <span
-                        v-for="i in 5"
-                        :key="i"
-                        class="relative text-xl text-gray-300"
-                      >
-                        ★
-                        <span
-                          v-if="i <= Math.floor(product.rating)"
-                          class="absolute inset-0 text-yellow-400"
-                          >★</span
-                        >
-                        <span
-                          v-else-if="
-                            i === Math.floor(product.rating) + 1 &&
-                            product.rating % 1 >= 0.5
-                          "
-                          class="absolute inset-0 text-yellow-400 overflow-hidden"
-                          style="width: 50%"
-                          >★</span
-                        >
-                      </span>
-                      <span class="text-sm text-gray-500"
-                        >({{ product.rating }})</span
-                      >
-                    </div> -->
-
-                    <!-- <UButton
-                      block
-                      color="neutral"
-                      class="hover:bg-green-500 transition-colors mt-1"
-                    >
-                      Add to Cart
-                    </UButton> -->
-                  </div>
-                </template>
-              </UPageCard>
+                :product="product"
+              />
             </UPageGrid>
           </UPageGrid>
-
           <div class="mt-10 flex justify-center">
             <UPagination
               v-model:page="currentPage"

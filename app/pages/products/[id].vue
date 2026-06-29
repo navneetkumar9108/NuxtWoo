@@ -84,33 +84,13 @@ const specs = computed(() => [
   { label: "Barcode", value: product.value.meta.barcode },
 ]);
 
-const reviews = ref([
-  {
-    id: 1,
-    name: "Rahul Sharma",
-    rating: 5,
-    date: "12 Jun 2025",
-    comment: "Bahut acha product hai, quality ekdum top notch!",
-  },
-  {
-    id: 2,
-    name: "Priya Singh",
-    rating: 4,
-    date: "3 May 2025",
-    comment: "Good product, delivery thodi slow thi but overall satisfied.",
-  },
-  {
-    id: 3,
-    name: "Amit Kumar",
-    rating: 3,
-    date: "20 Apr 2025",
-    comment: "Average quality, price ke hisaab se theek hai.",
-  },
-]);
+const sizes = ["S", "M", "L", "XL", "XXL"];
 </script>
+
 <template>
   <UContainer class="py-10">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+    <UPageGrid class="lg:grid-cols-[60%_auto] gap-10">
+      <!-- <div class="grid grid-cols-1 lg:grid-cols-2 gap-10"> -->
       <!-- Left: Images -->
       <!-- <div>
         <NuxtImg
@@ -169,30 +149,68 @@ const reviews = ref([
       </div>
 
       <!-- Right: Details -->
-      <div class="flex flex-col gap-6">
+      <div class="flex flex-col">
         <!-- Breadcrumb -->
         <UBreadcrumb :links="breadcrumbs" />
 
-        <!-- Title & Badge -->
+        <!--brand Title  Badge price -->
         <div>
-          <div class="flex items-center gap-2 mb-2">
-            <UBadge
+          <h1 class="text-2xl font-bold text-gray-800">{{ product.brand }}</h1>
+          <h1 class="text-xl font-normal text-gray-600 pt-1.5 pb-5">
+            {{ product.title }}
+          </h1>
+          <div class="flex items-center gap-2">
+            <!-- <UBadge
               :label="product.availabilityStatus"
               color="success"
               variant="subtle"
-            />
+            /> -->
             <UBadge
-              v-if="product.isNew"
-              label="New"
+              size="xl"
               color="primary"
               variant="subtle"
-            />
+              class="backdrop-blur-xl bg-white/50 border hover:border-zinc-300 border-gray-200 rounded-sm mb-3"
+            >
+              <div class="flex items-center gap-2">
+                <span class="font-bold text-gray-800 text-[16px]">{{
+                  product.rating
+                }}</span>
+                <UIcon
+                  name="i-lucide-star"
+                  class="size-4 font-bold text-gray-800"
+                />
+                <USeparator
+                  orientation="vertical"
+                  size="xs"
+                  class="h-3 text-gray-600"
+                />
+                <span class="text-gray-600 font-normal">{{ 5 }} Ratings</span>
+              </div>
+            </UBadge>
+            <!-- <UBadge
+            v-if="product.isNew"
+            label="New"
+            color="primary"
+            variant="subtle"
+            /> -->
           </div>
-          <h1 class="text-3xl font-bold">{{ product.title }}</h1>
+          <USeparator size="xs" class="text-gray-600" />
+          <span class="text-2xl text-gray-800 mr-3"
+            ><strong>₹{{ product.price }}</strong></span
+          >
+          <p class="text-gray-500 text-xl opacity-[0.8] inline-block mt-3.5">
+            <span class="mr-3">MRP <s>₹ 1499</s></span>
+            <span class="text-xl font-bold text-success"
+              >({{ product.discountPercentage }}% OFF)</span
+            >
+          </p>
+          <p class="text-[16px] mb-2.5 text-teal-600 font-bold mt-1">
+            <span>inclusive of all taxes</span>
+          </p>
         </div>
 
         <!-- Price -->
-        <div class="flex items-center gap-3">
+        <!-- <div class="flex items-center gap-3">
           <span class="text-2xl font-bold text-primary"
             >₹{{ product.price }}</span
           >
@@ -208,21 +226,27 @@ const reviews = ref([
             color="error"
             variant="subtle"
           />
-        </div>
+        </div> -->
 
-        <USeparator />
+        <!-- <USeparator /> -->
 
         <!-- Variants (Size/Color) -->
-        <div class="flex flex-col gap-3" v-if="product.sizes">
-          <p class="font-medium">Size</p>
-          <div class="flex gap-2 flex-wrap">
+        <div class="flex flex-col mt-2.5 mb-6">
+          <p class="font-medium mb-2.5">SELECT SIZE</p>
+          <!-- <span class="text-error">Please select a size </span> -->
+          <div class="flex gap-3 flex-wrap">
             <UButton
-              v-for="size in product.sizes"
+              v-for="size in sizes"
               :key="size"
-              :variant="selectedSize === size ? 'solid' : 'outline'"
-              :color="selectedSize === size ? 'primary' : 'neutral'"
-              size="sm"
+              variant="outline"
               @click="selectedSize = size"
+              class="rounded-full w-12.5 h-12.5 p-0 flex items-center justify-center text-sm font-bold bg-neutral hover:bg-neutral active:bg-neutral"
+              :ui="{
+                base:
+                  selectedSize === size
+                    ? 'ring-red-500 text-red-500'
+                    : 'ring-gray-800 text-gray-800',
+              }"
             >
               {{ size }}
             </UButton>
@@ -230,8 +254,8 @@ const reviews = ref([
         </div>
 
         <!-- Quantity + Add to Cart -->
-        <div class="flex items-center gap-4">
-          <div class="flex items-center border rounded-lg overflow-hidden">
+        <div class="flex items-center gap-4 mb-5.75">
+          <!-- <div class="flex items-center border rounded-lg overflow-hidden">
             <UButton
               icon="i-lucide-minus"
               variant="ghost"
@@ -239,19 +263,101 @@ const reviews = ref([
             />
             <span class="px-4 font-medium">{{ qty }}</span>
             <UButton icon="i-lucide-plus" variant="ghost" @click="qty++" />
-          </div>
+          </div> -->
 
-          <UButton class="flex-1" size="lg" icon="i-lucide-shopping-cart">
+          <!-- <UButton class="flex-1" size="lg" icon="i-lucide-shopping-cart">
             Add to Cart
+          </UButton> -->
+          <UButton
+            class="w-[50%] justify-center py-3.75 font-bold text-[16px] bg-error text-white rounded-sm"
+            icon="i-lucide-shopping-bag"
+            size="lg"
+            color="primary"
+            variant="solid"
+            >Add to Cart</UButton
+          >
+          <UButton
+            class="w-[40%] justify-center py-3.75 font-bold text-[16px] hover:ring-gray-800 text-gray-800 rounded-sm ring-error"
+            icon="i-lucide-heart"
+            variant="outline"
+          >
+            WISHLIST
           </UButton>
 
-          <UButton icon="i-lucide-heart" variant="outline" size="lg" />
+          <!-- <UButton icon="i-lucide-heart" variant="outline" size="lg" /> -->
         </div>
 
         <!-- Description -->
         <USeparator />
+        <div class="space-y-4 mt-7.5">
+          <!-- Header -->
+          <div class="flex items-center gap-2">
+            <h3
+              class="font-bold text-[16px] tracking-wide text-gray-800 uppercase"
+            >
+              DELIVERY OPTIONS
+            </h3>
+            <UIcon name="i-lucide-truck" class="size-4 text-gray-700" />
+          </div>
+
+          <div
+            class="flex items-center justify-between border border-gray-300 rounded-md px-3 py-2.5 w-fit"
+          >
+            <div class="flex items-center gap-2">
+              <span class="font-semibold text-sm text-gray-900">801103</span>
+              <UIcon
+                name="i-lucide-check-circle-2"
+                class="size-4 text-emerald-500"
+              />
+            </div>
+            <UButton
+              label="CHANGE"
+              variant="link"
+              color="error"
+              class="font-bold text-xs p-0"
+            />
+          </div>
+
+          <!-- Info rows -->
+          <div class="space-y-3.5">
+            <div class="flex items-center gap-3">
+              <UIcon name="i-lucide-truck" class="size-5 text-gray-700" />
+              <p class="text-sm font-semibold text-gray-900">
+                Get it by Mon, Jun 29
+              </p>
+            </div>
+
+            <div class="flex items-center gap-3">
+              <UIcon name="i-lucide-banknote" class="size-5 text-gray-700" />
+              <p class="text-sm font-semibold text-gray-900">
+                Pay on delivery available
+              </p>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <UIcon
+                  name="i-lucide-rotate-ccw"
+                  class="size-5 text-gray-700"
+                />
+                <p class="text-sm font-semibold text-gray-900">
+                  Easy 7 days return &amp; exchange available
+                </p>
+              </div>
+              <UButton
+                label="MORE INFO"
+                trailing-icon="i-lucide-chevron-right"
+                variant="link"
+                color="error"
+                class="font-bold text-xs p-0"
+              />
+            </div>
+          </div>
+        </div>
         <div>
-          <p class="text-gray-500 leading-relaxed">{{ product.description }}</p>
+          <p class="text-gray-500 leading-relaxed">
+            {{ product.description }}
+          </p>
         </div>
 
         <!-- Meta info -->
@@ -260,7 +366,8 @@ const reviews = ref([
           <span>Category: {{ product.category }}</span>
         </div>
       </div>
-    </div>
+      <!-- </div> -->
+    </UPageGrid>
 
     <!-- Tabs: Description / Reviews / Specs -->
     <div class="mt-16">
