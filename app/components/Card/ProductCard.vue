@@ -2,8 +2,6 @@
 const { product } = defineProps({
   product: Object,
 });
-
-// console.log(product);
 </script>
 
 <template>
@@ -19,12 +17,17 @@ const { product } = defineProps({
     }"
   >
     <template #header>
-      <NuxtImg
+      <ImageImg :src="product.thumbnail" :alt="product.title" />
+      <!-- <NuxtImg
         :src="product.thumbnail"
         alt=""
         class="w-full h-full object-contain"
+      /> -->
+      <BadgeRatingBadge
+        :rating="product.rating"
+        :ratingCount="product.ratingCount"
       />
-      <UBadge
+      <!-- <UBadge
         color="primary"
         variant="subtle"
         class="absolute left-2 bottom-1 backdrop-blur-xl bg-white/50 text-black rounded-xs"
@@ -35,37 +38,43 @@ const { product } = defineProps({
           <USeparator orientation="vertical" size="xs" class="h-3" />
           <span>{{ product.rating }}</span>
         </div>
-      </UBadge>
+      </UBadge> -->
       <!-- <div class="absolute top-3 left-0"> -->
-      <UBadge
-        label="NEW"
+      <BadgeNewBadge :show="product.isNew" label="NEW" />
+      <!-- <UBadge
+        v-if="product.isNew"
+        label="New"
         color="error"
         variant="solid"
         size="sm"
         :ui="{
           base: 'absolute top-3 left-0 rounded-none bg-gradient-to-r from-pink-500 to-rose-600 text-white font-bold tracking-wide pl-1 pr-5 py-1 shadow-md [clip-path:polygon(0_0,100%_0,85%_50%,100%_100%,0_100%)]',
         }"
-      />
+      /> -->
       <!-- </div> -->
     </template>
     <template #body>
-      <h3 class="text-[16px] font-bold text-gray-800">
+      <ProductInfo :brand="product.brand" :title="product.title" />
+      <!-- <h3 class="text-[16px] font-bold text-gray-800">
         {{ product.brand ? product.brand : "No Brand" }}
       </h3>
       <h4 class="text-sm text-gray-600 font-normal truncate">
         {{ product.title }}
-      </h4>
-      <div class="text-sm text-gray-800 mt-2.5 mb-1.5">
+      </h4> -->
+      <ProductPrice
+        :price="product.price"
+        :originalPrice="product.originalPrice"
+        :discount="product.discount"
+      />
+      <!-- <div class="text-sm text-gray-800 mt-2.5 mb-1.5">
         <span class="text-sm mr-1.25"
           ><strong>₹ {{ product.price }}</strong></span
         >
         <span class="text-xs mr-1.25 text-error"
-          ><s>₹ {{ product.price?.mrp ?? "N/A" }}</s></span
+          ><s>₹ {{ product.originalPrice }}</s></span
         >
-        <span class="text-xs text-success"
-          >({{ product.discountPercentage }} % OFF)</span
-        >
-      </div>
+        <span class="text-xs text-success">({{ product.discount }} % OFF)</span>
+      </div> -->
     </template>
   </UPageCard>
 </template>
