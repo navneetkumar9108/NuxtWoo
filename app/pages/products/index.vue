@@ -21,27 +21,55 @@ const priceRange = ref([
 const selectedRating = ref(route.query.rating || undefined);
 
 const skip = computed(() => (currentPage.value - 1) * itemsPerPage);
-const { data: products, pending, error } = await useFetch("/api/product");
 
-const { data: categories } = await useFetch("/api/categories");
-// const {
-//   data: products,
-//   pending,
-//   error,
-//   refresh,
-// } = await useFetch("https://dummyjson.com/products?limit=194");
-
-// const { data: categories } = await useFetch(
-//   "https://dummyjson.com/products/category-list",
-// );
-// const maxPrice = computed(() => {
-//   return Math.max(...(products.value?.data.products || []).map((p) => p.price));
+// const { data: products, pending, error } = await useFetch("/api/products");
+// const { data: products } = await useFetch("/api/products", {
+//   query: {
+//     sort: sortBy,
+//   },
 // });
 
-// const priceRange = ref([
-//   Number(route.query.minPrice) || 0,
-//   Number(route.query.maxPrice) || maxPrice.value,
-// ]);
+const { data: products } = await useFetch("/api/products", {
+  query: {
+    sort: sortBy,
+
+    category: computed(() =>
+      selectedCategories.value.length
+        ? selectedCategories.value.join(",")
+        : undefined,
+    ),
+
+    minPrice: computed(() => priceRange.value[0]),
+
+    maxPrice: computed(() => priceRange.value[1]),
+
+    rating: selectedRating,
+
+    page: currentPage,
+    limit: itemsPerPage,
+  },
+});
+
+console.log("products", products.value);
+const { data: brands } = await useFetch("/api/brands");
+// console.log("brands", brands.value.data);
+const { data: categories } = await useFetch("/api/categories");
+// console.log("categories", categories.value.data);
+
+const enrichedProducts = computed(() => {
+  const brandList = brands.value?.data || [];
+  const categoryList = categories.value?.data || [];
+
+  return (products.value?.data || []).map((product) => ({
+    ...product,
+
+    brand: brandList.find((b) => b.id === product.brandId),
+
+    category: categoryList.find((c) => c.id === product.categoryId),
+  }));
+});
+console.log(enrichedProducts.value);
+
 // category coming from the Categories page (?category=beauty)
 const activeCategory = computed(() => route.query.category || "");
 
@@ -66,36 +94,43 @@ watchEffect(() => {
 
 const filteredProducts = computed(() => {
   // let result = [...(products.value?.products || [])];
-  let result = [...(products.value?.data.products || [])];
+  // let result = [...(products.value?.data.products || [])];
+  // let result = [...(products.value?.data || [])];
+  let result = [...enrichedProducts.value];
 
-  if (selectedCategories.value.length) {
-    result = result.filter((p) =>
-      selectedCategories.value.includes(p.category.slug),
-    );
-  }
+  // if (selectedCategories.value.length) {
+  //   result = result.filter((p) =>
+  //     selectedCategories.value.includes(p.category.slug),
+  //   );
+  // }
 
-  result = result.filter(
-    (p) => p.price >= priceRange.value[0] && p.price <= priceRange.value[1],
-  );
+  // result = result.filter(
+  //   (p) => p.price >= priceRange.value[0] && p.price <= priceRange.value[1],
+  // );
 
-  if (selectedRating.value) {
-    result = result.filter((p) => p.rating >= Number(selectedRating.value));
-  }
+  // if (selectedRating.value) {
+  //   result = result.filter((p) => p.rating >= Number(selectedRating.value));
+  // }
 
-  if (sortBy.value === "price-asc") result.sort((a, b) => a.price - b.price);
-  if (sortBy.value === "price-desc") result.sort((a, b) => b.price - a.price);
+  // if (sortBy.value === "price-asc") result.sort((a, b) => a.price - b.price);
+  // if (sortBy.value === "price-desc") result.sort((a, b) => b.price - a.price);
 
   return result;
+});
+
+watch(sortBy, (value) => {
+  console.log("Sort Changed:", value);
 });
 
 watch([selectedCategories, priceRange, selectedRating, sortBy], () => {
   currentPage.value = 1;
 });
 
-const paginatedProducts = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage;
-  return filteredProducts.value.slice(start, start + itemsPerPage);
-});
+// const paginatedProducts = computed(() => {
+//   // const start = (currentPage.value - 1) * itemsPerPage;
+//   // return filteredProducts.value.slice(start, start + itemsPerPage);
+//   return filteredProducts.value;
+// });
 // console.log(products.value.data.products.length); // 30
 // console.log(filteredProducts.value.length);
 // --- Keep URL in sync with filters so reload doesn't clear them ---
@@ -129,11 +164,18 @@ const activeFilterCount = computed(
   () => selectedCategories.value.length + (selectedRating.value ? 1 : 0),
 );
 
+// const sortOptions = [
+//   { label: "Popularity", value: "popularity" },
+//   { label: "Price: Low to High", value: "price_asc" },
+//   { label: "Price: High to Low", value: "price_desc" },
+//   { label: "New Arrivals", value: "newest" },
+// ];
 const sortOptions = [
-  { label: "Popularity", value: "popularity" },
-  { label: "Price: Low to High", value: "price_asc" },
-  { label: "Price: High to Low", value: "price_desc" },
-  { label: "New Arrivals", value: "newest" },
+  { label: "Featured", value: "featured" },
+  { label: "Popularity", value: "popular" },
+  { label: "Price: Low to High", value: "price-low" },
+  { label: "Price: High to Low", value: "price-high" },
+  { label: "Newest", value: "newest" },
 ];
 const items = [
   {
@@ -171,23 +213,16 @@ const formatCategory = (category) => {
         <p class="text-muted mt-1">{{ filteredProducts.length }} results</p>
       </div>
 
-      <div class="flex gap-8">
-        <div class="flex-1 min-w-0">
-          <UPageGrid class="lg:grid-cols-[22%_auto] gap-4">
-            <UCard
-              class="hidden lg:block h-fit bg-neutral sticky top-18 rounded-xs ring-0"
-            >
-              <template #header>
-                <h2 class="font-semibold text-lg">Filters</h2>
-              </template>
-              <FilterPanel
-                :items="items"
-                :category-items="categoryItems"
-                v-model:selected-categories="selectedCategories"
-                v-model:price-range="priceRange"
-                v-model:selected-rating="selectedRating"
-              />
-              <!-- <UAccordion :items="items" type="multiple">
+
+
+      <UPageGrid class="lg:grid-cols-[22%_auto] gap-4">
+        <UCard class="hidden lg:block h-fit bg-neutral sticky top-18 rounded-xs ring-0">
+          <template #header>
+            <h2 class="font-semibold text-lg">Filters</h2>
+          </template>
+          <FilterPanel :items="items" :category-items="categoryItems" v-model:selected-categories="selectedCategories"
+            v-model:price-range="priceRange" v-model:selected-rating="selectedRating" />
+          <!-- <UAccordion :items="items" type="multiple">
                 <template #body="{ item }">
                   <div v-if="item.label === 'Category'" class="space-y-3">
                     <UCheckboxGroup
@@ -235,66 +270,51 @@ const formatCategory = (category) => {
                   </div>
                 </template>
               </UAccordion> -->
-            </UCard>
+        </UCard>
+        <div class="">
+          <div class="flex items-center justify-end sticky top-18 z-2">
 
-            <UPageGrid class="h-fit gap-2 lg:grid-cols-4">
-              <CardProductCard
-                v-for="product in paginatedProducts"
-                :key="product.id"
-                :product="product"
-              />
-            </UPageGrid>
+            <USelect v-model="sortBy" :items="sortOptions" placeholder="Sort by" class="w-48 flex self-end" />
+          </div>
+          <USeparator class="py-7 flex items-center justify-center" />
+          <UPageGrid class="h-fit gap-2 lg:grid-cols-4">
+            <CardProductCard v-for="product in enrichedProducts" :key="product.id" :product="product" />
           </UPageGrid>
           <div class="mt-10 flex justify-center">
-            <UPagination
-              v-model:page="currentPage"
-              :total="filteredProducts.length"
-              :items-per-page="itemsPerPage"
-            />
+            <!-- <UPagination v-model:page="currentPage" :total="filteredProducts.length" :items-per-page="itemsPerPage" /> -->
+            <UPagination v-model:page="currentPage" :total="products?.meta?.total || 0"
+              :items-per-page="itemsPerPage" />
           </div>
         </div>
-      </div>
+      </UPageGrid>
+
     </div>
+
+
+
     <div
-      class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-200 grid grid-cols-2 divide-x divide-gray-200"
-    >
-      <button
-        class="flex items-center justify-center gap-2 py-3 text-sm font-medium text-gray-700"
-        @click="isSortOpen = true"
-      >
+      class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-200 grid grid-cols-2 divide-x divide-gray-200">
+      <button class="flex items-center justify-center gap-2 py-3 text-sm font-medium text-gray-700"
+        @click="isSortOpen = true">
         <UIcon name="i-lucide-arrow-up-down" class="w-4 h-4" />
         SORT
       </button>
-      <button
-        class="flex items-center justify-center gap-2 py-3 text-sm font-medium text-gray-700"
-        @click="isFilterOpen = true"
-      >
+      <button class="flex items-center justify-center gap-2 py-3 text-sm font-medium text-gray-700"
+        @click="isFilterOpen = true">
         <UIcon name="i-lucide-sliders-horizontal" class="w-4 h-4" />
         FILTER
-        <span
-          v-if="activeFilterCount"
-          class="w-1.5 h-1.5 rounded-full bg-primary"
-        />
+        <span v-if="activeFilterCount" class="w-1.5 h-1.5 rounded-full bg-primary" />
       </button>
     </div>
 
     <!-- Filter bottom sheet -->
-    <USlideover
-      v-model:open="isFilterOpen"
-      side="bottom"
-      :ui="{ content: 'h-[85vh] rounded-t-xl' }"
-    >
+    <USlideover v-model:open="isFilterOpen" side="bottom" :ui="{ content: 'h-[85vh] rounded-t-xl' }">
       <template #header>
         <h2 class="font-semibold text-lg">Filters</h2>
       </template>
       <template #body>
-        <FilterPanel
-          :items="items"
-          :category-items="categoryItems"
-          v-model:selected-categories="selectedCategories"
-          v-model:price-range="priceRange"
-          v-model:selected-rating="selectedRating"
-        />
+        <FilterPanel :items="items" :category-items="categoryItems" v-model:selected-categories="selectedCategories"
+          v-model:price-range="priceRange" v-model:selected-rating="selectedRating" />
       </template>
       <template #footer>
         <UButton block @click="isFilterOpen = false">Apply Filters</UButton>
@@ -302,11 +322,7 @@ const formatCategory = (category) => {
     </USlideover>
 
     <!-- Sort bottom sheet -->
-    <USlideover
-      v-model:open="isSortOpen"
-      side="bottom"
-      :ui="{ content: 'h-[50vh] rounded-t-xl' }"
-    >
+    <USlideover v-model:open="isSortOpen" side="bottom" :ui="{ content: 'h-[50vh] rounded-t-xl' }">
       <template #header>
         <h2 class="font-semibold text-lg">Sort By</h2>
       </template>

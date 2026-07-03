@@ -357,3 +357,12 @@ const formatCategory = (category) => {
     .join(" ");
 };
 </script> -->
+
+// const { // data: products, // pending, // error, // refresh, // } = await
+useFetch("https://dummyjson.com/products?limit=194"); // const { data:
+categories } = await useFetch( //
+"https://dummyjson.com/products/category-list", // ); // const maxPrice =
+computed(() => { // return Math.max(...(products.value?.data.products ||
+[]).map((p) => p.price)); // }); // const priceRange = ref([ //
+Number(route.query.minPrice) || 0, // Number(route.query.maxPrice) ||
+maxPrice.value, // ]);

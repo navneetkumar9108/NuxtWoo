@@ -5,17 +5,13 @@ const { product } = defineProps({
 </script>
 
 <template>
-  <UPageCard
-    class="w-52.5 bg-neutral ring-0 mx-2.5 mb-7.5"
-    :to="`/products/${product.id}`"
-    :ui="{
-      root: 'hover:bg-neutral hover:bg-white hover:shadow-lg transition-all duration-300 rounded-xs',
-      container: 'sm:p-0 gap-0   ',
+  <UPageCard class="w-52.5 bg-neutral ring-0 mx-2.5 mb-7.5" :to="`/products/${product.id}`" :ui="{
+    root: 'hover:bg-neutral hover:bg-white hover:shadow-lg transition-all duration-300 rounded-xs',
+    container: 'sm:p-0 gap-0   ',
 
-      header: 'w-full  h-70 mb-0 relative  bg-gray-200',
-      body: 'px-2.5 mt-3 leading-tight w-52.5',
-    }"
-  >
+    header: 'w-full  h-70 mb-0 relative  bg-gray-200',
+    body: 'px-2.5 mt-3 leading-tight w-52.5',
+  }">
     <template #header>
       <ImageImg :src="product.thumbnail" :alt="product.title" />
       <!-- <NuxtImg
@@ -23,10 +19,7 @@ const { product } = defineProps({
         alt=""
         class="w-full h-full object-contain"
       /> -->
-      <BadgeRatingBadge
-        :rating="product.rating"
-        :ratingCount="product.ratingCount"
-      />
+      <BadgeRatingBadge :rating="product.rating" :ratingCount="product.ratingCount" />
       <!-- <UBadge
         color="primary"
         variant="subtle"
@@ -54,18 +47,14 @@ const { product } = defineProps({
       <!-- </div> -->
     </template>
     <template #body>
-      <ProductInfo :brand="product.brand" :title="product.title" />
+      <ProductInfo :brand="product.brand.name" :title="product.title" />
       <!-- <h3 class="text-[16px] font-bold text-gray-800">
         {{ product.brand ? product.brand : "No Brand" }}
       </h3>
       <h4 class="text-sm text-gray-600 font-normal truncate">
         {{ product.title }}
       </h4> -->
-      <ProductPrice
-        :price="product.price"
-        :originalPrice="product.originalPrice"
-        :discount="product.discount"
-      />
+      <ProductPrice :price="product.price" :originalPrice="product.originalPrice" :discount="product.discount" />
       <!-- <div class="text-sm text-gray-800 mt-2.5 mb-1.5">
         <span class="text-sm mr-1.25"
           ><strong>₹ {{ product.price }}</strong></span
