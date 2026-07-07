@@ -715,22 +715,24 @@ import { paginate } from "../../utils/pagination";
 export default defineEventHandler((event) => {
   const query = getQuery(event);
 
-  let result = productsV3;
+  const enrichedProducts = productsV3.map((product) => enrichProduct(product));
+  let result = enrichedProducts;
+  // console.log("Enriched Products:", result.slice(0, 5));
 
   result = filterProducts(result, query);
   result = searchProducts(result, query.search);
-  console.log(
-    "Before sort",
-    result.slice(0, 5).map((p) => p.id),
-  );
+  // console.log(
+  //   "Before sort",
+  //   result.slice(0, 5).map((p) => p.id),
+  // );
   result = sortProducts(result, query.sort);
-  console.log(
-    "After sort",
-    result.slice(0, 5).map((p) => p.id),
-  );
+  // console.log(
+  //   "After sort",
+  //   result.slice(0, 5).map((p) => p.id),
+  // );
   const paginated = paginate(result, query.page, query.limit);
-  console.log("query:", query);
-  console.log("Sort Query Api:", query.sort);
+  // console.log("query:", query);
+  // console.log("Sort Query Api:", query.sort);
   return successResponse(
     paginated.items,
     "Products fetched successfully",

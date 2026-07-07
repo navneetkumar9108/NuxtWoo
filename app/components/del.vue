@@ -366,3 +366,403 @@ computed(() => { // return Math.max(...(products.value?.data.products ||
 []).map((p) => p.price)); // }); // const priceRange = ref([ //
 Number(route.query.minPrice) || 0, // Number(route.query.maxPrice) ||
 maxPrice.value, // ]);
+
+<!-- pdp image and thumbnail strip code -->
+<!-- <div class="flex flex-col gap-3">
+        Main Image with Prev/Next
+        <div class="relative rounded-xl overflow-hidden aspect-square bg-gray-100 group">
+          <img :src="product.images[activeIndex]" class="w-full h-full object-cover transition-all duration-300" />
+          
+
+          Prev Button
+          <button @click="
+            activeIndex =
+            (activeIndex - 1 + product.images.length) %
+            product.images.length
+            "
+            class="absolute left-2 top-1/2 inline-flex size-11 -translate-y-1/2 items-center justify-center bg-white/80 hover:bg-white rounded-full p-2 shadow opacity-0 group-hover:opacity-100 transition-opacity">
+            <UIcon name="i-lucide-chevron-left" class="w-5 h-5" />
+          </button>
+
+          Next Button
+          <button @click="activeIndex = (activeIndex + 1) % product.images.length"
+            class="absolute right-2 top-1/2 inline-flex size-11 -translate-y-1/2 items-center justify-center bg-white/80 hover:bg-white rounded-full p-2 shadow opacity-0 group-hover:opacity-100 transition-opacity">
+            <UIcon name="i-lucide-chevron-right" class="w-5 h-5" />
+          </button>
+        </div>
+
+        Thumbnail Strip
+        <div class="flex gap-2 overflow-x-auto">
+          <button v-for="(img, i) in product.images" :key="i" @click="activeIndex = i"
+            class="shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all" :class="activeIndex === i
+              ? 'border-primary'
+              : 'border-transparent opacity-60'
+              ">
+            <img :src="img" class="w-full h-full object-cover" />
+          </button>
+        </div>
+      </div> -->
+
+<!-- Quantity + Add to Cart -->
+<!-- <div class="flex items-center gap-4 mb-5.75">
+                    <!-- <div class="flex items-center border rounded-lg overflow-hidden">
+                      <UButton
+                        icon="i-lucide-minus"
+                        variant="ghost"
+                        @click="qty > 1 && qty--"
+                      />
+                      <span class="px-4 font-medium">{{ qty }}</span>
+                      <UButton icon="i-lucide-plus" variant="ghost" @click="qty++" />
+                    </div>  -->
+
+<!-- <UButton class="flex-1" size="lg" icon="i-lucide-shopping-cart">
+                      Add to Cart
+                    </UButton> -->
+
+
+
+<!-- Tabs: Description / Reviews / Specs -->
+<!-- <div class="mt-16">
+                          <UTabs :items="tabs" class="w-full">
+                            <template #description>
+                              <div class="prose max-w-none py-4" v-html="product.description" />
+                            </template>
+                    <template #reviews>
+                              <div class="py-4 flex flex-col gap-4">
+                    
+                                <341 to 350 not use></341>
+                                Rating Summary 
+                                 <div class="flex items-center gap-4">
+                                  <span class="text-5xl font-bold">4.2</span>
+                                  <div>
+                                    <div class="flex gap-1 text-yellow-400">
+                                      <UIcon name="i-lucide-star" v-for="i in 5" :key="i" />
+                                    </div>
+                                    <p class="text-sm text-gray-500 mt-1">Based on 128 reviews</p>
+                                  </div>
+                                </div>
+                    
+                                <USeparator />
+                    
+                                Review Cards
+                                <UCard v-for="review in product.reviews" :key="review.reviewerEmail">
+                                  <div class="flex flex-col gap-2">
+                                    Header
+                                    <div class="flex items-center justify-between">
+                                      <div class="flex items-center gap-2">
+                                        <UAvatar :alt="review.reviewerName" size="sm" />
+                                        <span class="font-medium">{{ review.reviewerName }}</span>
+                                      </div>
+                                      <span class="text-sm text-gray-400">{{
+                                        new Date(review.date).toLocaleDateString("en-IN")
+                                      }}</span>
+                                    </div>
+                    
+                                    Stars
+                                    <div class="flex gap-1">
+                                      <UIcon v-for="i in 5" :key="i" :name="i <= review.rating ? 'i-lucide-star' : 'i-lucide-star-off'
+                                        " :class="i <= review.rating ? 'text-yellow-400' : 'text-gray-300'
+                                          " />
+                                    </div>
+                    
+                                    Comment
+                                    <p class="text-gray-500 text-sm">{{ review.comment }}</p>
+                                  </div>
+                                </UCard>
+                    
+                                Load More 
+                                 <UButton variant="outline" class="self-center">Load More</UButton>
+                              </div>
+                            </template>
+                    <template #specs>
+                              <UTable :data="specs" :columns="specColumns" :ui="{
+                                th: 'text-black',
+                              }" />
+                            </template>
+                    </UTabs>
+                    </div> -->
+
+<!-- Description -->
+
+<!-- <div class="space-y-4 mt-7.5">
+                                Header
+                                <div class="flex items-center gap-2">
+                                  <h3 class="font-bold text-[16px] tracking-wide text-gray-800 uppercase">
+                                    DELIVERY OPTIONS
+                                  </h3>
+                                  <UIcon name="i-lucide-truck" class="size-4 text-gray-700" />
+                                </div>
+                      
+                                <div class="flex items-center justify-between border border-gray-300 rounded-md px-3 py-2.5 w-fit">
+                                  <div class="flex items-center gap-2">
+                                    <span class="font-semibold text-sm text-gray-900">801103</span>
+                                    <UIcon name="i-lucide-check-circle-2" class="size-4 text-emerald-500" />
+                                  </div>
+                                  <UButton label="CHANGE" variant="link" color="error" class="font-bold text-xs p-0" />
+                                </div>
+                      
+                                Info rows
+                                <div class="space-y-3.5">
+                                  <div class="flex items-center gap-3">
+                                    <UIcon name="i-lucide-truck" class="size-5 text-gray-700" />
+                                    <p class="text-sm font-semibold text-gray-900">
+                                      Get it by Mon, Jun 29
+                                    </p>
+                                  </div>
+                      
+                                  <div class="flex items-center gap-3">
+                                    <UIcon name="i-lucide-banknote" class="size-5 text-gray-700" />
+                                    <p class="text-sm font-semibold text-gray-900">
+                                      Pay on delivery available
+                                    </p>
+                                  </div>
+                      
+                                  <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                      <UIcon name="i-lucide-rotate-ccw" class="size-5 text-gray-700" />
+                                      <p class="text-sm font-semibold text-gray-900">
+                                        Easy 7 days return &amp; exchange available
+                                      </p>
+                                    </div>
+                                    <UButton label="MORE INFO" trailing-icon="i-lucide-chevron-right" variant="link" color="error"
+                                      class="font-bold text-xs p-0" />
+                                  </div>
+                                </div>
+                              </div> -->
+
+
+
+
+<!-- plp -->
+<!-- <template>
+  <UContainer>
+    <div class="py-10">
+      <div class="mb-1 lg:mb-8">
+        <h1 class="text-xl lg:text-3xl font-bold">
+          {{
+            selectedCategories.length === 1
+              ? formatCategory(selectedCategories[0])
+              : "All Products"
+          }}
+        </h1> -->
+<!-- <p class="text-muted mt-1">{{ filteredProducts.length }} results</p> -->
+<!-- </div>
+      <UPageGrid class="lg:grid-cols-[22%_auto] gap-4">
+        <UCard class="hidden lg:block h-fit bg-neutral sticky top-18 rounded-xs ring-0">
+          <template #header>
+            <h2 class="font-semibold text-lg">Filters</h2>
+          </template>
+          <FilterPanel :items="items" :category-items="categoryItems" v-model:selected-categories="selectedCategories"
+            v-model:price-range="priceRange" v-model:selected-rating="selectedRating" /> -->
+
+<!-- <UAccordion :items="items" type="multiple">
+                <template #body="{ item }">
+                  <div v-if="item.label === 'Category'" class="space-y-3">
+                    <UCheckboxGroup
+                      :items="categoryItems"
+                      v-model="selectedCategories"
+                      :ui="{
+                        label: 'text-black font-normal',
+                      }"
+                    />
+                  </div>
+
+                  <div
+                    v-else-if="item.label === 'Price'"
+                    class="space-y-3 mt-2"
+                  >
+                    <USlider
+                      size="xs"
+                      v-model="priceRange"
+                      :min="0"
+                      :max="10000"
+                      :ui="{
+                        track: 'bg-gray-300',
+                        range: 'bg-blue-500',
+                        thumb: 'bg-white ring-gray-300',
+                      }"
+                    />
+
+                    <p class="text-sm text-black">
+                      ₹{{ priceRange[0] }} - ₹{{ priceRange[1] }}
+                    </p>
+                  </div>
+
+                  <div v-else-if="item.label === 'Rating'" class="space-y-2">
+                    <URadioGroup
+                      v-model="selectedRating"
+                      :items="[
+                        { label: '4★ & Above', value: '4' },
+                        { label: '3★ & Above', value: '3' },
+                        { label: '2★ & Above', value: '2' },
+                      ]"
+                      :ui="{
+                        label: 'text-black font-normal',
+                      }"
+                    />
+                  </div>
+                </template>
+              </UAccordion> -->
+<!-- </UCard>
+        <div class="">
+          <div class="flex items-center justify-end sticky top-18 z-2 ">
+            <USelect v-model="sortBy" :items="sortOptions" placeholder="Sort by" class="w-48 flex self-end" />
+          </div>
+          <USeparator class="py-1 lg:py-7 flex items-center justify-center" />
+          <UPageGrid class="h-fit gap-2 grid-cols-2 lg:grid-cols-4">
+            <CardProductCard v-for="product in products?.data || []" :key="product.id" :product="product" />
+          </UPageGrid>
+          <div class="mt-10 flex justify-center">
+            <!-- <UPagination v-model:page="currentPage" :total="filteredProducts.length" :items-per-page="itemsPerPage" /> -->
+<!-- <UPagination v-model:page="currentPage" :total="products?.meta?.total || 0"
+              :items-per-page="itemsPerPage" />
+          </div>
+        </div>
+      </UPageGrid>
+    </div>
+
+    <div
+      class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-200 grid grid-cols-2 divide-x divide-gray-200">
+      <button class="flex items-center justify-center gap-2 py-3 text-sm font-medium text-gray-700"
+        @click="isSortOpen = true">
+        <UIcon name="i-lucide-arrow-up-down" class="w-4 h-4" />
+        SORT
+      </button>
+      <button class="flex items-center justify-center gap-2 py-3 text-sm font-medium text-gray-700"
+        @click="isFilterOpen = true">
+        <UIcon name="i-lucide-sliders-horizontal" class="w-4 h-4" />
+        FILTER
+        <span v-if="activeFilterCount" class="w-1.5 h-1.5 rounded-full bg-primary" />
+      </button>
+    </div>  -->
+
+<!-- Filter bottom sheet -->
+<!-- <USlideover v-model:open="isFilterOpen" side="bottom" :ui="{ content: 'h-[85vh] rounded-t-xl' }">
+      <template #header>
+        <h2 class="font-semibold text-lg">Filters</h2>
+      </template>
+      <template #body>
+        <FilterPanel :items="items" :category-items="categoryItems" v-model:selected-categories="selectedCategories"
+          v-model:price-range="priceRange" v-model:selected-rating="selectedRating" />
+      </template>
+      <template #footer>
+        <UButton block @click="isFilterOpen = false">Apply Filters</UButton>
+      </template>
+    </USlideover> -->
+
+<!-- Sort bottom sheet -->
+<!-- <USlideover v-model:open="isSortOpen" side="bottom" :ui="{ content: 'h-[50vh] rounded-t-xl' }">
+      <template #header>
+        <h2 class="font-semibold text-lg">Sort By</h2>
+      </template>
+      <template #body>
+        <URadioGroup v-model="sortOption" :items="sortOptions" />
+      </template>
+    </USlideover>
+  </UContainer>
+</template> -->
+
+<!-- product card -->
+<!-- <template>
+  <UPageCard
+    class="w-full max-w-[180px] sm:max-w-[210px] lg:w-52.5 lg:max-w-none bg-neutral ring-0 mx-auto sm:mx-2.5 mb-4 sm:mb-7.5"
+    :to="`/products/${product.slug}`"
+    :ui="{
+      root: 'hover:bg-neutral hover:bg-white hover:shadow-lg transition-all duration-300 rounded-xs',
+      container: 'sm:p-0 gap-0',
+      header: 'w-full h-40 sm:h-56 lg:h-70 mb-0 relative bg-gray-200',
+      body: 'px-2 sm:px-2.5 mt-2 sm:mt-3 leading-tight w-full',
+    }"
+  >
+    <template #header>
+      <ImageImg :src="product.thumbnail" :alt="product.title" />
+      <BadgeRatingBadge :rating="product.rating" :ratingCount="product.ratingCount" />
+      <BadgeNewBadge :show="product.isNew" label="NEW" />
+    </template>
+    <template #body>
+      <ProductInfo :brand="product.brand.name" :title="product.title" />
+      <ProductPrice :price="product.price" :originalPrice="product.originalPrice" :discount="product.discount" />
+    </template>
+  </UPageCard>
+</template> -->
+
+<!-- plp -->
+<!-- <template>
+  <UContainer>
+    <div class="py-4 sm:py-6 lg:py-10">
+      <div class="mb-1 lg:mb-8">
+        <h1 class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold">
+          {{
+            selectedCategories.length === 1
+              ? formatCategory(selectedCategories[0])
+              : "All Products"
+          }}
+        </h1>
+      </div>
+
+      <UPageGrid class="grid-cols-1 lg:grid-cols-[22%_auto] gap-4">
+        <UCard class="hidden lg:block h-fit bg-neutral sticky top-18 rounded-xs ring-0">
+          <template #header>
+            <h2 class="font-semibold text-lg">Filters</h2>
+          </template>
+          <FilterPanel :items="items" :category-items="categoryItems" v-model:selected-categories="selectedCategories"
+            v-model:price-range="priceRange" v-model:selected-rating="selectedRating" />
+        </UCard>
+
+        <div>
+          <div class="flex items-center justify-end sticky top-16 lg:top-18 z-2 bg-white/80 backdrop-blur py-1">
+            <USelect v-model="sortBy" :items="sortOptions" placeholder="Sort by"
+              class="w-32 sm:w-40 lg:w-48 flex self-end" />
+          </div>
+          <USeparator class="py-1 lg:py-7 flex items-center justify-center" />
+
+          <UPageGrid class="h-fit gap-2 sm:gap-3 lg:gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
+            <CardProductCard v-for="product in products?.data || []" :key="product.id" :product="product" />
+          </UPageGrid>
+
+          <div class="mt-6 sm:mt-8 lg:mt-10 flex justify-center pb-16 lg:pb-0">
+            <UPagination v-model:page="currentPage" :total="products?.meta?.total || 0"
+              :items-per-page="itemsPerPage" />
+          </div>
+        </div>
+      </UPageGrid>
+    </div>
+
+    <div
+      class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-200 grid grid-cols-2 divide-x divide-gray-200">
+      <button class="flex items-center justify-center gap-2 py-3 text-xs sm:text-sm font-medium text-gray-700"
+        @click="isSortOpen = true">
+        <UIcon name="i-lucide-arrow-up-down" class="w-4 h-4" />
+        SORT
+      </button>
+      <button class="flex items-center justify-center gap-2 py-3 text-xs sm:text-sm font-medium text-gray-700"
+        @click="isFilterOpen = true">
+        <UIcon name="i-lucide-sliders-horizontal" class="w-4 h-4" />
+        FILTER
+        <span v-if="activeFilterCount" class="w-1.5 h-1.5 rounded-full bg-primary" />
+      </button>
+    </div>
+
+    <USlideover v-model:open="isFilterOpen" side="bottom" :ui="{ content: 'h-[90vh] sm:h-[85vh] rounded-t-xl' }">
+      <template #header>
+        <h2 class="font-semibold text-lg">Filters</h2>
+      </template>
+      <template #body>
+        <FilterPanel :items="items" :category-items="categoryItems" v-model:selected-categories="selectedCategories"
+          v-model:price-range="priceRange" v-model:selected-rating="selectedRating" />
+      </template>
+      <template #footer>
+        <UButton block @click="isFilterOpen = false">Apply Filters</UButton>
+      </template>
+    </USlideover>
+
+    <USlideover v-model:open="isSortOpen" side="bottom" :ui="{ content: 'h-[50vh] rounded-t-xl' }">
+      <template #header>
+        <h2 class="font-semibold text-lg">Sort By</h2>
+      </template>
+      <template #body>
+        <URadioGroup v-model="sortOption" :items="sortOptions" />
+      </template>
+    </USlideover>
+  </UContainer>
+</template> -->

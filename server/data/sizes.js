@@ -85,11 +85,12 @@ const sizeList = [
   {
     name: "XS",
     slug: "xs",
+    isFeatured: true,
   },
   {
     name: "S",
     slug: "s",
-    isFeatured: true,
+    isFeatured: false,
   },
   {
     name: "M",

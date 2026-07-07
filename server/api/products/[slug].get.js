@@ -1,25 +1,28 @@
-import { products } from "../../data/products";
+import { productsV3 } from "~~/server/data/productsV3";
 import { getRelatedProducts } from "../../utils/product";
 import { successResponse, errorResponse } from "../../utils/response";
+import { enrichProduct } from "../../utils/enrichProduct";
 
 export default defineEventHandler((event) => {
   const { slug } = getRouterParams(event);
 
-  const product = products.find((item) => item.slug === slug);
+  const product = productsV3.find((item) => item.slug === slug);
 
   if (!product) {
-    setResponseStatus(event, 404);
+    // setResponseStatus(event, 404);
 
     return errorResponse("Product not found", 404);
   }
+  const enrichedProduct = enrichProduct(product);
 
-  const relatedProducts = getRelatedProducts(product);
+  // const relatedProducts = getRelatedProducts(product);
 
-  return successResponse(
-    {
-      product,
-      relatedProducts,
-    },
-    "Product fetched successfully",
-  );
+  // return successResponse(
+  //   {
+  //     product,
+  //     relatedProducts,
+  //   },
+  //   "Product fetched successfully",
+  // );
+  return successResponse(enrichedProduct, "Product fetched successfully");
 });

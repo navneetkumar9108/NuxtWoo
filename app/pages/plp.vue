@@ -33,9 +33,9 @@ const paginatedProducts = computed(() => {
   return filteredProducts.value.slice(start, start + itemsPerPage);
 });
 
-const addToCart = (product) => {
-  console.log("Added to cart:", product.name);
-};
+// const addToCart = (product) => {
+//   console.log("Added to cart:", product.name);
+// };
 </script>
 <template>
   <UContainer>
@@ -51,54 +51,30 @@ const addToCart = (product) => {
         <div class="flex-1 min-w-0">
           <!-- Product Grid -->
           <UPageGrid class="lg:grid-cols-4">
-            <UPageCard
-              v-for="product in paginatedProducts"
-              :key="product.id"
-              :title="product.name"
-              :description="product.category"
-              :to="`/products/${product.slug}`"
-              :ui="{
+            <UPageCard v-for="product in paginatedProducts" :key="product.id" :title="product.name"
+              :description="product.category" :to="`/products/${product.slug}`" :ui="{
                 root: 'bg-white hover:bg-white',
-              }"
-            >
+              }">
               <template #leading>
-                <NuxtImg
-                  :src="product.image"
-                  :alt="product.name"
-                  class="w-[280px] h-[315px] object-cover rounded-lg"
-                />
+                <NuxtImg :src="product.image" :alt="product.name" class="w-[280px] h-[315px] object-cover rounded-lg" />
               </template>
 
               <template #trailing>
                 <div class="flex items-center justify-between mt-2">
                   <span class="text-lg font-bold">${{ product.price }}</span>
-                  <UBadge
-                    v-if="product.badge"
-                    :label="product.badge"
-                    color="success"
-                    variant="subtle"
-                  />
+                  <UBadge v-if="product.badge" :label="product.badge" color="success" variant="subtle" />
                 </div>
               </template>
 
               <template #footer>
-                <UButton
-                  label="Add to Cart"
-                  icon="i-lucide-shopping-cart"
-                  block
-                  @click.prevent="addToCart(product)"
-                />
+                <UButton label="Add to Cart" icon="i-lucide-shopping-cart" block @click.prevent="addToCart(product)" />
               </template>
             </UPageCard>
           </UPageGrid>
 
           <!-- Pagination -->
           <div class="mt-10 flex justify-center">
-            <UPagination
-              v-model:page="currentPage"
-              :total="filteredProducts.length"
-              :items-per-page="itemsPerPage"
-            />
+            <UPagination v-model:page="currentPage" :total="filteredProducts.length" :items-per-page="itemsPerPage" />
           </div>
         </div>
       </div>

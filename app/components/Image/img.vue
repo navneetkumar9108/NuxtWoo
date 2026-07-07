@@ -6,7 +6,7 @@ const { src, alt } = defineProps({
 </script>
 
 <template>
-  <NuxtImg :src="src" :alt="alt" class="w-full h-full object-contain" />
+  <NuxtImg :src="src" :alt="alt" class=" w-full h-full object-contain" />
 </template>
 
 <style lang="scss" scoped></style>

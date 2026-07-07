@@ -25,10 +25,10 @@ export const productsV3 = [
         colorId: 1, // Black
 
         images: [
-          "/products/1/black-1.webp",
-          "/products/1/black-2.webp",
-          "/products/1/black-3.webp",
-          "/products/1/black-4.webp",
+          "https://prod-img.thesouledstore.com/public/theSoul…atalog/product/1781693235_1160540.jpg?w=480&dpr=1",
+          "https://prod-img.thesouledstore.com/public/theSoul…atalog/product/1781693235_9329608.jpg?w=480&dpr=1",
+          "https://prod-img.thesouledstore.com/public/theSoul…atalog/product/1781693235_7933601.jpg?w=480&dpr=1",
+          "https://prod-img.thesouledstore.com/public/theSoul…atalog/product/1781693235_1068361.jpg?w=480&dpr=1",
         ],
 
         sizes: [
@@ -55,9 +55,11 @@ export const productsV3 = [
         colorId: 2, // White
 
         images: [
-          "/products/1/white-1.webp",
-          "/products/1/white-2.webp",
-          "/products/1/white-3.webp",
+          "https://prod-img.thesouledstore.com/public/theSoul…atalog/product/1781693235_7933601.jpg?w=480&dpr=1",
+          "https://prod-img.thesouledstore.com/public/theSoul…atalog/product/1781693235_1068361.jpg?w=480&dpr=1",
+          "https://prod-img.thesouledstore.com/public/theSoul…atalog/product/1781693235_3366163.jpg?w=480&dpr=1",
+          "https://prod-img.thesouledstore.com/public/theSoul…atalog/product/1781693235_9888228.jpg?w=480&dpr=1",
+          "https://prod-img.thesouledstore.com/public/theSoul…atalog/product/1781852586_6401975.jpg?w=480&dpr=1",
         ],
 
         sizes: [
@@ -573,9 +575,9 @@ export const productsV3 = [
         colorId: 1, // Black
 
         images: [
-          "/products/5/black-1.webp",
-          "/products/5/black-2.webp",
-          "/products/5/black-3.webp",
+          "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/FEBRUARY/28/RTVOzBir_6b486a3a3ef24c5898f13a565b69d69e.jpg",
+          "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/FEBRUARY/28/qz0LiFuG_0c3d455840444b918f9815689e455189.jpg",
+          "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/FEBRUARY/28/9od2Fyr8_425031e20b3449a9a7e5cee8ad7e0c6c.jpg",
         ],
 
         sizes: [
@@ -1520,9 +1522,9 @@ export const productsV3 = [
         colorId: 1, // Black
 
         images: [
-          "/products/12/black-1.webp",
-          "/products/12/black-2.webp",
-          "/products/12/black-3.webp",
+          "https://prod-img.thesouledstore.com/public/theSoul…atalog/product/1752216270_1880849.jpg?w=480&dpr=1",
+          "https://prod-img.thesouledstore.com/public/theSoul…atalog/product/1746297227_6892711.jpg?w=480&dpr=1",
+          "https://prod-img.thesouledstore.com/public/theSoul…atalog/product/1762941550_7886104.jpg?w=480&dpr=1",
         ],
 
         sizes: [
@@ -1657,9 +1659,9 @@ export const productsV3 = [
         colorId: 1, // Black
 
         images: [
-          "/products/13/black-1.webp",
-          "/products/13/black-2.webp",
-          "/products/13/black-3.webp",
+          "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/FEBRUARY/28/c7VJsmwL_a7e4277a0e354a2886c966fa60193123.jpg",
+          "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/FEBRUARY/28/qdWcEXIi_e8785871f25246d0bd6ac71f000bf22d.jpg",
+          "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/FEBRUARY/28/cEzk55xL_ed76ef9d76934102b23027b185db66c4.jpg",
         ],
 
         sizes: [
@@ -1673,7 +1675,11 @@ export const productsV3 = [
       {
         colorId: 3, // Grey
 
-        images: ["/products/13/grey-1.webp", "/products/13/grey-2.webp"],
+        images: [
+          "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/FEBRUARY/28/cEzk55xL_ed76ef9d76934102b23027b185db66c4.jpg",
+          "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/FEBRUARY/28/qdWcEXIi_e8785871f25246d0bd6ac71f000bf22d.jpg",
+          "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/FEBRUARY/28/c7VJsmwL_a7e4277a0e354a2886c966fa60193123.jpg",
+        ],
 
         sizes: [
           { sizeId: 2, stock: 5 },
@@ -3977,7 +3983,7 @@ export const productsV3 = [
         ],
 
         sizes: [
-          { sizeId: 2, stock: 7 }, // S
+          { sizeId: 1, stock: 7 }, // S
           { sizeId: 3, stock: 11 }, // M
           { sizeId: 4, stock: 15 }, // L
           { sizeId: 5, stock: 9 }, // XL
@@ -4083,7 +4089,7 @@ export const productsV3 = [
     publishedAt: "2026-07-01",
   },
 ];
-console.log(
-  "productsV3 file",
-  productsV3.slice(0, 5).map((p) => p.id),
-);
+// console.log(
+//   "productsV3 file",
+//   productsV3.slice(0, 5).map((p) => p.id),
+// );

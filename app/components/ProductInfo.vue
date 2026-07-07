@@ -6,10 +6,10 @@ const { brand, title } = defineProps({
 </script>
 
 <template>
-  <h3 class="text-[16px] font-bold text-gray-800">
+  <h3 class="text-[13px] sm:text-[16px] font-bold text-gray-800">
     {{ brand || "No Brand" }}
   </h3>
-  <h4 class="text-sm text-gray-600 font-normal truncate">
+  <h4 class=" text-[11px] sm:text-sm text-gray-600 font-normal truncate">
     {{ title }}
   </h4>
 </template>

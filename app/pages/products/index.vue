@@ -22,13 +22,6 @@ const selectedRating = ref(route.query.rating || undefined);
 
 const skip = computed(() => (currentPage.value - 1) * itemsPerPage);
 
-// const { data: products, pending, error } = await useFetch("/api/products");
-// const { data: products } = await useFetch("/api/products", {
-//   query: {
-//     sort: sortBy,
-//   },
-// });
-
 const { data: products } = await useFetch("/api/products", {
   query: {
     sort: sortBy,
@@ -56,19 +49,19 @@ const { data: brands } = await useFetch("/api/brands");
 const { data: categories } = await useFetch("/api/categories");
 // console.log("categories", categories.value.data);
 
-const enrichedProducts = computed(() => {
-  const brandList = brands.value?.data || [];
-  const categoryList = categories.value?.data || [];
+// const enrichedProducts = computed(() => {
+//   const brandList = brands.value?.data || [];
+//   const categoryList = categories.value?.data || [];
 
-  return (products.value?.data || []).map((product) => ({
-    ...product,
+//   return (products.value?.data || []).map((product) => ({
+//     ...product,
 
-    brand: brandList.find((b) => b.id === product.brandId),
+//     brand: brandList.find((b) => b.id === product.brandId),
 
-    category: categoryList.find((c) => c.id === product.categoryId),
-  }));
-});
-console.log(enrichedProducts.value);
+//     category: categoryList.find((c) => c.id === product.categoryId),
+//   }));
+// });
+// console.log(enrichedProducts.value);
 
 // category coming from the Categories page (?category=beauty)
 const activeCategory = computed(() => route.query.category || "");
@@ -92,31 +85,31 @@ watchEffect(() => {
   }
 });
 
-const filteredProducts = computed(() => {
-  // let result = [...(products.value?.products || [])];
-  // let result = [...(products.value?.data.products || [])];
-  // let result = [...(products.value?.data || [])];
-  let result = [...enrichedProducts.value];
+// const filteredProducts = computed(() => {
+//   // let result = [...(products.value?.products || [])];
+//   // let result = [...(products.value?.data.products || [])];
+//   // let result = [...(products.value?.data || [])];
+//   let result = [...enrichedProducts.value];
 
-  // if (selectedCategories.value.length) {
-  //   result = result.filter((p) =>
-  //     selectedCategories.value.includes(p.category.slug),
-  //   );
-  // }
+//   // if (selectedCategories.value.length) {
+//   //   result = result.filter((p) =>
+//   //     selectedCategories.value.includes(p.category.slug),
+//   //   );
+//   // }
 
-  // result = result.filter(
-  //   (p) => p.price >= priceRange.value[0] && p.price <= priceRange.value[1],
-  // );
+//   // result = result.filter(
+//   //   (p) => p.price >= priceRange.value[0] && p.price <= priceRange.value[1],
+//   // );
 
-  // if (selectedRating.value) {
-  //   result = result.filter((p) => p.rating >= Number(selectedRating.value));
-  // }
+//   // if (selectedRating.value) {
+//   //   result = result.filter((p) => p.rating >= Number(selectedRating.value));
+//   // }
 
-  // if (sortBy.value === "price-asc") result.sort((a, b) => a.price - b.price);
-  // if (sortBy.value === "price-desc") result.sort((a, b) => b.price - a.price);
+//   // if (sortBy.value === "price-asc") result.sort((a, b) => a.price - b.price);
+//   // if (sortBy.value === "price-desc") result.sort((a, b) => b.price - a.price);
 
-  return result;
-});
+//   return result;
+// });
 
 watch(sortBy, (value) => {
   console.log("Sort Changed:", value);
@@ -202,19 +195,16 @@ const formatCategory = (category) => {
 <template>
   <UContainer>
     <div class="py-10">
-      <div class="mb-8">
-        <h1 class="text-3xl font-bold">
+      <div class="mb-1 lg:mb-8">
+        <h1 class="text-xl lg:text-3xl font-bold">
           {{
             selectedCategories.length === 1
               ? formatCategory(selectedCategories[0])
               : "All Products"
           }}
         </h1>
-        <p class="text-muted mt-1">{{ filteredProducts.length }} results</p>
+        <!-- <p class="text-muted mt-1">{{ filteredProducts.length }} results</p> -->
       </div>
-
-
-
       <UPageGrid class="lg:grid-cols-[22%_auto] gap-4">
         <UCard class="hidden lg:block h-fit bg-neutral sticky top-18 rounded-xs ring-0">
           <template #header>
@@ -272,13 +262,12 @@ const formatCategory = (category) => {
               </UAccordion> -->
         </UCard>
         <div class="">
-          <div class="flex items-center justify-end sticky top-18 z-2">
-
+          <div class="flex items-center justify-end sticky top-18 z-2 hidden lg:block">
             <USelect v-model="sortBy" :items="sortOptions" placeholder="Sort by" class="w-48 flex self-end" />
           </div>
-          <USeparator class="py-7 flex items-center justify-center" />
-          <UPageGrid class="h-fit gap-2 lg:grid-cols-4">
-            <CardProductCard v-for="product in enrichedProducts" :key="product.id" :product="product" />
+          <USeparator class="py-1 lg:py-7 flex items-center justify-center" />
+          <UPageGrid class="h-fit gap-2  grid-cols-2 lg:grid-cols-4">
+            <CardProductCard v-for="product in products?.data || []" :key="product.id" :product="product" />
           </UPageGrid>
           <div class="mt-10 flex justify-center">
             <!-- <UPagination v-model:page="currentPage" :total="filteredProducts.length" :items-per-page="itemsPerPage" /> -->
@@ -287,10 +276,7 @@ const formatCategory = (category) => {
           </div>
         </div>
       </UPageGrid>
-
     </div>
-
-
 
     <div
       class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-200 grid grid-cols-2 divide-x divide-gray-200">

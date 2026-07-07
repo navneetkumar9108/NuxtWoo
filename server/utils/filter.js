@@ -25,23 +25,23 @@ export function filterProducts(products, query = {}) {
       .filter((category) => categorySlugs.includes(category.slug))
       .map((category) => category.id);
 
-    console.log("Query Category:", query.category);
-    console.log("Category Slugs:", categorySlugs);
-    console.log("Category IDs:", categoryIds);
+    // console.log("Query Category:", query.category);
+    // console.log("Category Slugs:", categorySlugs);
+    // console.log("Category IDs:", categoryIds);
 
     filtered = filtered.filter((product) =>
       categoryIds.includes(product.categoryId),
     );
 
-    console.log("Total Products After Filter:", filtered.length);
+    // console.log("Total Products After Filter:", filtered.length);
   }
-  console.log(
-    "Filtered Products:",
-    filtered.map((p) => ({
-      id: p.id,
-      categoryId: p.categoryId,
-    })),
-  );
+  // console.log(
+  //   "Filtered Products:",
+  //   filtered.map((p) => ({
+  //     id: p.id,
+  //     categoryId: p.categoryId,
+  //   })),
+  // );
   // Gender
   if (query.gender) {
     filtered = filtered.filter(
@@ -102,21 +102,21 @@ export function filterProducts(products, query = {}) {
     );
   }
 
-  console.log("Min Price:", query.minPrice);
-  console.log("Max Price:", query.maxPrice);
+  // console.log("Min Price:", query.minPrice);
+  // console.log("Max Price:", query.maxPrice);
 
   // Rating
   if (query.rating) {
     filtered = filtered.filter(
       (product) => product.rating >= Number(query.rating),
     );
-    console.log(
-      "Products After Rating:",
-      filtered.map((p) => ({
-        id: p.id,
-        rating: p.rating,
-      })),
-    );
+    // console.log(
+    //   "Products After Rating:",
+    //   filtered.map((p) => ({
+    //     id: p.id,
+    //     rating: p.rating,
+    //   })),
+    // );
   }
 
   // Discount
