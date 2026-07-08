@@ -193,7 +193,7 @@ const formatCategory = (category) => {
 };
 </script>
 <template>
-  <UContainer>
+  <UContainer class="px-2.5">
     <div class="py-10">
       <div class="mb-1 lg:mb-8">
         <h1 class="text-xl lg:text-3xl font-bold">
@@ -205,7 +205,7 @@ const formatCategory = (category) => {
         </h1>
         <!-- <p class="text-muted mt-1">{{ filteredProducts.length }} results</p> -->
       </div>
-      <UPageGrid class="lg:grid-cols-[22%_auto] gap-4">
+      <UPageGrid class="sm:grid-cols-1 lg:grid-cols-[22%_auto] gap-4">
         <UCard class="hidden lg:block h-fit bg-neutral sticky top-18 rounded-xs ring-0">
           <template #header>
             <h2 class="font-semibold text-lg">Filters</h2>
@@ -266,7 +266,7 @@ const formatCategory = (category) => {
             <USelect v-model="sortBy" :items="sortOptions" placeholder="Sort by" class="w-48 flex self-end" />
           </div>
           <USeparator class="py-1 lg:py-7 flex items-center justify-center" />
-          <UPageGrid class="h-fit gap-2  grid-cols-2 lg:grid-cols-4">
+          <UPageGrid class="h-fit gap-2  grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4">
             <CardProductCard v-for="product in products?.data || []" :key="product.id" :product="product" />
           </UPageGrid>
           <div class="mt-10 flex justify-center">

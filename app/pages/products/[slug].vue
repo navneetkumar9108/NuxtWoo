@@ -64,18 +64,35 @@ const specRows = computed(() =>
     value,
   }))
 )
+const items = [
+  'https://picsum.photos/640/640?random=1',
+  'https://picsum.photos/640/640?random=2',
+  'https://picsum.photos/640/640?random=3',
+  'https://picsum.photos/640/640?random=4',
+  'https://picsum.photos/640/640?random=5',
+  'https://picsum.photos/640/640?random=6'
+]
+
 </script>
 
 <template>
   <UContainer class="py-10">
-    <UPageGrid class="lg:grid-cols-[60%_auto] gap-10">
+    <UPageGrid class="lg:grid-cols-[60%_auto] gap-2 sm:gap-10 items-start">
       <!-- Left: Images -->
-      <UPageGrid class="lg:grid-cols-2 gap-2">
+      <UPageGrid class="hidden sm:grid sm:grid-cols-2 lg:grid-cols-2 gap-2">
+        <div class="overflow-hidden" v-for="(image, index) in galleryImages" :key="index">
 
-        <NuxtImg v-for="(image, index) in galleryImages" :key="index" :src="image"
-          class="w-full rounded-xs object-cover" />
+          <NuxtImg :src="image"
+            class="w-full rounded-xs object-cover transition-transform duration-500 hover:scale-110 cursor-zoom-in " />
+        </div>
       </UPageGrid>
+      <UCarousel v-slot="{ item }" wheel-gestures dots :items="galleryImages" class="w-full   mx-auto sm:hidden" :ui="{
+        dot: 'size-1',
+        dots: '-bottom-2'
+      }">
+        <NuxtImg :src="item" height="320" class="w-full rounded-lg" loading="lazy" playsinline />
 
+      </UCarousel>
       <!-- Right: Details -->
       <div class="flex flex-col">
 
