@@ -11,7 +11,7 @@ useSeoMeta({
     <TrustedBy />
     <ShopByCategory />
     <WhyChooseUs />
-    <PopularProduct />
+    <!-- <PopularProduct /> -->
   </div>
 </template>
 

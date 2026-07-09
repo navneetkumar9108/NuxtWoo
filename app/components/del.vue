@@ -766,3 +766,9 @@ maxPrice.value, // ]);
     </USlideover>
   </UContainer>
 </template> -->
+
+
+root: ' bg-transparent ',
+body: 'p-0 justify-center items-center',
+title: 'absolute bottom-3 text-white font-semibold text-sm z-10',
+container: 'sm:p-0',

@@ -24,21 +24,17 @@ const servicesData = [
 </script>
 
 <template>
-  <UPageGrid class="lg:grid-cols-4 mx-60 my-24 px-12 gap-4">
-    <UPageCard
-      v-for="service in servicesData"
-      :key="service.title"
-      :ui="{
-        root: 'bg-white ring-0 ring-transparent',
-        container: ' sm:p-0',
-      }"
-    >
-      <div class="flex items-center gap-8 p-8 rounded-lg bg-white">
-        <img :src="service.src" class="w-[60px] h-[60px]" />
+  <UPageGrid class=" grid-cols-2 lg:grid-cols-4 mx-20 md:mx-74 my-24 px-12 gap-4">
+    <UPageCard v-for="service in servicesData" :key="service.title" :ui="{
+      root: 'bg-white ring-0 ring-transparent',
+      container: ' sm:p-0',
+    }">
+      <div class="flex lg:flex-row flex-col items-center justify-center gap-4 p-5 rounded-lg bg-white">
+        <img :src="service.src" class="w-10 h-10" />
 
-        <div class="">
-          <h3 class="text-xl font-semibold">{{ service.title }}</h3>
-          <p class="text-sm">{{ service.description }}</p>
+        <div class="leading-tight w-full flex flex-col items-center justify-center">
+          <h3 class="text-lg font-semibold text-center">{{ service.title }}</h3>
+          <p class="text-[1rem] text-wrap text-center">{{ service.description }}</p>
         </div>
       </div>
     </UPageCard>

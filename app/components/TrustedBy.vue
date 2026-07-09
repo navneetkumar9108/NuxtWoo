@@ -11,14 +11,10 @@ const items = [
 
 <template>
   <div>
-    <UPageLogos
-      :items="items"
-      class=""
-      :ui="{
-        root: 'mx-60 my-16 px-12',
-        logos: 'gap-10 mt-0',
-        logo: 'rounded-none w-auto   bg-transparent ',
-      }"
-    />
+    <UPageLogos :items="items" class="" :ui="{
+      root: 'mx-20 lg:mx-74 my-16 px-12',
+      logos: 'gap-x-8 gap-y-4 lg:gap-10 mt-0 flex-wrap lg:justify-between',
+      logo: 'rounded-none w-auto   bg-transparent ',
+    }" />
   </div>
 </template>
