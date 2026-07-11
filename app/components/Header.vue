@@ -1,4 +1,11 @@
 <script setup>
+const search = ref("");
+const cartCount = ref(3);
+
+const isMobileMenuOpen = ref(false);
+const isSearchOpen = ref(false)
+const searchQuery = ref('')
+
 const items = ref([
   {
     label: "Home",
@@ -22,12 +29,10 @@ const items = ref([
   },
 ]);
 
-const search = ref("");
-const cartCount = ref(3);
+const desktopNavItems = computed(() =>
+  items.value.filter(item => item.to !== '/account')
+);
 
-const isMobileMenuOpen = ref(false);
-const isSearchOpen = ref(false)
-const searchQuery = ref('')
 </script>
 
 <template>
@@ -45,7 +50,7 @@ const searchQuery = ref('')
         </NuxtLink>
 
         <!-- Navigation Menu -->
-        <UNavigationMenu :items="items" class="px-4" trailingIcon="false" :ui="{
+        <UNavigationMenu :items="desktopNavItems" class="px-4" trailingIcon="false" :ui="{
           root: 'hidden lg:flex',
           list: 'flex items-center justify-between gap-6 px-4   ',
           item: '',
@@ -70,7 +75,7 @@ const searchQuery = ref('')
         <!-- Account Button -->
         <UButton icon="i-lucide-user" color="neutral" variant="ghost" aria-label="Account" to="/account"
           class="hover:bg-transparent active:bg-transparent hidden lg:block" :ui="{
-            leadingIcon: 'size-8 text-slate-950 font-normal stroke-1',
+            leadingIcon: 'size-6 text-slate-950 font-normal stroke-1',
           }" />
         <!-- Search Icon -->
         <UButton class="lg:hidden text-gray-800" icon="i-lucide-search" color="neutral" variant="ghost" size="xl"
@@ -85,7 +90,7 @@ const searchQuery = ref('')
             }" />
           <!-- </UChip> -->
           <UBadge v-if="cartCount > 0" :label="String(cartCount)" size="xs" color="primary"
-            class="absolute -top-1 -right-1 pointer-events-none bg-indigo-800 text-white rounded-full text-[8px] p-1 gap-0 font-normal h-[12px] min-w-[12px]" />
+            class="absolute -top-1 -right-1 pointer-events-none bg-indigo-800 text-white rounded-full text-[8px] p-1 gap-0 font-normal h-3 min-w-3" />
         </div>
 
       </div>

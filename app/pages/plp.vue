@@ -56,7 +56,7 @@ const paginatedProducts = computed(() => {
                 root: 'bg-white hover:bg-white',
               }">
               <template #leading>
-                <NuxtImg :src="product.image" :alt="product.name" class="w-[280px] h-[315px] object-cover rounded-lg" />
+                <NuxtImg :src="product.image" :alt="product.name" class="w-70 h-78.75 object-cover rounded-lg" />
               </template>
 
               <template #trailing>

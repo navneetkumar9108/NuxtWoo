@@ -43,7 +43,7 @@ const { data: products } = await useFetch("/api/products", {
   },
 });
 
-console.log("products", products.value);
+// console.log("products", products.value);
 const { data: brands } = await useFetch("/api/brands");
 // console.log("brands", brands.value.data);
 const { data: categories } = await useFetch("/api/categories");
@@ -262,7 +262,7 @@ const formatCategory = (category) => {
               </UAccordion> -->
         </UCard>
         <div class="">
-          <div class="flex items-center justify-end sticky top-18 z-2 hidden lg:block">
+          <div class="hidden lg:flex items-center justify-end sticky top-18 z-2">
             <USelect v-model="sortBy" :items="sortOptions" placeholder="Sort by" class="w-48 flex self-end" />
           </div>
           <USeparator class="py-1 lg:py-7 flex items-center justify-center" />
