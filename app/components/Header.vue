@@ -1,10 +1,13 @@
 <script setup>
+import {useCounterStore} from '~~/store/counter'
 const search = ref("");
 const cartCount = ref(3);
 
 const isMobileMenuOpen = ref(false);
 const isSearchOpen = ref(false)
 const searchQuery = ref('')
+
+const store = useCounterStore()
 
 const items = ref([
   {
@@ -45,7 +48,7 @@ const desktopNavItems = computed(() =>
           @click="isMobileMenuOpen = true" />
         <!-- Logo -->
         <NuxtLink to="/" class="flex items-center gap-2 font-bold text-lg shrink-0">
-          <NuxtImg src="/icons/logo.svg" alt="Logo" class="h-8 w-auto" />
+          <ImageImg src="/icons/logo.svg" alt="Logo" class="h-8 w-auto" />
           <span>WooNuxt</span>
         </NuxtLink>
 
@@ -74,25 +77,23 @@ const desktopNavItems = computed(() =>
 
         <!-- Account Button -->
         <UButton icon="i-lucide-user" color="neutral" variant="ghost" aria-label="Account" to="/account"
-          class="hover:bg-transparent active:bg-transparent hidden lg:block" :ui="{
-            leadingIcon: 'size-6 text-slate-950 font-normal stroke-1',
-          }" />
+          class="hover:bg-transparent active:bg-transparent hidden lg:inline-flex text-gray-800" />
         <!-- Search Icon -->
         <UButton class="lg:hidden text-gray-800" icon="i-lucide-search" color="neutral" variant="ghost" size="xl"
           @click="isSearchOpen = !isSearchOpen" />
 
         <!-- Cart Button with Badge -->
-        <div class="relative">
-          <!-- <UChip :text="5" size="3xl"> -->
+        <!-- <div class="relative">
           <UButton icon="i-lucide-shopping-cart" color="neutral" variant="ghost" aria-label="Cart" to="/cart"
             class="hover:bg-transparent active:bg-transparent" :ui="{
               leadingIcon: 'size-6 text-slate-950',
             }" />
-          <!-- </UChip> -->
           <UBadge v-if="cartCount > 0" :label="String(cartCount)" size="xs" color="primary"
             class="absolute -top-1 -right-1 pointer-events-none bg-indigo-800 text-white rounded-full text-[8px] p-1 gap-0 font-normal h-3 min-w-3" />
-        </div>
-
+        </div> -->
+        <CartBadge />
+        <!-- <h1>Count: {{store.count}}</h1>
+        <button @click='store.count++'>Increment</button> -->
       </div>
       <!-- </div> -->
     </UContainer>

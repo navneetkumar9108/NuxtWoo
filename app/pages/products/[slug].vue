@@ -1,9 +1,12 @@
 <script setup>
+import { useCartStore } from '~~/store/cart';
 const route = useRoute();
 const qty = ref(1);
 const selectedSize = ref("");
 const activeIndex = ref(0);
 const selectedVariantIndex = ref(0);
+const cartStore = useCartStore()
+
 
 // Fetch product by slug
 
@@ -25,7 +28,9 @@ const galleryImages = computed(() => {
 
 
 
-
+function handleAddToCart() {
+  cartStore.addToCart(product.value)
+}
 
 const tabs = [
   { label: "Description", slot: "description" },
@@ -167,7 +172,7 @@ const items = [
         <!-- Add to Cart -->
         <div class="flex items-center gap-4 mb-5.75">
           <UButton class="w-[50%] justify-center py-3.75 font-bold text-[16px] bg-error text-white rounded-sm"
-            icon="i-lucide-shopping-bag" size="lg" color="primary" variant="solid">Add to Cart</UButton>
+            icon="i-lucide-shopping-bag" size="lg" color="primary" variant="solid" @click="handleAddToCart">Add to Cart</UButton>
           <UButton
             class="w-[40%] justify-center py-3.75 font-bold text-[16px] hover:ring-gray-800 text-gray-800 rounded-sm ring-error"
             icon="i-lucide-heart" variant="outline">

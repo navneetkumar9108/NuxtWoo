@@ -26,7 +26,7 @@ const categories = [
       }">
         <template #header>
           <span class="absolute bottom-2 left-1/2 -translate-x-1/2 text-white ">{{ cat.alt }}</span>
-          <NuxtImg :src="cat.src" :alt="cat.alt" class=" object-cover  w-full lg:w-55 h-62 rounded-lg" />
+          <ImageImg :src="cat.src" :alt="cat.alt" class='object-cover  w-full lg:w-55 h-62 rounded-lg' />
         </template>
       </UPageCard>
       <!-- <UCard v-for="category in categories.slice(0, 6)" :key="category.alt" :title="category.alt" class="p-0" :ui="{
