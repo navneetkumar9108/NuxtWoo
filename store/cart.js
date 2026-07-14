@@ -23,24 +23,23 @@ export const useCartStore = defineStore(
 
     // actions
     function addToCart(product, qty = 1, variant = null) {
-      const existing = items.value.find(
-        (i) => i.id === product.id && i.variant === variant,
-      );
-
+      console.log("product", product);
+      const existing = items.value.find((i) => i.id === product.data.id);
+      console.log("product", existing);
       if (existing) {
         existing.qty += qty;
       } else {
         items.value.push({
-          id: product.id,
-          name: product.name,
-          price: product.price,
-          image: product.image,
+          id: product.data.id,
+          name: product.data.brand.name,
+          price: product.data.price,
+          image: product.data.thumbnail,
           variant,
           qty,
         });
       }
     }
-
+    console.log("items", items);
     function removeFromCart(id, variant = null) {
       items.value = items.value.filter(
         (i) => !(i.id === id && i.variant === variant),

@@ -20,7 +20,6 @@ const priceRange = ref([
 ]);
 const selectedRating = ref(route.query.rating || undefined);
 
-const skip = computed(() => (currentPage.value - 1) * itemsPerPage);
 
 const { data: products } = await useFetch("/api/products", {
   query: {
@@ -43,28 +42,7 @@ const { data: products } = await useFetch("/api/products", {
   },
 });
 
-// console.log("products", products.value);
-const { data: brands } = await useFetch("/api/brands");
-// console.log("brands", brands.value.data);
 const { data: categories } = await useFetch("/api/categories");
-// console.log("categories", categories.value.data);
-
-// const enrichedProducts = computed(() => {
-//   const brandList = brands.value?.data || [];
-//   const categoryList = categories.value?.data || [];
-
-//   return (products.value?.data || []).map((product) => ({
-//     ...product,
-
-//     brand: brandList.find((b) => b.id === product.brandId),
-
-//     category: categoryList.find((c) => c.id === product.categoryId),
-//   }));
-// });
-// console.log(enrichedProducts.value);
-
-// category coming from the Categories page (?category=beauty)
-const activeCategory = computed(() => route.query.category || "");
 
 const categoryItems = computed(() =>
   (categories.value?.data || []).map((category) => ({
@@ -72,6 +50,10 @@ const categoryItems = computed(() =>
     value: category.slug,
   })),
 );
+
+const activeCategory = computed(() => route.query.category || "");
+
+
 // when activeCategory arrives from the Categories page, pre-select it
 // in the sidebar checkbox group. The URL cleanup (removing 'category'
 // and writing 'categories') happens in the single watch below so the
@@ -85,47 +67,15 @@ watchEffect(() => {
   }
 });
 
-// const filteredProducts = computed(() => {
-//   // let result = [...(products.value?.products || [])];
-//   // let result = [...(products.value?.data.products || [])];
-//   // let result = [...(products.value?.data || [])];
-//   let result = [...enrichedProducts.value];
-
-//   // if (selectedCategories.value.length) {
-//   //   result = result.filter((p) =>
-//   //     selectedCategories.value.includes(p.category.slug),
-//   //   );
-//   // }
-
-//   // result = result.filter(
-//   //   (p) => p.price >= priceRange.value[0] && p.price <= priceRange.value[1],
-//   // );
-
-//   // if (selectedRating.value) {
-//   //   result = result.filter((p) => p.rating >= Number(selectedRating.value));
-//   // }
-
-//   // if (sortBy.value === "price-asc") result.sort((a, b) => a.price - b.price);
-//   // if (sortBy.value === "price-desc") result.sort((a, b) => b.price - a.price);
-
-//   return result;
+// watch(sortBy, (value) => {
+//   console.log("Sort Changed:", value);
 // });
-
-watch(sortBy, (value) => {
-  console.log("Sort Changed:", value);
-});
 
 watch([selectedCategories, priceRange, selectedRating, sortBy], () => {
   currentPage.value = 1;
 });
 
-// const paginatedProducts = computed(() => {
-//   // const start = (currentPage.value - 1) * itemsPerPage;
-//   // return filteredProducts.value.slice(start, start + itemsPerPage);
-//   return filteredProducts.value;
-// });
-// console.log(products.value.data.products.length); // 30
-// console.log(filteredProducts.value.length);
+
 // --- Keep URL in sync with filters so reload doesn't clear them ---
 // (also clears the old 'category' param from the Categories page,
 // in the SAME router.replace call so it doesn't race with this one)
@@ -157,12 +107,6 @@ const activeFilterCount = computed(
   () => selectedCategories.value.length + (selectedRating.value ? 1 : 0),
 );
 
-// const sortOptions = [
-//   { label: "Popularity", value: "popularity" },
-//   { label: "Price: Low to High", value: "price_asc" },
-//   { label: "Price: High to Low", value: "price_desc" },
-//   { label: "New Arrivals", value: "newest" },
-// ];
 const sortOptions = [
   { label: "Featured", value: "featured" },
   { label: "Popularity", value: "popular" },
@@ -170,6 +114,7 @@ const sortOptions = [
   { label: "Price: High to Low", value: "price-high" },
   { label: "Newest", value: "newest" },
 ];
+
 const items = [
   {
     label: "Category",

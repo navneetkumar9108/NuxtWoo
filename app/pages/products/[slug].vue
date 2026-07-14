@@ -14,7 +14,7 @@ const { data: product } = await useFetch(
   `/api/products/${route.params.slug}`,
 );
 
-// console.log('product', product.value);
+// console.log('product', product.value.data);
 const discount = computed(() => {
   if (!product.value?.originalPrice) return null;
   return Math.round(
@@ -84,7 +84,7 @@ const items = [
   <UContainer class="py-10">
     <UPageGrid class="lg:grid-cols-[60%_auto] gap-2 sm:gap-10 items-start">
       <!-- Left: Images -->
-      <UPageGrid class="hidden sm:grid sm:grid-cols-2 lg:grid-cols-2 gap-2">
+      <!-- <UPageGrid class="hidden sm:grid sm:grid-cols-2 lg:grid-cols-2 gap-2">
         <div class="overflow-hidden" v-for="(image, index) in galleryImages" :key="index">
 
           <NuxtImg :src="image"
@@ -97,6 +97,21 @@ const items = [
       }">
         <NuxtImg :src="item" height="320" class="w-full rounded-lg" loading="lazy" playsinline />
 
+      </UCarousel> -->
+      <UPageGrid class="hidden sm:grid sm:grid-cols-2 lg:grid-cols-2 gap-2">
+        <div class="overflow-hidden" v-for="(image, index) in product.data.images" :key="index">
+
+          <NuxtImg :src="image"
+            class="w-full rounded-xs object-cover transition-transform duration-500 hover:scale-110 cursor-zoom-in " />
+        </div>
+      </UPageGrid>
+      <UCarousel v-slot="{ item }" wheel-gestures dots :items="product.data.images" class="w-full   mx-auto sm:hidden"
+        :ui="{
+          dot: 'size-1',
+          dots: '-bottom-2'
+        }">
+        <NuxtImg :src="item" height="320" class="w-full rounded-lg" loading="lazy" playsinline />
+
       </UCarousel>
       <!-- Right: Details -->
       <div class="flex flex-col">
@@ -104,7 +119,7 @@ const items = [
 
         <!--brand Title  Badge price -->
         <div>
-          <h1 class="text-2xl font-bold text-gray-800">{{ product.data.brand.name }}</h1>
+          <h1 class="text-2xl font-bold text-gray-800">{{ product.data?.brand.name }}</h1>
           <h1 class="text-xl font-normal text-gray-600 pt-1.5 pb-5">
             {{ product.data.title }}
           </h1>
@@ -135,7 +150,7 @@ const items = [
 
         <!-- Variants (Size/Color) -->
 
-        <UCarousel v-slot="{ item, index }" :items="product.data.variants" arrows wheel-gestures
+        <!-- <UCarousel v-slot="{ item, index }" :items="product.data.variants" arrows wheel-gestures
           :prev="{ variant: 'solid' }" :next="{ variant: 'solid' }" :ui="{
             item: 'basis-1/4 ps-0',
             prev: 'sm:start-0 ',
@@ -144,9 +159,10 @@ const items = [
           }">
           <NuxtImg :src="item.images[0]" width="100" height="100" class="rounded-xs cursor-pointer" loading="lazy"
             @click="selectedVariantIndex = index" />
-        </UCarousel>
+        </UCarousel> -->
 
-        <div class="flex flex-col mt-2.5 mb-6">
+
+        <!-- <div class="flex flex-col mt-2.5 mb-6">
           <p class="font-medium mb-2.5">SELECT SIZE</p>
           <div class="flex  flex-row  gap-1">
 
@@ -167,12 +183,35 @@ const items = [
               </UBadge>
             </UButton>
           </div>
+        </div> -->
+        <div class="flex flex-col mt-2.5 mb-6">
+          <p class="font-medium mb-2.5">SELECT SIZE</p>
+          <div class="flex  flex-row  gap-1">
+
+            <UButton variant="outline" v-for="item in product.data.sizes" :key="item.sizeId"
+              @click="selectedSize = item.sizeId"
+              class="rounded-full w-12.5 h-12.5 p-0 flex items-center justify-center text-sm font-bold bg-neutral hover:bg-neutral active:bg-neutral relative"
+              :ui="{
+                base:
+                  selectedSize === item.sizeId
+                    ? 'ring-red-500 text-red-500'
+                    : 'ring-gray-800 text-gray-800',
+              }">
+              {{ item.name }}
+
+              <UBadge color="success" class="absolute -bottom-1 flex items-center justify-center w-10 py-0 px-0">
+                {{ item.stock === 0 ? "(Out of Stock) " :
+                  item.stock }}
+              </UBadge>
+            </UButton>
+          </div>
         </div>
 
         <!-- Add to Cart -->
         <div class="flex items-center gap-4 mb-5.75">
           <UButton class="w-[50%] justify-center py-3.75 font-bold text-[16px] bg-error text-white rounded-sm"
-            icon="i-lucide-shopping-bag" size="lg" color="primary" variant="solid" @click="handleAddToCart">Add to Cart</UButton>
+            icon="i-lucide-shopping-bag" size="lg" color="primary" variant="solid" @click="handleAddToCart">Add to Cart
+          </UButton>
           <UButton
             class="w-[40%] justify-center py-3.75 font-bold text-[16px] hover:ring-gray-800 text-gray-800 rounded-sm ring-error"
             icon="i-lucide-heart" variant="outline">
@@ -187,7 +226,7 @@ const items = [
           <div class="flex items-center gap-2">
             <h4 class="text-[16px] text-gray-800 uppercase font-bold">Product Details
             </h4>
-            <UIcon name="boxicons:list-square" class="size-4" />
+            <!-- <UIcon name="boxicons:list-square" class="size-4" /> -->
           </div>
           <p class="text-[16px] text-gray-800 font-normal leading-snug mt-3">
           <ul v-for="highlight in product.data.highlights" :key="highlight">

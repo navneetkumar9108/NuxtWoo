@@ -18,32 +18,41 @@ export function filterProducts(products, query = {}) {
   // }
 
   // Category
+  // if (query.category) {
+  //   const categorySlugs = query.category.split(",");
+
+  //   const categoryIds = categories
+  //     .filter((category) => categorySlugs.includes(category.slug))
+  //     .map((category) => category.id);
+
+  //   // console.log("Query Category:", query.category);
+  //   // console.log("Category Slugs:", categorySlugs);
+  //   // console.log("Category IDs:", categoryIds);
+
+  //   filtered = filtered.filter((product) =>
+  //     categoryIds.includes(product.categoryId),
+  //   );
+
+  //   // console.log("Total Products After Filter:", filtered.length);
+  // }
+
   if (query.category) {
-    const categorySlugs = query.category.split(",");
-
-    const categoryIds = categories
-      .filter((category) => categorySlugs.includes(category.slug))
-      .map((category) => category.id);
-
-    // console.log("Query Category:", query.category);
-    // console.log("Category Slugs:", categorySlugs);
-    // console.log("Category IDs:", categoryIds);
+    const category = query.category.split(",");
 
     filtered = filtered.filter((product) =>
-      categoryIds.includes(product.categoryId),
+      category.includes(product.category.slug),
     );
-
-    // console.log("Total Products After Filter:", filtered.length);
   }
-  // console.log(
-  //   "Filtered Products:",
-  //   filtered.map((p) => ({
-  //     id: p.id,
-  //     categoryId: p.categoryId,
-  //   })),
-  // );
-  // Gender
+
   if (query.gender) {
+    // console.log(
+    //   "Filtered Products:",
+    //   filtered.map((p) => ({
+    //     id: p.id,
+    //     categoryId: p.categoryId,
+    //   })),
+    // );
+    // Gender
     filtered = filtered.filter(
       (product) => product.genderId === Number(query.gender),
     );

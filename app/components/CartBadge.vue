@@ -1,5 +1,5 @@
 <script setup>
-import {useCartStore} from '~~/store/cart'
+import { useCartStore } from '~~/store/cart'
 const cartStore = useCartStore()
 const isOpen = ref(false)
 </script>
@@ -31,7 +31,7 @@ const isOpen = ref(false)
 
                         <div class="flex-1 flex flex-col justify-between">
                             <div>
-                                <p class="text-sm font-medium line-clamp-1">{{ item.name }}</p>
+                                <p class="text-sm font-medium line-clamp-1">{{ item.name }} </p>
                                 <p v-if="item.variant" class="text-xs text-neutral-500">{{ item.variant }}</p>
                                 <p class="text-sm font-semibold mt-1">₹{{ item.price }}</p>
                             </div>

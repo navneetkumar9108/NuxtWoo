@@ -772,3 +772,21 @@ root: ' bg-transparent ',
 body: 'p-0 justify-center items-center',
 title: 'absolute bottom-3 text-white font-semibold text-sm z-10',
 container: 'sm:p-0',
+
+
+
+// console.log("categories", categories.value.data);
+
+// const enrichedProducts = computed(() => {
+// const brandList = brands.value?.data || [];
+// const categoryList = categories.value?.data || [];
+
+// return (products.value?.data || []).map((product) => ({
+// ...product,
+
+// brand: brandList.find((b) => b.id === product.brandId),
+
+// category: categoryList.find((c) => c.id === product.categoryId),
+// }));
+// });
+// console.log(enrichedProducts.value);
