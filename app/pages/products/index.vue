@@ -41,7 +41,6 @@ const { data: products } = await useFetch("/api/products", {
     limit: itemsPerPage,
   },
 });
-
 const { data: categories } = await useFetch("/api/categories");
 
 const categoryItems = computed(() =>

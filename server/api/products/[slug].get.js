@@ -1,8 +1,5 @@
 import { productsV4 } from "~~/server/data/data";
-import { productsV3 } from "~~/server/data/productsV3";
-import { getRelatedProducts } from "../../utils/product";
 import { successResponse, errorResponse } from "../../utils/response";
-import { enrichProduct } from "../../utils/enrichProduct";
 
 export default defineEventHandler((event) => {
   const { slug } = getRouterParams(event);

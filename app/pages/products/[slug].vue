@@ -14,7 +14,6 @@ const { data: product } = await useFetch(
   `/api/products/${route.params.slug}`,
 );
 
-// console.log('product', product.value.data);
 const discount = computed(() => {
   if (!product.value?.originalPrice) return null;
   return Math.round(
@@ -28,9 +27,9 @@ const galleryImages = computed(() => {
 
 
 
-function handleAddToCart() {
-  cartStore.addToCart(product.value)
-}
+//function handleAddToCart() {
+//  cartStore.addToCart(product.value)
+//}
 
 const tabs = [
   { label: "Description", slot: "description" },
@@ -210,7 +209,8 @@ const items = [
         <!-- Add to Cart -->
         <div class="flex items-center gap-4 mb-5.75">
           <UButton class="w-[50%] justify-center py-3.75 font-bold text-[16px] bg-error text-white rounded-sm"
-            icon="i-lucide-shopping-bag" size="lg" color="primary" variant="solid" @click="handleAddToCart">Add to Cart
+            icon="i-lucide-shopping-bag" size="lg" color="primary" variant="solid"
+            @click="cartStore.addToCart(product.data)">Add to Cart
           </UButton>
           <UButton
             class="w-[40%] justify-center py-3.75 font-bold text-[16px] hover:ring-gray-800 text-gray-800 rounded-sm ring-error"

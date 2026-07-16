@@ -1,5 +1,4 @@
 import { productsV4 } from "~~/server/data/data";
-import { productsV3 } from "../../data/productsV3";
 import { successResponse } from "../../utils/response";
 import { filterProducts } from "../../utils/filter";
 import { searchProducts } from "../../utils/search";

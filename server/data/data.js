@@ -233,8 +233,6 @@ export const productsV4 = [
       "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/MAY/22/afAMi023_04652fcbc3604185ab37654c5ad598ef.jpg",
       "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/MAY/22/UG4AbMSy_6d2cac2d8f3b40ee959337f8be44b116.jpg",
       "https://assets.myntassets.com/assets/images/2025/MAY/22/c7VEtUlQ_02b9777aa5d643289984e6f3904d43d9.jpg",
-      "https://assets.myntassets.com/assets/images/2025/MAY/22/c7VEtUlQ_02b9777aa5d643289984e6f3904d43d9.jpg?im=Crop,rect=(44,231,475,576)",
-      "https://assets.myntassets.com/assets/images/2025/MAY/22/c7VEtUlQ_02b9777aa5d643289984e6f3904d43d9.jpg?im=Crop,rect=(184,620,713,748)",
       "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/MAY/22/BUlcCvKh_3f477269a02c4ac99458d598abe6188e.jpg",
     ],
     thumbnail:

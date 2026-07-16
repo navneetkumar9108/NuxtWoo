@@ -1,5 +1,4 @@
 // server/utils/filter.js
-import { categories } from "../data/categories";
 export function filterProducts(products, query = {}) {
   let filtered = [...products];
 
