@@ -72,26 +72,14 @@ async function onSubmit() {
       </UFormField>
 
       <UFormField label="Email" name="email" :error="errors.email">
-        <UInput
-          v-model="state.email"
-          type="email"
-          placeholder="john@example.com"
-          class="w-full"
-        />
+        <UInput v-model="state.email" type="email" placeholder="john@example.com" class="w-full" />
       </UFormField>
 
       <UFormField label="Message" name="message" :error="errors.message">
-        <UTextarea
-          v-model="state.message"
-          placeholder="Your message..."
-          :rows="5"
-          class="w-full"
-        />
+        <UTextarea v-model="state.message" placeholder="Your message..." :rows="5" class="w-full" />
       </UFormField>
 
-      <UButton type="submit" size="lg" :loading="loading" block>
-        Send Message
-      </UButton>
+      <ButtonUButton label="Send Message" type="submit" size="lg" :loading="loading" block />
     </UForm>
   </UContainer>
 </template>

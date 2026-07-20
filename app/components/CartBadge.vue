@@ -64,7 +64,7 @@ const isOpen = ref(false)
                         <span>Total</span>
                         <span>₹{{ cartStore.totalPrice }}</span>
                     </div>
-                    <UButton block size="lg" color="primary" to="/checkout">
+                    <UButton block size="lg" color="primary" to="/checkout" @click="isOpen = false">
                         Checkout
                     </UButton>
                 </div>

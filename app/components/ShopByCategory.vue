@@ -15,7 +15,7 @@ const categories = [
   <UContainer>
     <div class="flex items-center justify-between mb-6">
       <h2 class="text-2xl font-bold">Shop by Category</h2>
-      <UButton label="View All" variant="ghost" color="neutral" />
+      <ButtonUButton label="View All" variant="link" color="neutral" to="/categories" />
     </div>
     <UPageGrid class=" grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4  items-start">
       <UPageCard v-for="(cat, index) in categories.slice(0, 6)" :key="index" :ui="{

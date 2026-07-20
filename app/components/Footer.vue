@@ -66,7 +66,8 @@ const items = [
 </script>
 
 <template>
-  <UFooter class="bg-white" :ui="{ container: 'hidden', top: 'lg:pt-12 lg:pb-0 py-0', bottom: 'lg:pt-0 pt-0 lg:pb-0 ' }">
+  <UFooter class="bg-white"
+    :ui="{ container: 'hidden', top: 'lg:pt-12 lg:pb-0 py-0', bottom: 'lg:pt-0 pt-0 lg:pb-0 ' }">
     <template #top>
       <UContainer>
         <div class="flex flex-col md:flex-row justify-between gap-12 py-12">
@@ -83,16 +84,17 @@ const items = [
               information just like the one you're reading now.
             </p>
             <!-- Newsletter -->
-            <UDropdownMenu :items="items" :ui="{
+            <!-- <UDropdownMenu :items="items" :ui="{
               content:
                 'w-(--reka-dropdown-menu-trigger-width) bg-transparent ',
               item: 'text-black data-highlighted:before:bg-transparent data-[state=open]:before:bg-transparent data-highlighted:text-current',
               itemLeadingIcon: 'hidden',
             }">
-              <UButton label="Open"
+              <ButtonUButton label="Open"
                 class="w-40 p-3 rounded-lg bg-transparent text-black hover:bg-transparent active:bg-transparent"
                 color="neutral" variant="outline" block trailing-icon="i-lucide-chevron-down" />
-            </UDropdownMenu>
+
+            </UDropdownMenu> -->
           </div>
 
           <!-- RIGHT: Link Columns -->
@@ -120,7 +122,7 @@ const items = [
         <div class="flex flex-col md:flex-row items-center justify-between py-6 border-t border-gray-800">
           <span class="text-sm text-gray-500">© 2026 MyStore. All rights reserved.</span>
           <div class="flex gap-3 mt-4 md:mt-0">
-            <UButton v-for="social in socialLinks" :key="social.icon" :icon="social.icon" :to="social.href"
+            <ButtonUButton v-for="social in socialLinks" :key="social.icon" :icon="social.icon" :to="social.href"
               target="_blank" color="gray" variant="ghost" size="xs" />
           </div>
         </div>

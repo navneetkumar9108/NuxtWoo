@@ -187,6 +187,7 @@ const items = [
           <p class="font-medium mb-2.5">SELECT SIZE</p>
           <div class="flex  flex-row  gap-1">
 
+
             <UButton variant="outline" v-for="item in product.data.sizes" :key="item.sizeId"
               @click="selectedSize = item.sizeId"
               class="rounded-full w-12.5 h-12.5 p-0 flex items-center justify-center text-sm font-bold bg-neutral hover:bg-neutral active:bg-neutral relative"
@@ -208,15 +209,14 @@ const items = [
 
         <!-- Add to Cart -->
         <div class="flex items-center gap-4 mb-5.75">
-          <UButton class="w-[50%] justify-center py-3.75 font-bold text-[16px] bg-error text-white rounded-sm"
+          <ButtonUButton label="Add to Cart"
+            class="w-[50%] justify-center py-3.75 font-bold text-[16px] bg-error text-white rounded-sm"
             icon="i-lucide-shopping-bag" size="lg" color="primary" variant="solid"
-            @click="cartStore.addToCart(product.data)">Add to Cart
-          </UButton>
-          <UButton
+            @click="cartStore.addToCart(product.data)" />
+
+          <ButtonUButton label="WISHLIST"
             class="w-[40%] justify-center py-3.75 font-bold text-[16px] hover:ring-gray-800 text-gray-800 rounded-sm ring-error"
-            icon="i-lucide-heart" variant="outline">
-            WISHLIST
-          </UButton>
+            icon="i-lucide-heart" variant="outline" />
         </div>
 
         <!-- Description -->

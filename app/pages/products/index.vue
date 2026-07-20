@@ -247,7 +247,7 @@ const formatCategory = (category) => {
           v-model:price-range="priceRange" v-model:selected-rating="selectedRating" />
       </template>
       <template #footer>
-        <UButton block @click="isFilterOpen = false">Apply Filters</UButton>
+        <ButtonUButton label="Apply Filters" block @click="isFilterOpen = false" />
       </template>
     </USlideover>
 

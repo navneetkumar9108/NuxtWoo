@@ -44,8 +44,9 @@ const desktopNavItems = computed(() =>
       <!-- Left: Logo + Nav -->
       <div class="flex items-center justify-center gap-2 lg:gap-6">
         <!-- Mobile Menu Button -->
-        <UButton icon="i-lucide-menu" color="neutral" variant="ghost" class="lg:hidden text-gray-800"
+        <ButtonUButton icon="i-lucide-menu" color="neutral" variant="ghost" class="lg:hidden text-gray-800"
           @click="isMobileMenuOpen = true" />
+
         <!-- Logo -->
         <NuxtLink to="/" class="flex items-center gap-2 font-bold text-lg shrink-0">
           <ImageImg src="/icons/logo.svg" alt="Logo" class="h-8 w-auto" />
@@ -76,16 +77,15 @@ const desktopNavItems = computed(() =>
           }" />
 
         <!-- Account Button -->
-        <UButton icon="i-lucide-user" color="neutral" variant="ghost" aria-label="Account" to="/account"
+        <ButtonUButton icon="i-lucide-user" color="neutral" variant="ghost" aria-label="Account" to="/account"
           class="hover:text-white  hidden lg:inline-flex text-gray-800" />
-        <!-- class="hover:bg-transparent active:bg-transparent hidden lg:inline-flex text-gray-800" /> -->
+
         <!-- Search Icon -->
-        <UButton class="lg:hidden text-gray-800" icon="i-lucide-search" color="neutral" variant="ghost" size="xl"
+        <ButtonUButton class="lg:hidden text-gray-800" icon="i-lucide-search" color="neutral" variant="ghost" size="xl"
           @click="isSearchOpen = !isSearchOpen" />
 
         <!-- Cart Button with Badge -->
-
-        <CartBadge />
+        <Bag />
 
       </div>
       <!-- </div> -->
@@ -111,9 +111,8 @@ const desktopNavItems = computed(() =>
     }">
       <template #header>
         <h2 class="font-semibold text-lg">Menu</h2>
-        <UButton icon="i-lucide-x" color="primary" variant="ghost" class="absolute top-4 right-4"
+        <ButtonUButton icon="i-lucide-x" color="primary" variant="ghost" class="absolute top-4 right-4"
           @click="isMobileMenuOpen = false" />
-
       </template>
 
       <template #body>
@@ -124,8 +123,5 @@ const desktopNavItems = computed(() =>
         }" @click="isMobileMenuOpen = false" />
       </template>
     </USlideover>
-
-    <!-- Backdrop -->
-    <!-- <div v-if="isMobileMenuOpen" @click="isMobileMenuOpen = false" class="fixed inset-0 bg-black z-40 md:hidden"></div> -->
   </header>
 </template>
