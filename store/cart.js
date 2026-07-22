@@ -3,6 +3,7 @@ import { ref, computed } from "vue";
 
 export const useCartStore = defineStore("cart", () => {
   const items = ref([]);
+  const appliedCoupon = ref(null); // { code, discount }
 
   function addToCart(product) {
     console.log("product", product);
@@ -15,9 +16,12 @@ export const useCartStore = defineStore("cart", () => {
 
     items.value.push({
       id: product.id,
-      name: product.brand.name,
+      name: product.brand?.name || product.name,
+      title: product.title,
       price: product.price,
-      image: product.thumbnail,
+      originalPrice: product.originalPrice,
+      discount: product.discount,
+      image: product.thumbnail || product.image,
       quantity: 1,
     });
   }
@@ -46,6 +50,14 @@ export const useCartStore = defineStore("cart", () => {
     }
   }
 
+  function applyCoupon(coupon) {
+    appliedCoupon.value = coupon; // { code, discount }
+  }
+  console.log("appliedCoupon.value", appliedCoupon.value);
+  function removeCoupon() {
+    appliedCoupon.value = null;
+  }
+
   const totalItems = computed(() =>
     items.value.reduce((sum, item) => sum + item.quantity, 0),
   );
@@ -54,13 +66,35 @@ export const useCartStore = defineStore("cart", () => {
     items.value.reduce((sum, item) => sum + item.price * item.quantity, 0),
   );
 
+  const totalOriginalPrice = computed(() =>
+    items.value.reduce(
+      (sum, item) => sum + item.originalPrice * item.quantity,
+      0,
+    ),
+  );
+
+  const discountAmount = computed(
+    () => totalOriginalPrice.value - totalPrice.value,
+  );
+
+  const finalPrice = computed(
+    () => Math.max(0, totalPrice.value - (appliedCoupon.value || 0)),
+    // Math.max(0, totalPrice.value - (appliedCoupon.value?.discount || 0)),
+  );
+
   return {
     items,
+    appliedCoupon,
     addToCart,
     removeFromCart,
     increaseQuantity,
     decreaseQuantity,
+    applyCoupon,
+    removeCoupon,
     totalItems,
     totalPrice,
+    totalOriginalPrice,
+    discountAmount,
+    finalPrice,
   };
 });

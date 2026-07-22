@@ -1,4 +1,5 @@
 <script setup>
+import { useWishlistStore } from '~~/store/wishlist';
 import { useCartStore } from '~~/store/cart';
 const route = useRoute();
 const qty = ref(1);
@@ -6,6 +7,7 @@ const selectedSize = ref("");
 const activeIndex = ref(0);
 const selectedVariantIndex = ref(0);
 const cartStore = useCartStore()
+const wishlistStore = useWishlistStore() // agar nahi banaya to bata dena, wo bhi bana du
 
 
 // Fetch product by slug
@@ -216,7 +218,7 @@ const items = [
 
           <ButtonUButton label="WISHLIST"
             class="w-[40%] justify-center py-3.75 font-bold text-[16px] hover:ring-gray-800 text-gray-800 rounded-sm ring-error"
-            icon="i-lucide-heart" variant="outline" />
+            icon="i-lucide-heart" variant="outline" @click="wishlistStore.addToWishlist(product.data)" />
         </div>
 
         <!-- Description -->

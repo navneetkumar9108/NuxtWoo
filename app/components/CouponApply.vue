@@ -1,4 +1,5 @@
 <script setup>
+import { useCartStore } from '~~/store/cart'
 const cartStore = useCartStore()
 
 const code = ref('')
@@ -6,21 +7,22 @@ const applying = ref(false)
 const error = ref('')
 
 async function applyCoupon() {
-    if (!code.value.trim()) return
-    applying.value = true
-    error.value = ''
-    try {
-        const res = await $fetch('/api/coupon/apply', {
-            method: 'POST',
-            body: { code: code.value.trim(), cartTotal: cartStore.totalPrice }
-        })
-        cartStore.applyCoupon(res)
-        code.value = ''
-    } catch (e) {
-        error.value = e.data?.message || 'Invalid coupon code'
-    } finally {
-        applying.value = false
-    }
+    cartStore.applyCoupon(code.value)
+    // if (!code.value.trim()) return
+    // applying.value = true
+    // error.value = ''
+    // try {
+    //     const res = await $fetch('/api/coupon/apply', {
+    //         method: 'POST',
+    //         body: { code: code.value.trim(), cartTotal: cartStore.totalPrice }
+    //     })
+    //     cartStore.applyCoupon(res)
+    //     code.value = ''
+    // } catch (e) {
+    //     error.value = e.data?.message || 'Invalid coupon code'
+    // } finally {
+    //     applying.value = false
+    // }
 }
 
 function removeCoupon() {
@@ -44,8 +46,7 @@ function removeCoupon() {
 
         <template v-else>
             <UAlert color="success" variant="soft" icon="i-lucide-badge-check"
-                :title="`${cartStore.appliedCoupon.code} applied`"
-                :description="`You saved ₹${cartStore.appliedCoupon.discount}`">
+                :title="`${cartStore.appliedCoupon} applied`" :description="`You saved ₹${cartStore.appliedCoupon}`">
                 <template #actions>
                     <UButton variant="ghost" color="neutral" size="xs" @click="removeCoupon">
                         Remove
