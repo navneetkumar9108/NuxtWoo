@@ -127,7 +127,9 @@ const desktopNavItems = computed(() =>
 
 <script setup>
 import { useAuthStore } from '~~/store/auth'
+import { useWishlistStore } from '~~/store/wishlist';
 const authStore = useAuthStore() // apna actual auth store path use karo
+const wishlistStore = useWishlistStore() // agar nahi banaya to bata dena, wo bhi bana du
 
 const search = ref("");
 const cartCount = ref(3);
@@ -207,7 +209,18 @@ const accountMenuItems = computed(() => [
         </UDropdownMenu>
 
         <UButton v-else icon="i-lucide-user" color="neutral" variant="ghost" aria-label="Account" to="/login"
-          class="hidden lg:inline-flex text-gray-800" />
+          class="hidden lg:inline-flex text-gray-800 hover:text-white" />
+
+        <UChip v-if="wishlistStore.items" :text="wishlistStore.items.length" size="3xl" :ui="{
+          base: '-top-1 -right-1 -translate-y-0 translate-x-0 h-4 w-4 ring-0  text-white text-[10px]'
+        }">
+          <UButton icon="i-lucide-heart" color=" neutral" variant="ghost" aria-label="Wishlist" to="/wishlist"
+            class="hidden lg:inline-flex hover:bg-gray-800 text-gray-800 hover:text-white " />
+        </UChip>
+        <!-- <span v-if="wishlistStore.totalItems > 0" class="absolute -top-1 -right-1 flex items-center justify-center
+             h-4 w-4 rounded-full bg-primary text-white text-[10px] font-medium">
+          {{ wishlistStore.items }}
+        </span> -->
 
         <UButton class="lg:hidden text-gray-800" icon="i-lucide-search" color="neutral" variant="ghost" size="xl"
           @click="isSearchOpen = !isSearchOpen" />

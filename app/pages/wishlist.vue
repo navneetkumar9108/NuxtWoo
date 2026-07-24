@@ -6,10 +6,33 @@ import { useCartStore } from '~~/store/cart'
 const wishlistStore = useWishlistStore() // agar nahi banaya to bata dena, wo bhi bana du
 const cartStore = useCartStore()
 
+// function moveToBag(item) {
+//     console.log('item', item);
+//     cartStore.addToCart(item)
+//     wishlistStore.removeFromWishlist(item.id)
+// }
+
+const toast = useToast()
+
+const sizeModalOpen = ref(false)
+const activeItem = ref(null)
+const selectedSize = ref(null)
+
 function moveToBag(item) {
-    console.log('item', item);
-    cartStore.addToCart(item)
-    wishlistStore.removeFromWishlist(item.id)
+    activeItem.value = item
+    selectedSize.value = null
+    sizeModalOpen.value = true
+}
+
+function confirmMoveToBag() {
+    if (!selectedSize.value) {
+        toast.add({ title: 'Please select a size', color: 'error', icon: 'i-lucide-alert-circle' })
+        return
+    }
+    console.log('item', activeItem.value)
+    cartStore.addToCart({ ...activeItem.value, selectedSize: selectedSize.value })
+    wishlistStore.removeFromWishlist(activeItem.value.id)
+    sizeModalOpen.value = false
 }
 </script>
 
@@ -24,8 +47,10 @@ function moveToBag(item) {
         </div>
 
         <div v-else class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+
+
             <UCard v-for="item in wishlistStore.items" :key="item.id" :ui="{
-                root: 'bg-white w-52.5 mx-auto rounded-xs',
+                root: 'bg-white w-52.5 mx-auto rounded-xs ring-0',
                 header: 'p-0 sm:p-0',
                 body: 'p-0 sm:p-2'
             }">
@@ -39,11 +64,39 @@ function moveToBag(item) {
                 <p class="text-sm font-semibold mt-1">₹{{ item.price }}</p> -->
 
                 <div class="flex gap-2 mt-3">
+                    <!-- <UButton size="xs" block @click="moveToBag(item)">Move to Bag</UButton> -->
                     <UButton size="xs" block @click="moveToBag(item)">Move to Bag</UButton>
                     <UButton size="xs" variant="ghost" color="error" icon="i-lucide-trash-2"
                         @click="wishlistStore.removeFromWishlist(item.id)" />
                 </div>
             </UCard>
         </div>
+        <!-- Select Size Modal -->
+        <UModal v-model:open="sizeModalOpen" :ui="{ content: 'max-w-sm bg-white' }">
+            <template #header>
+                <h2 class="text-base font-semibold">Select Size</h2>
+            </template>
+
+            <template #body>
+                <div class="grid grid-cols-5 gap-3 justify-items-center">
+                    <button v-for="size in activeItem?.sizes || []" :key="size.sizeId" type="button"
+                        :disabled="size.stock === 0"
+                        class="size-11 rounded-full border flex items-center justify-center text-sm font-medium transition-colors"
+                        :class="[
+                            selectedSize === size.sizeId
+                                ? 'border-primary text-primary'
+                                : 'border-neutral-300 text-neutral-700 hover:border-neutral-400',
+                            size.stock === 0 ? 'opacity-40 cursor-not-allowed line-through' : ''
+                        ]" @click="selectedSize = size.sizeId">
+                        {{ size.name }}
+                    </button>
+                </div>
+
+                <UButton block size="lg" color="primary" class="mt-6" @click="confirmMoveToBag">
+                    Done
+                </UButton>
+            </template>
+        </UModal>
+
     </UContainer>
 </template>

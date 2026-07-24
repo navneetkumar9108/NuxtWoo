@@ -79,6 +79,22 @@ const items = [
   'https://picsum.photos/640/640?random=6'
 ]
 
+const toast = useToast() // Nuxt UI v3 ka built-in toast composable
+
+console.log('selectedSize', selectedSize.value);
+function handleAddToCart() {
+  if (!selectedSize.value) {
+    toast.add({
+      title: 'Please select a size',
+      color: 'error',
+      icon: 'i-lucide-alert-circle'
+    })
+    return
+  }
+
+  cartStore.addToCart({ ...product.value.data, selectedSize: selectedSize.value })
+}
+
 </script>
 
 <template>
@@ -191,11 +207,11 @@ const items = [
 
 
             <UButton variant="outline" v-for="item in product.data.sizes" :key="item.sizeId"
-              @click="selectedSize = item.sizeId"
+              @click="selectedSize = item.name"
               class="rounded-full w-12.5 h-12.5 p-0 flex items-center justify-center text-sm font-bold bg-neutral hover:bg-neutral active:bg-neutral relative"
               :ui="{
                 base:
-                  selectedSize === item.sizeId
+                  selectedSize === item.name
                     ? 'ring-red-500 text-red-500'
                     : 'ring-gray-800 text-gray-800',
               }">
@@ -213,8 +229,11 @@ const items = [
         <div class="flex items-center gap-4 mb-5.75">
           <ButtonUButton label="Add to Cart"
             class="w-[50%] justify-center py-3.75 font-bold text-[16px] bg-error text-white rounded-sm"
+            icon="i-lucide-shopping-bag" size="lg" color="primary" variant="solid" @click="handleAddToCart" />
+          <!-- <ButtonUButton label="Add to Cart"
+            class="w-[50%] justify-center py-3.75 font-bold text-[16px] bg-error text-white rounded-sm"
             icon="i-lucide-shopping-bag" size="lg" color="primary" variant="solid"
-            @click="cartStore.addToCart(product.data)" />
+            @click="cartStore.addToCart(product.data)" /> -->
 
           <ButtonUButton label="WISHLIST"
             class="w-[40%] justify-center py-3.75 font-bold text-[16px] hover:ring-gray-800 text-gray-800 rounded-sm ring-error"

@@ -17,6 +17,7 @@ export const useWishlistStore = defineStore("wishlist", () => {
       originalPrice: product.originalPrice,
       discount: product.discount,
       image: product.thumbnail,
+      sizes: product.sizes.name,
     });
   }
 

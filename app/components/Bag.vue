@@ -31,8 +31,8 @@ const isOpen = defineModel('open', { default: false })
                         <span>Total</span>
                         <span>{{ formatPrice(cartStore.totalPrice) }}</span>
                     </div>
-                    <ButtonUButton label="Checkout" block size="lg" color="primary" to="/checkout/cart"
-                        @click="isOpen = false" />
+                    <ButtonUButton label="Go to Bag" block size="lg" color="primary" to="/cart" @click="isOpen = false"
+                        class="bg-indigo-600 text-white p-3 hover:bg-indigo-600 active:bg-indigo-600" />
                 </div>
             </template>
         </USlideover>

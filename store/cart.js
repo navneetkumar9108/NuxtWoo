@@ -4,6 +4,10 @@ import { ref, computed } from "vue";
 export const useCartStore = defineStore("cart", () => {
   const items = ref([]);
   const appliedCoupon = ref(null); // { code, discount }
+  const DELIVERY_CHARGE = 50;
+  const FREE_DELIVERY_THRESHOLD = 999;
+  const orderNote = ref("");
+  const COUPONS = { SAVE50: 50, WELCOME10: 100 };
 
   function addToCart(product) {
     console.log("product", product);
@@ -22,6 +26,7 @@ export const useCartStore = defineStore("cart", () => {
       originalPrice: product.originalPrice,
       discount: product.discount,
       image: product.thumbnail || product.image,
+      size: product.selectedSize,
       quantity: 1,
     });
   }
@@ -50,10 +55,22 @@ export const useCartStore = defineStore("cart", () => {
     }
   }
 
-  function applyCoupon(coupon) {
-    appliedCoupon.value = coupon; // { code, discount }
+  // function applyCoupon(coupon) {
+  //   appliedCoupon.value = coupon; // { code, discount }
+  // }
+
+  function applyCoupon(code) {
+    const upperCode = code.toUpperCase();
+    const discount = COUPONS[upperCode];
+    if (!discount) {
+      return { success: false, message: "Invalid coupon code" };
+    }
+    appliedCoupon.value = { code: upperCode, discount };
+    return { success: true };
   }
+
   console.log("appliedCoupon.value", appliedCoupon.value);
+
   function removeCoupon() {
     appliedCoupon.value = null;
   }
@@ -64,6 +81,10 @@ export const useCartStore = defineStore("cart", () => {
 
   const totalPrice = computed(() =>
     items.value.reduce((sum, item) => sum + item.price * item.quantity, 0),
+  );
+
+  const deliveryCharge = computed(() =>
+    totalPrice.value >= FREE_DELIVERY_THRESHOLD ? 0 : DELIVERY_CHARGE,
   );
 
   const totalOriginalPrice = computed(() =>
@@ -78,9 +99,24 @@ export const useCartStore = defineStore("cart", () => {
   );
 
   const finalPrice = computed(
-    () => Math.max(0, totalPrice.value - (appliedCoupon.value || 0)),
+    () =>
+      Math.max(
+        0,
+        totalPrice.value -
+          (appliedCoupon.value?.discount || 0) +
+          deliveryCharge.value,
+      ),
     // Math.max(0, totalPrice.value - (appliedCoupon.value?.discount || 0)),
   );
+
+  function setQuantity(id, qty) {
+    const item = items.value.find((item) => item.id === id);
+    if (item) item.quantity = qty;
+  }
+
+  function setOrderNote(note) {
+    orderNote.value = note;
+  }
 
   return {
     items,
@@ -96,5 +132,9 @@ export const useCartStore = defineStore("cart", () => {
     totalOriginalPrice,
     discountAmount,
     finalPrice,
+    setQuantity,
+    deliveryCharge,
+    setOrderNote,
+    orderNote,
   };
 });
