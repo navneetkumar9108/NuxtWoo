@@ -7,7 +7,7 @@ const isOpen = defineModel('open', { default: false })
 <template>
     <div class="relative">
         <ButtonUButton icon="i-lucide-shopping-bag" color="neutral" variant="ghost" aria-label="Open bag"
-            class="text-gray-800 hover:text-white" @click="isOpen = true" />
+            class="text-gray-800 hover:text-white cursor-pointer" @click="isOpen = true" />
 
         <span v-if="cartStore.totalItems > 0" class="absolute -top-1 -right-1 flex items-center justify-center
              h-4 w-4 rounded-full bg-primary text-white text-[10px] font-medium">

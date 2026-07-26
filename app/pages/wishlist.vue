@@ -83,11 +83,11 @@ function confirmMoveToBag() {
                         :disabled="size.stock === 0"
                         class="size-11 rounded-full border flex items-center justify-center text-sm font-medium transition-colors"
                         :class="[
-                            selectedSize === size.sizeId
+                            selectedSize === size.id
                                 ? 'border-primary text-primary'
                                 : 'border-neutral-300 text-neutral-700 hover:border-neutral-400',
                             size.stock === 0 ? 'opacity-40 cursor-not-allowed line-through' : ''
-                        ]" @click="selectedSize = size.sizeId">
+                        ]" @click="selectedSize = size.name">
                         {{ size.name }}
                     </button>
                 </div>

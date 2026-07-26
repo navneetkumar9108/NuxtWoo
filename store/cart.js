@@ -3,6 +3,7 @@ import { ref, computed } from "vue";
 
 export const useCartStore = defineStore("cart", () => {
   const items = ref([]);
+  console.log("cart items", items.value);
   const appliedCoupon = ref(null); // { code, discount }
   const DELIVERY_CHARGE = 50;
   const FREE_DELIVERY_THRESHOLD = 999;
@@ -27,6 +28,7 @@ export const useCartStore = defineStore("cart", () => {
       discount: product.discount,
       image: product.thumbnail || product.image,
       size: product.selectedSize,
+      sizes: product.sizes,
       quantity: 1,
     });
   }

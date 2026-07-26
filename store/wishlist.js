@@ -3,21 +3,23 @@ import { ref } from "vue";
 
 export const useWishlistStore = defineStore("wishlist", () => {
   const items = ref([]);
+  console.log("wishlist items", items.value);
 
   function addToWishlist(product) {
+    console.log("wishlist product", product);
     const existingItem = items.value.find((item) => item.id === product.id);
 
     if (existingItem) return;
 
     items.value.push({
       id: product.id,
-      name: product.brand.name,
+      name: product.brand?.name || product.name,
       title: product.title,
       price: product.price,
       originalPrice: product.originalPrice,
       discount: product.discount,
-      image: product.thumbnail,
-      sizes: product.sizes.name,
+      image: product.thumbnail || product.image,
+      sizes: product.sizes,
     });
   }
 

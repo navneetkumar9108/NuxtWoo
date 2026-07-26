@@ -1,10 +1,12 @@
 <script setup>
 import { useAddressStore } from '~~/store/address';
 import { useCartStore } from '~~/store/cart';
+import { useWishlistStore } from '~~/store/wishlist';
 
 //definePageMeta({ layout: 'checkout' })
 const addressStore = useAddressStore()
 const cartStore = useCartStore()
+const wishlistStore = useWishlistStore()
 const router = useRouter()
 
 const deliveryAddress = addressStore.selectedAddress
@@ -21,6 +23,11 @@ function applyNote() {
     noteOpen.value = false
     console.log('store orderNote:', cartStore.orderNote)
 
+}
+
+function moveToWishlist(item) {
+    wishlistStore.addToWishlist(item)
+    cartStore.removeFromCart(item.id)
 }
 
 function openQtyModal(item) {
@@ -53,7 +60,6 @@ function goToAddress() {
                 border: 'text-gray-800',
             }" />
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
                 <div class="lg:col-span-2 space-y-4 ">
                     <UCard v-if="deliveryAddress" class="bg-neutral-50 rounded-xs ring-0">
                         <div class="flex justify-between items-start gap-4">
@@ -73,9 +79,9 @@ function goToAddress() {
                         </div>
                     </UCard>
                     <UCard v-for="item in cartStore.items" :key="item.id" class="bg-white ring-0 rounded-xs ">
-                        <div class="flex flex-row justify-between items-start gap-4">
+                        <div class="flex flex-col justify-between items-start ">
                             <div class="flex gap-5">
-                                <ImageImg :src="item.image" class="w-30 h-full object-cover rounded" />
+                                <ImageImg :src="item.image" class="w-30 h-full object-cover rounded-xs" />
                                 <div>
                                     <ProductInfo :brand="item.name" :title="item.title" />
                                     <ProductPrice :price="item.price" :originalPrice="item.originalPrice"
@@ -87,7 +93,6 @@ function goToAddress() {
                                         <span v-if="item.size && item.color"> · </span>
                                         <span v-if="item.color">{{ item.color }}</span>
                                     </p>
-
                                     <UInputNumber :model-value="item.quantity" :min="1" size="sm" class="mt-2 w-28 "
                                         @update:model-value="(qty) => cartStore.setQuantity(item.id, qty)" :ui="{
                                             base: 'bg-neutral-100 text-gray-800 p-2 ring-gray-200 focus-visible:ring-gray-200 focus-visible:ring-1 rounded-xs '
@@ -104,13 +109,31 @@ function goToAddress() {
                                     </UInputNumber>
                                 </div>
                             </div>
-                            <UButton variant="ghost" color="error" icon="i-lucide-trash-2"
-                                @click="cartStore.removeFromCart(item.id)" />
+                            <USeparator :ui="{
+                                border: 'border-t-neutral-200'
+                            }" />
+                            <div class="flex items-center justify-end w-full pt-3">
+                                <UButton label="Remove From Cart" variant="ghost" color="error" icon="i-lucide-trash-2"
+                                    class="rounded-xs" @click="cartStore.removeFromCart(item.id)" />
+                                <ButtonUButton label="Move To Wishlist" icon="i-lucide-heart" variant="ghost"
+                                    class="rounded-xs" color="error" @click="moveToWishlist(item)" />
+                            </div>
                         </div>
                     </UCard>
+                    <NuxtLink to="/wishlist" class=" cursor-pointer">
+                        <UCard to="/wishlist" class="bg-white ring-0 rounded-xs " :ui="{
+                            body: 'flex items-center justify-between gap-2',
+                        }">
+                            <div class="flex items-center justify-start gap-2">
+                                <UIcon name="i-lucide-heart" class="size-5 text-red-500 shrink-0" />
+                                <span>ADD FROM WISHLIST</span>
+                            </div>
+                            <UIcon name="i-lucide-chevron-right" class="size-5 text-red-500 shrink-0" />
+                        </UCard>
+
+                    </NuxtLink>
                 </div>
                 <div class=" space-y-4 ">
-
                     <UCard class="bg-white ring-0 rounded-xs">
                         <UCollapsible v-model:open="noteOpen">
                             <button type="button" class="flex items-center justify-between w-full">
@@ -176,7 +199,7 @@ function goToAddress() {
 
                         <UButton block
                             class="mt-4 bg-indigo-600 text-white p-3 hover:bg-indigo-600 active:bg-indigo-600"
-                            to="/checkout/address">
+                            to="/address">
                             Continue
                         </UButton>
                     </UCard>

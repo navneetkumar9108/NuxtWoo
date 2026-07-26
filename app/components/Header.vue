@@ -214,7 +214,7 @@ const accountMenuItems = computed(() => [
         <UChip v-if="wishlistStore.items" :text="wishlistStore.items.length" size="3xl" :ui="{
           base: '-top-1 -right-1 -translate-y-0 translate-x-0 h-4 w-4 ring-0  text-white text-[10px]'
         }">
-          <UButton icon="i-lucide-heart" color=" neutral" variant="ghost" aria-label="Wishlist" to="/wishlist"
+          <UButton icon="i-lucide-heart" color="neutral" variant="ghost" aria-label="Wishlist" to="/wishlist"
             class="hidden lg:inline-flex hover:bg-gray-800 text-gray-800 hover:text-white " />
         </UChip>
         <!-- <span v-if="wishlistStore.totalItems > 0" class="absolute -top-1 -right-1 flex items-center justify-center
