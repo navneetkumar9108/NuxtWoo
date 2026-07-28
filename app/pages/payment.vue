@@ -5,6 +5,7 @@ import { useAddressStore } from '~~/store/address'
 
 const cartStore = useCartStore()
 const addressStore = useAddressStore()
+const router = useRouter()
 
 
 const paymentMethod = ref('upi')
@@ -34,15 +35,33 @@ const isValid = computed(() => {
 
 defineExpose({ isValid, paymentMethod })
 
-// const router = useRouter()
 
 // const paymentMode = ref('cod')
 
 async function placeOrder() {
     if (!isValid.value) return
-    // TODO: actual payment gateway call yahin
-    //     // TODO: call your order-placement API here
-    // router.push('/checkout/success')
+
+    // Order ID generate karo (real backend hone tak temporary/local hi rahega)
+    const orderId = `${Date.now()}${Math.floor(Math.random() * 1000)}`
+    console.log('orderId', orderId);
+    const order = {
+        orderId,
+        items: cartStore.items,
+        totalAmount: cartStore.finalPrice,
+        address: addressStore.selectedAddress,
+        paymentMethod: paymentMethod.value,
+        status: 'placed',
+        date: new Date().toLocaleDateString('en-IN')
+    }
+
+    const existing = JSON.parse(localStorage.getItem('orders') || '[]')
+    localStorage.setItem('orders', JSON.stringify([order, ...existing]))
+
+    // TODO: yahan actual order-placement API call hoga, jo backend se real orderId return karega
+    // const res = await $fetch('/api/order/place', { method: 'POST', body: {...} })
+    // const orderId = res.orderId
+
+    router.push({ path: '/confirm', query: { orderid: orderId } })
 }
 </script>
 
@@ -107,7 +126,7 @@ async function placeOrder() {
                             <div v-if="paymentMethod === method.value && method.value === 'upi'" class="mt-3"
                                 @click.stop>
                                 <UInput v-model="upiId" placeholder="yourname@upi" class="w-full" :ui="{
-                                    base: 'bg-white focus-visible:ring-1 focus-visible:ring-red-500'
+                                    base: 'bg-white text-gray-500 focus-visible:ring-1 focus-visible:ring-red-500'
                                 }" />
                             </div>
 
@@ -115,10 +134,10 @@ async function placeOrder() {
                                 class="mt-3 flex flex-col gap-3" @click.stop>
                                 <UInput v-model="card.number" placeholder="Card Number" maxlength="19" class="w-full"
                                     :ui="{
-                                        base: 'bg-white focus-visible:ring-1 focus-visible:ring-red-500'
+                                        base: 'bg-white text-gray-500 focus-visible:ring-1 focus-visible:ring-red-500'
                                     }" />
                                 <UInput v-model="card.name" placeholder="Name on Card" class="w-full" :ui="{
-                                    base: 'bg-white focus-visible:ring-1 focus-visible:ring-red-500'
+                                    base: 'bg-white text-gray-500 focus-visible:ring-1 focus-visible:ring-red-500'
                                 }" />
                                 <div class="grid grid-cols-2 gap-3">
                                     <UInput v-model="card.expiry" placeholder="MM/YY" maxlength="5" :ui="{
@@ -191,8 +210,8 @@ async function placeOrder() {
                 </div>
 
                 <UButton block class="mt-4 bg-indigo-600 text-white p-3 hover:bg-indigo-600 active:bg-indigo-600"
-                    to="/payment">
-                    Continue
+                    @click="placeOrder">
+                    Place Order
                 </UButton>
             </UCard>
 

@@ -156,7 +156,7 @@ const accountMenuItems = computed(() => [
     { label: 'Wishlist', icon: 'i-lucide-heart', to: '/wishlist' }
   ],
   [
-    { label: 'Edit Profile', icon: 'i-lucide-user-pen', to: '/account/edit' },
+    { label: 'Profile', icon: 'i-lucide-user-pen', to: '/profile' },
     { label: 'Logout', icon: 'i-lucide-log-out', onSelect: () => authStore.logout() }
   ]
 ])
@@ -195,7 +195,11 @@ const accountMenuItems = computed(() => [
           }" />
 
         <!-- Account -->
-        <UDropdownMenu v-if="authStore.user" :items="accountMenuItems" :ui="{ content: 'w-64' }">
+        <UDropdownMenu v-if="authStore.user" :items="accountMenuItems" :ui="{
+          content: 'w-64 bg-white ring-0 rounded-xs',
+          item: 'rounded-xs before:rounded-xs ',
+          itemLabel: ''
+        }">
           <!-- <UButton icon="i-lucide-user" color="neutral" variant="ghost" aria-label="Account"
             class="hidden lg:inline-flex text-gray-800" /> -->
           <UAvatar :alt="authStore.user.name" size="md" />

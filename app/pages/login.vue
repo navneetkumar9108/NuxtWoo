@@ -117,9 +117,15 @@ const loginSchema = z.object({
     password: z.string().min(6, 'Min 6 characters')
 })
 
+
+
 const registerSchema = z.object({
     name: z.string().min(2, 'Name daalo'),
     email: z.string().email('Valid email daalo'),
+    phone: z.string().length(10, '10-digit number'),
+    gender: z.string().min(1, 'Gender select karo'),
+    dob: z.string().min(1, 'Date of Birth daalo'),
+    location: z.string().min(2, 'Location daalo'),
     password: z.string().min(6, 'Min 6 characters'),
     confirmPassword: z.string()
 }).refine(d => d.password === d.confirmPassword, {
@@ -128,7 +134,22 @@ const registerSchema = z.object({
 })
 
 const loginState = reactive({ email: '', password: '' })
-const registerState = reactive({ name: '', email: '', password: '', confirmPassword: '' })
+const registerState = reactive({
+    name: '',
+    email: '',
+    phone: '',
+    gender: '',
+    dob: '',
+    location: '',
+    password: '',
+    confirmPassword: ''
+})
+
+const genderOptions = [
+    { label: 'Male', value: 'male' },
+    { label: 'Female', value: 'female' },
+    { label: 'Other', value: 'other' }
+]
 
 const loading = ref(false)
 const errorMsg = ref('')
@@ -210,6 +231,24 @@ onMounted(() => {
                         <UFormField label="Email" name="email">
                             <UInput v-model="registerState.email" type="email" class="w-full" />
                         </UFormField>
+                        <UFormField label="Phone" name="phone">
+                            <UInput v-model="registerState.phone" maxlength="10" placeholder="10-digit mobile number"
+                                class="w-full" />
+                        </UFormField>
+
+                        <UFormField label="Gender" name="gender">
+                            <URadioGroup v-model="registerState.gender" orientation="horizontal"
+                                :items="genderOptions" />
+                        </UFormField>
+
+                        <UFormField label="Date of Birth" name="dob">
+                            <UInput v-model="registerState.dob" type="date" class="w-full" />
+                        </UFormField>
+
+                        <UFormField label="Location" name="location">
+                            <UInput v-model="registerState.location" placeholder="City, State" class="w-full" />
+                        </UFormField>
+
                         <UFormField label="Password" name="password">
                             <UInput v-model="registerState.password" type="password" class="w-full" />
                         </UFormField>

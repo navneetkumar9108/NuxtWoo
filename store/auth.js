@@ -62,9 +62,20 @@ export const useAuthStore = defineStore("auth", () => {
       throw new Error("Email already exists");
     }
 
+    // const newUser = {
+    //   name: data.name,
+    //   email: data.email,
+    //   phone: data.phone || "",
+    //   password: data.password,
+    // };
+
     const newUser = {
       name: data.name,
       email: data.email,
+      phone: data.phone || "",
+      gender: data.gender || "",
+      dob: data.dob || "",
+      location: data.location || "",
       password: data.password,
     };
 
@@ -104,6 +115,20 @@ export const useAuthStore = defineStore("auth", () => {
     isLoggedIn.value = false;
   };
 
+  const updateProfile = (data) => {
+    const updatedUser = { ...user.value, ...data };
+    user.value = updatedUser;
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+
+    // "users" list mein bhi update karo taaki login pe bhi naya data mile
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const index = users.findIndex((u) => u.email === updatedUser.email);
+    if (index !== -1) {
+      users[index] = { ...users[index], ...data };
+      localStorage.setItem("users", JSON.stringify(users));
+    }
+  };
+
   return {
     user,
     isLoggedIn,
@@ -111,5 +136,6 @@ export const useAuthStore = defineStore("auth", () => {
     register,
     login,
     logout,
+    updateProfile,
   };
 });
