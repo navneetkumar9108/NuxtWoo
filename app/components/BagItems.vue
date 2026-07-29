@@ -7,7 +7,7 @@ const cartStore = useCartStore()
     <div v-if="cartStore.items.length === 0" class="text-center py-16 text-neutral-500">
         <UIcon name="i-lucide-shopping-bag" class="size-10 mx-auto mb-3 text-neutral-300" />
         <p>Your bag is empty</p>
-        <ButtonUButton label="Continue Shopping" variant="link" color="primary" to="/" class="mt-2" />
+        <ButtonUButton label="Continue Shopping" variant="link" color="primary" to="/products" class="mt-2" />
     </div>
 
     <div v-else class="flex flex-col gap-4">

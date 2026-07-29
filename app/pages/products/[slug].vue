@@ -228,7 +228,7 @@ function handleAddToCart() {
         <!-- Add to Cart -->
         <div class="flex items-center gap-4 mb-5.75">
           <ButtonUButton label="Add to Cart"
-            class="w-[50%] justify-center py-3.75 font-bold text-[16px] bg-error text-white rounded-sm"
+            class="w-[50%] justify-center py-3.75 font-bold text-[16px] bg-red-400 hover:bg-red-400 active:bg-red-400 text-white rounded-sm"
             icon="i-lucide-shopping-bag" size="lg" color="primary" variant="solid" @click="handleAddToCart" />
           <!-- <ButtonUButton label="Add to Cart"
             class="w-[50%] justify-center py-3.75 font-bold text-[16px] bg-error text-white rounded-sm"

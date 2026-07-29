@@ -34,10 +34,12 @@ onMounted(loadOrders)
             <UCard v-for="order in orders" :key="order.orderId"
                 class="bg-white rounded-xs ring-0 divide-y divide-neutral-100" :ui="{ body: 'p-0' }">
                 <div class="flex items-center gap-3 p-4 bg-neutral-50">
-                    <div class="size-9 rounded-full bg-white flex items-center justify-center relative shrink-0">
+                    <div class="size-9 rounded-full bg-neutral-100 flex items-center justify-center relative shrink-0">
                         <UIcon name="i-lucide-package" class="size-5 text-neutral-700" />
-                        <UIcon v-if="order.status === 'cancelled'" name="i-lucide-x-circle"
-                            class="size-4 text-red-500 absolute -bottom-0.5 -right-0.5 bg-white rounded-full" />
+                        <UIcon v-if="order.status === 'cancelled'" name="i-ph-x-circle-fill"
+                            class="size-4 text-white absolute -bottom-0.5 -right-0.5 bg-red-950 rounded-full" />
+                        <UIcon v-if="order.status === 'delivered'" name="i-ph-check-circle-fill"
+                            class="size-4 text-white absolute -bottom-0.5 -right-0.5 bg-green-600 rounded-full" />
                     </div>
                     <div>
                         <p class="text-sm font-semibold capitalize" :class="{

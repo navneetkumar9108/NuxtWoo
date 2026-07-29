@@ -87,28 +87,81 @@ function updateStatus(newStatus) {
     orders.value = updated
 }
 
+
 onMounted(loadOrders)
 </script>
 
 <template>
     <UContainer class="py-8 max-w-2xl" v-if="order">
-        <h1 class="text-xl font-bold mb-6">Order #{{ order.orderId }}</h1>
 
-        <UCard v-for="item in order.items" :key="item.id" class="bg-white ring-0 rounded-xs mb-3">
-            <div class="flex gap-3">
-                <img :src="item.image" class="w-16 h-20 object-cover rounded-xs" />
-                <div>
-                    <p class="text-sm font-semibold">{{ item.name }}</p>
-                    <p class="text-xs text-neutral-500">{{ item.title }}</p>
-                    <p class="text-xs text-neutral-500">Size: {{ item.size }} · Qty: {{ item.quantity }}</p>
+        <UCard v-for="item in order.items" :key="item.id" class=" ring-0 rounded-xs mb-3 bg-neutral-200">
+            <div class="flex flex-col justify-center items-center text-center gap-3">
+                <img :src="item.image" class="w-35 h-full object-cover rounded-2xl" />
+                <div class="text-sm w-full">
+                    <p class=" font-semibold">{{ item.name }}</p>
+                    <p class=" text-neutral-500">{{ item.title }}</p>
+                    <p class=" text-neutral-500">Size: {{ item.size }} · Quantity: {{ item.quantity }}</p>
+                    <p class=" text-neutral-500">Order ID: #{{ order.orderId }}</p>
+                    <!-- <p class=" text-neutral-500">{{ order.status }}</p> -->
+                    <div class="flex items-center gap-3 p-4 rounded-2xl w-full mt-2" :class="{
+                        'bg-red-500': order.status === 'cancelled',
+                        'bg-green-600': order.status === 'delivered',
+                        'bg-blue-600': order.status === 'return_requested' || order.status === 'exchange_requested',
+                        'bg-orange-500': order.status === 'processing',
+                        'bg-neutral-800': order.status === 'placed' || order.status === 'shipped'
+                    }">
+                        <div class="size-9 rounded-full bg-white flex items-center justify-center relative shrink-0">
+                            <UIcon name="i-lucide-package" class="size-5 text-neutral-700" />
+                            <UIcon v-if="order.status === 'cancelled'" name="i-ph-x-circle-fill"
+                                class="size-5 text-white absolute -bottom-0.5 -right-0.5 bg-red-950 rounded-full" />
+                            <UIcon v-if="order.status === 'delivered'" name="i-ph-check-circle-fill"
+                                class="size-4 text-white absolute -bottom-0.5 -right-0.5 bg-green-950 rounded-full" />
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold capitalize text-white">
+                                {{ order.status?.replace('_', ' ') || 'Placed' }}
+                                on {{ order.date }}
+                            </p>
+                            <p class="text-xs text-white text-start">
+                                <span v-if="order.status === 'cancelled' && order.cancelReason">
+                                    {{ order.cancelReason }}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </UCard>
 
         <UCard class="bg-white ring-0 rounded-xs mb-3">
-            <p class="text-sm">Delivering to: {{ order.address?.fullName }}</p>
-            <p class="text-xs text-neutral-500">{{ order.address?.addressLine1 }}, {{ order.address?.city }}</p>
-            <p class="text-sm font-semibold mt-2">Total: ₹{{ order.totalAmount }}</p>
+            <div class=" flex gap-3">
+                <UAvatar size="2xl"
+                    src="https://assets.myntassets.com/assets/images/2026/JUNE/17/vAviurqR_d0a7490162924bf4afd3946f4b839450.png"
+                    class="rounded-xl" />
+                <div>
+                    <p class="font-semibold text-[16px]">Delivery To</p>
+                    <p class="text-xs"> {{ order.address?.fullName }}</p>
+                </div>
+            </div>
+            <USeparator class="py-3 " :ui="{
+                border: 'border-neutral-200'
+            }" />
+            <div class=" flex items-center gap-3">
+                <UIcon name="i-lucide-phone" />
+                <div>
+                    <p class="text-[16px] font-semibold ">Contact Details</p>
+                    <p class="text-xs ">{{ order.address?.phone }}</p>
+                </div>
+            </div>
+            <div class=" flex items-center gap-3 mt-3">
+                <UIcon name="i-lucide-map-pin" />
+                <div ">
+                    <p class=" text-[16px] font-semibold">Delivery Address</p>
+                    <p class="text-xs text-balance ">{{ order.address?.addressLine1 }}{{ order.address?.addressLine2 }},
+                        {{
+                            order.address?.city }}-{{ order.address?.pincode }},{{ order.address?.state }}</p>
+                </div>
+            </div>
         </UCard>
 
         <UButton v-if="order.status === 'placed'" block color="error" variant="outline" @click="cancelModalOpen = true">
@@ -137,7 +190,7 @@ onMounted(loadOrders)
             </div>
         </UCard>
 
-        <UModal v-model:open="cancelModalOpen" :ui="{ content: 'max-w-sm bg-white' }">
+        <UModal v-model:open="cancelModalOpen" :ui="{ content: 'max-w-sm bg-white rounded-xs ring-neutral-200' }">
             <template #header>
                 <h2 class="text-base font-semibold">Cancel Order</h2>
             </template>
@@ -150,29 +203,46 @@ onMounted(loadOrders)
             </template>
         </UModal>
         <!-- Return/Exchange Modal -->
-        <UModal v-model:open="returnModalOpen" :ui="{ content: 'max-w-sm bg-white' }">
+        <UModal v-model:open="returnModalOpen" :ui="{
+            content: 'max-w-sm bg-white rounded-xs ring-neutral-200',
+            header: 'border-b-neutral-200 text-gray-800',
+        }">
             <template #header>
                 <h2 class="text-base font-semibold">Return / Exchange</h2>
             </template>
             <template #body>
-                <UFormField label="What do you want to do?" class="mb-4">
+                <UFormField label="What do you want to do?" class="mb-4" :ui="{ label: 'text-gray-800' }">
                     <URadioGroup v-model="returnType" orientation="horizontal" :items="[
                         { label: 'Return', value: 'return' },
                         { label: 'Exchange', value: 'exchange' }
-                    ]" />
+                    ]" :ui="{
+                        label: 'text-red-400', base: 'bg-white border border-red-400  rounded-sm',
+                        indicator: 'bg-white after:bg-red-400 after:rounded-sm  after:size-3'
+                    }" />
                 </UFormField>
 
-                <UFormField v-if="returnType === 'exchange'" label="New Size" class="mb-4">
+                <UFormField v-if="returnType === 'exchange'" label="New Size" class="mb-4"
+                    :ui="{ label: 'text-gray-800' }">
                     <USelect v-model="exchangeSize"
                         :items="order.items[0]?.sizes?.map(s => ({ label: s.name, value: s.sizeId })) || []"
-                        placeholder="Select size" class="w-full" />
+                        placeholder="Select size"
+                        class="w-full bg-white hover:bg-white focus:ring-1 ring-neutral-200 focus:ring-neutral-200 text-red-400 rounded-xs"
+                        :ui="{
+                            content: 'w-64 bg-white ring-0 rounded-xs',
+                            item: 'rounded-xs before:rounded-xs  text-red-400',
+                            itemLabel: ''
+                        }" />
                 </UFormField>
 
-                <UFormField label="Reason">
-                    <URadioGroup v-model="returnReason" :items="returnReasons.map(r => ({ label: r, value: r }))" />
+                <UFormField label="Reason" :ui="{ label: 'text-gray-800' }">
+                    <URadioGroup v-model="returnReason" :items="returnReasons.map(r => ({ label: r, value: r }))" :ui="{
+                        label: 'text-red-400', base: 'bg-white border border-red-400  rounded-sm',
+                        indicator: 'bg-white after:bg-red-400 after:rounded-sm  after:size-3'
+                    }" />
                 </UFormField>
 
-                <UButton block color="primary" class="mt-6"
+                <UButton block color="primary" class="mt-6 p-3 rounded-xs bg-red-400 text-white hover:bg-red-400
+                    uppercase active:bg-red-400"
                     :disabled="!returnReason || (returnType === 'exchange' && !exchangeSize)" @click="confirmReturn">
                     Submit Request
                 </UButton>
