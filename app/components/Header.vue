@@ -246,7 +246,7 @@ const accountMenuItems = computed(() => [
       </UInput>
     </div>
 
-    <USlideover v-model:open="isMobileMenuOpen" side="left" :ui="{ content: 'w-100 bg-white' }">
+    <USlideover v-model:open="isMobileMenuOpen" side="left" :ui="{ content: 'max-w-xs bg-white' }">
       <template #header>
         <h2 class="font-semibold text-lg">Menu</h2>
         <UButton icon="i-lucide-x" color="primary" variant="ghost" class="absolute top-4 right-4"

@@ -24,11 +24,11 @@ function applyNote() {
         </span>
 
         <USlideover v-model:open="isOpen" side="right" :ui="{
-            content: 'max-w-md bg-white',
+            content: 'max-w-xs lg:max-w-md bg-white',
             footer: 'flex-col'
         }">
             <template #header>
-                <h2 class="text-base font-semibold">
+                <h2 class="text-base font-semibold ">
                     Bag ({{ cartStore.totalItems }})
                 </h2>
             </template>
