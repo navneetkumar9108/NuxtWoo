@@ -93,7 +93,7 @@ onMounted(() => {
                         class="p-3 rounded-xs bg-white ring-red-400 text-red-400 hover:bg-white active:bg-white cursor-pointer">
                         Continue Shopping
                     </UButton>
-                    <UButton color="primary" block to="/orders"
+                    <UButton color="primary" block to="account/orders"
                         class="p-3 rounded-xs bg-red-400 text-white hover:bg-red-400 active:bg-red-400">
                         View Order
                     </UButton>

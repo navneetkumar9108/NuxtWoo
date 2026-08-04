@@ -2,7 +2,7 @@
 const { product } = defineProps({
   product: Object,
 });
-console.log('product', product);
+// console.log('product', product);
 </script>
 
 <template>
@@ -23,7 +23,8 @@ console.log('product', product);
     </template>
     <template #body>
       <ProductInfo :brand="product.brand.name" :title="product.title" />
-      <ProductPrice :price="product.price" :originalPrice="product.originalPrice" :discount="product.discount" />
+      <ProductPrice :price="product.price" :originalPrice="product.originalPrice" :discount="product.discount"
+        class="text-sm text-gray-800 mt-1.5 sm:mt-2.5 mb-1.5" />
     </template>
   </UPageCard>
 </template>

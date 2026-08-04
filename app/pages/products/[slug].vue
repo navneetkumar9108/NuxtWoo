@@ -86,13 +86,27 @@ function handleAddToCart() {
   if (!selectedSize.value) {
     toast.add({
       title: 'Please select a size',
-      color: 'error',
-      icon: 'i-lucide-alert-circle'
+      // color: 'error',
+      icon: 'i-lucide-alert-circle', class: 'bg-red-100 text-red-800 rounded-xs'
     })
     return
   }
 
   cartStore.addToCart({ ...product.value.data, selectedSize: selectedSize.value })
+  toast.add({
+    title: 'Item added to cart',
+    color: 'success',
+    icon: 'i-lucide-check-circle'
+  })
+}
+
+function handleAddToWishlist() {
+  wishlistStore.addToWishlist(product.data)
+  toast.add({
+    title: 'Item added to wishlist',
+    color: 'success',
+    icon: 'i-lucide-check-circle'
+  })
 }
 
 </script>
@@ -237,7 +251,10 @@ function handleAddToCart() {
 
           <ButtonUButton label="WISHLIST"
             class="w-[40%] justify-center py-3.75 font-bold text-[16px] hover:ring-gray-800 text-gray-800 rounded-sm ring-error"
-            icon="i-lucide-heart" variant="outline" @click="wishlistStore.addToWishlist(product.data)" />
+            icon="i-lucide-heart" variant="outline" @click="() => {
+              wishlistStore.addToWishlist(product.data)
+              toast.add({ title: 'Item added to wishlist', color: 'success', icon: 'i-lucide-check-circle' })
+            }" />
         </div>
 
         <!-- Description -->

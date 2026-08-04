@@ -160,7 +160,7 @@ function onSubmit() {
                                     <p class="text-sm text-neutral-600 text-balance">
                                         {{ address.addressLine1 }}<span v-if="address.addressLine2">, {{
                                             address.addressLine2
-                                        }}</span><span v-if="address.landmark">, near {{ address.landmark
+                                            }}</span><span v-if="address.landmark">, near {{ address.landmark
                                             }}</span>,<br>
                                         {{ address.city }} - {{ address.pincode }}, <br> {{ address.state }} </p>
                                     <p class="text-sm text-neutral-500 mt-1">Mobile: {{ address.phone }}</p>
@@ -372,8 +372,8 @@ function onSubmit() {
                 </div>
 
                 <UButton block class="mt-4 bg-indigo-600 text-white p-3 hover:bg-indigo-600 active:bg-indigo-600"
-                    to="/payment">
-                    Continue
+                    to="/checkout">
+                    Checkout
                 </UButton>
             </UCard>
 

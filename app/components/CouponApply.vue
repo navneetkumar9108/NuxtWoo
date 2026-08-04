@@ -94,7 +94,8 @@ function removeCoupon() {
                     <UIcon name="i-lucide-ticket-percent" class="size-4" />
                     {{ cartStore.appliedCoupon.code }} applied — You saved ₹{{ cartStore.appliedCoupon.discount }}
                 </span>
-                <UButton variant="ghost" color="neutral" size="xs" @click="removeCoupon">
+                <UButton variant="ghost" color="neutral" size="xs" class="hover:bg-red-400 hover:text-white rounded-xs"
+                    @click="removeCoupon">
                     Remove
                 </UButton>
             </div>

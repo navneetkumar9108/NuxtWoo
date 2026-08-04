@@ -5,8 +5,13 @@ export const useCartStore = defineStore("cart", () => {
   const items = ref([]);
   console.log("cart items", items.value);
   const appliedCoupon = ref(null); // { code, discount }
-  const DELIVERY_CHARGE = 50;
-  const FREE_DELIVERY_THRESHOLD = 999;
+  // Delivery
+  const deliveryMethod = ref("standard");
+
+  const STANDARD_DELIVERY_CHARGE = 0;
+  const EXPRESS_DELIVERY_CHARGE = 50;
+
+  // const FREE_DELIVERY_THRESHOLD = 999;
   const orderNote = ref("");
   const COUPONS = { SAVE50: 50, WELCOME10: 100 };
 
@@ -77,6 +82,17 @@ export const useCartStore = defineStore("cart", () => {
     appliedCoupon.value = null;
   }
 
+  function setDeliveryMethod(method) {
+    deliveryMethod.value = method;
+  }
+
+  const deliveryCharge = computed(() => {
+    if (deliveryMethod.value === "express") {
+      return 50;
+    }
+    return 0;
+  });
+
   const totalItems = computed(() =>
     items.value.reduce((sum, item) => sum + item.quantity, 0),
   );
@@ -85,9 +101,9 @@ export const useCartStore = defineStore("cart", () => {
     items.value.reduce((sum, item) => sum + item.price * item.quantity, 0),
   );
 
-  const deliveryCharge = computed(() =>
-    totalPrice.value >= FREE_DELIVERY_THRESHOLD ? 0 : DELIVERY_CHARGE,
-  );
+  // const deliveryCharge = computed(() =>
+  //   totalPrice.value >= FREE_DELIVERY_THRESHOLD ? 0 : DELIVERY_CHARGE,
+  // );
 
   const totalOriginalPrice = computed(() =>
     items.value.reduce(
@@ -135,7 +151,9 @@ export const useCartStore = defineStore("cart", () => {
     discountAmount,
     finalPrice,
     setQuantity,
+    deliveryMethod,
     deliveryCharge,
+    setDeliveryMethod,
     setOrderNote,
     orderNote,
   };

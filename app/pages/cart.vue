@@ -8,6 +8,8 @@ const addressStore = useAddressStore()
 const cartStore = useCartStore()
 const wishlistStore = useWishlistStore()
 const router = useRouter()
+const toast = useToast()
+
 
 const deliveryAddress = addressStore.selectedAddress
 
@@ -85,7 +87,8 @@ function goToAddress() {
                                 <div>
                                     <ProductInfo :brand="item.name" :title="item.title" />
                                     <ProductPrice :price="item.price" :originalPrice="item.originalPrice"
-                                        :discount="item.discount" />
+                                        :discount="item.discount"
+                                        class="text-sm text-gray-800 mt-1.5 sm:mt-2.5 mb-1.5" />
 
                                     <p v-if="item.size || item.color"
                                         class=" text-xs text-neutral-500 mt-0.5 mb-0.5 font-bold">
@@ -114,9 +117,15 @@ function goToAddress() {
                             }" />
                             <div class="flex items-center justify-end w-full pt-3">
                                 <UButton label="Remove From Cart" variant="ghost" color="error" icon="i-lucide-trash-2"
-                                    class="rounded-xs" @click="cartStore.removeFromCart(item.id)" />
+                                    class="rounded-xs" @click="() => {
+                                        cartStore.removeFromCart(item.id)
+                                        toast.add({ title: 'Item removed from cart', color: 'success', icon: 'i-lucide-check-circle' })
+                                    }" />
                                 <ButtonUButton label="Move To Wishlist" icon="i-lucide-heart" variant="ghost"
-                                    class="rounded-xs" color="error" @click="moveToWishlist(item)" />
+                                    class="rounded-xs" color="error" @click="() => {
+                                        moveToWishlist(item)
+                                        toast.add({ title: 'Item moved to wishlist', color: 'success', icon: 'i-lucide-check-circle' })
+                                    }" />
                             </div>
                         </div>
                     </UCard>
@@ -134,8 +143,8 @@ function goToAddress() {
                     </NuxtLink>
                 </div>
                 <div class=" space-y-4 ">
-                    <UCard class="bg-white ring-0 rounded-xs">
-                        <!-- <UCollapsible v-model:open="noteOpen">
+                    <!-- <UCard class="bg-white ring-0 rounded-xs"> -->
+                    <!-- <UCollapsible v-model:open="noteOpen">
                             <button type="button" class="flex items-center justify-between w-full">
                                 <span class="flex items-center gap-1 font-medium text-sm">
                                     <UIcon name="i-lucide-pencil" class="size-4" />
@@ -155,10 +164,10 @@ function goToAddress() {
                                     color="primary" @click="applyNote" />
                             </template>
                         </UCollapsible> -->
-                        <p v-if="cartStore.orderNote" class="text-xs text-neutral-500 mt-2 line-clamp-2">
+                    <!-- <p v-if="cartStore.orderNote" class="text-xs text-neutral-500 mt-2 line-clamp-2">
                             {{ cartStore.orderNote }}
-                        </p>
-                    </UCard>
+                        </p> -->
+                    <!-- </UCard> -->
                     <CouponApply v-if="cartStore.items.length !== 0" />
                     <UCard class="h-fit bg-white ring-0 rounded-xs " v-if="cartStore.totalPrice">
                         <template #header>
@@ -199,8 +208,8 @@ function goToAddress() {
 
                         <UButton block
                             class="mt-4 bg-indigo-600 text-white p-3 hover:bg-indigo-600 active:bg-indigo-600"
-                            to="/address">
-                            Continue
+                            to="/checkout">
+                            Checkout
                         </UButton>
                     </UCard>
                 </div>

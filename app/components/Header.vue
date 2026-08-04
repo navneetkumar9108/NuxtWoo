@@ -152,11 +152,11 @@ const desktopNavItems = computed(() =>
 
 const accountMenuItems = computed(() => [
   [
-    { label: 'Orders', icon: 'i-lucide-package', to: '/orders' },
+    { label: 'Orders', icon: 'i-lucide-package', to: '/account/orders' },
     { label: 'Wishlist', icon: 'i-lucide-heart', to: '/wishlist' }
   ],
   [
-    { label: 'Profile', icon: 'i-lucide-user-pen', to: '/profile' },
+    { label: 'Profile', icon: 'i-lucide-user-pen', to: '/account', exact: true },
     { label: 'Logout', icon: 'i-lucide-log-out', onSelect: () => authStore.logout() }
   ]
 ])
