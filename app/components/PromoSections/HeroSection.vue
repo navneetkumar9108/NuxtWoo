@@ -45,22 +45,7 @@
       <img src="/images/hero_4.jpg" class="absolute inset-0 w-full h-full object-cover -z-10 " alt="" />
     </template>
   </UPageHero>
-  <!-- <UPageHero title="Long-term thinking"
-    description="We're committed to responsible, sustainable, and ethical manufacturing. Our small-scale approach allows us to focus on quality and reduce our impact. We're doing our best to delay the inevitable heat-death of the universe."
-    :links="[{
-      label: 'Read our story', to: '#', size: 'lg', color: 'white', class: 'text-gray-900', ui: {
-        base: 'bg-white text-white hover:bg-white active:bg-white rounded-xs p-3'
-      }
-    }]" :ui="{
-      container: 'py-32 sm:py-40 relative isolate',
-      title: 'text-white',
-      description: 'text-white/80'
-    }">
-    <template #top>
-      <NuxtImg src="/images/hero_4.jpg" alt="" class="absolute inset-0 -z-10 size-full object-cover" />
-      <div class="absolute inset-0 -z-10 bg-black/60" />
-    </template>
-  </UPageHero> -->
+
   <!-- <UContainer class="bg-white">
 
     <UPageHero title="Summer styles are finally here"

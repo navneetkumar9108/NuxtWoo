@@ -9,7 +9,11 @@ export const productsV4 = [
       name: "Bewakoof",
       slug: "bewakoof",
     },
-    category: { id: 1, name: "Men T-Shirts", slug: "men-t-shirts" },
+    category: {
+      id: 1,
+      name: "Men T-Shirts",
+      slug: "men-t-shirts",
+    },
     gender: { id: 1, name: "Men", slug: "men" },
     material: { id: 1, name: "Cotton", slug: "cotton" },
     fit: { id: 2, name: "Oversized", slug: "oversized" },

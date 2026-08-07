@@ -25,7 +25,7 @@ const servicesData = [
 
 <template>
   <UPageGrid
-    class=" grid-cols-1 sm:grid-cols-1 md:grid-cols-2  lg:grid-cols-2 xl:grid-cols-4  2xl:mx-74 my-24 px-4 md:px-5 2xl:px-12 gap-4">
+    class=" grid-cols-1 sm:grid-cols-1 md:grid-cols-2  lg:grid-cols-2 xl:grid-cols-4  2xl:mx-74 my-10 px-4 md:px-5 2xl:px-12 gap-4">
     <UPageCard v-for="service in servicesData" :key="service.title" :ui="{
       root: 'bg-white ring-0 ring-transparent',
       container: ' sm:p-0',
