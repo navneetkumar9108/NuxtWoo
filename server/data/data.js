@@ -86,7 +86,8 @@ export const productsV4 = [
     stock: 74,
     availability: "In Stock",
     isNew: true,
-    isBestSeller: true,
+    isBestSeller: false,
+    isFeatured: false,
     wishlist: false,
     seo: {
       metaTitle: "Marvel Graphic Printed Oversized T-Shirt | Bewakoof",
@@ -201,8 +202,9 @@ export const productsV4 = [
     tags: ["Green", "Oversized", "Cotton", "Casual"],
     stock: 45,
     availability: "In Stock",
-    isNew: true,
-    isBestSeller: false,
+    isNew: false,
+    isBestSeller: true,
+    isFeatured: false,
     wishlist: false,
     seo: {
       metaTitle: "Green Oversized T-Shirt | The Souled Store",
@@ -308,8 +310,9 @@ export const productsV4 = [
     tags: ["Black", "Cotton", "Casual", "Basic"],
     stock: 45,
     availability: "In Stock",
-    isNew: true,
+    isNew: false,
     isBestSeller: false,
+    isFeatured: true,
     wishlist: false,
     seo: {
       metaTitle: "Black T-Shirt | The Souled Store",
@@ -423,6 +426,7 @@ export const productsV4 = [
     availability: "In Stock",
     isNew: true,
     isBestSeller: false,
+    isFeatured: false,
     wishlist: false,
     seo: {
       metaTitle: "Black Oversized T-Shirt | Roadster",
@@ -534,8 +538,9 @@ export const productsV4 = [
     tags: ["Black", "Oversized", "Cotton", "Casual"],
     stock: 54,
     availability: "In Stock",
-    isNew: true,
-    isBestSeller: false,
+    isNew: false,
+    isBestSeller: true,
+    isFeatured: false,
     wishlist: false,
     seo: {
       metaTitle: "Black Oversized T-Shirt | Roadster",
@@ -644,8 +649,9 @@ export const productsV4 = [
     tags: ["Blue", "Oversized", "Cotton", "Casual", "Women"],
     stock: 51,
     availability: "In Stock",
-    isNew: true,
+    isNew: false,
     isBestSeller: false,
+    isFeatured: true,
     wishlist: false,
     seo: {
       metaTitle: "Blue Oversized T-Shirt | H&M",
@@ -760,6 +766,7 @@ export const productsV4 = [
     availability: "In Stock",
     isNew: true,
     isBestSeller: false,
+    isFeatured: false,
     wishlist: false,
     seo: {
       metaTitle: "Black T-Shirt for Women | Puma",
@@ -872,8 +879,9 @@ export const productsV4 = [
     tags: ["Red", "White", "Cotton", "Casual", "Women"],
     stock: 46,
     availability: "In Stock",
-    isNew: true,
-    isBestSeller: false,
+    isNew: false,
+    isBestSeller: true,
+    isFeatured: false,
     wishlist: false,
     seo: {
       metaTitle: "Red & White Mix T-Shirt for Women | Tommy Hilfiger",
@@ -991,8 +999,9 @@ export const productsV4 = [
     tags: ["Pink", "Cotton", "Casual", "Women"],
     stock: 46,
     availability: "In Stock",
-    isNew: true,
+    isNew: false,
     isBestSeller: false,
+    isFeatured: true,
     wishlist: false,
     seo: {
       metaTitle: "Pink T-Shirt for Women | Tommy Hilfiger",
@@ -1104,6 +1113,7 @@ export const productsV4 = [
     availability: "In Stock",
     isNew: true,
     isBestSeller: false,
+    isFeatured: false,
     wishlist: false,
     seo: {
       metaTitle: "White & Blue T-Shirt for Women | Tommy Hilfiger",
@@ -1221,8 +1231,9 @@ export const productsV4 = [
     tags: ["Black", "Cotton", "Casual", "Women", "Sports"],
     stock: 51,
     availability: "In Stock",
-    isNew: true,
-    isBestSeller: false,
+    isNew: false,
+    isBestSeller: true,
+    isFeatured: false,
     wishlist: false,
     seo: {
       metaTitle: "Black T-Shirt for Women | Adidas",
@@ -1334,8 +1345,9 @@ export const productsV4 = [
     tags: ["Black", "White", "Joggers", "Women", "Sports"],
     stock: 46,
     availability: "In Stock",
-    isNew: true,
+    isNew: false,
     isBestSeller: false,
+    isFeatured: true,
     wishlist: false,
     seo: {
       metaTitle: "Black & White Joggers for Women | Adidas",
@@ -1451,6 +1463,7 @@ export const productsV4 = [
     availability: "In Stock",
     isNew: true,
     isBestSeller: false,
+    isFeatured: false,
     wishlist: false,
     seo: {
       metaTitle: "Drycell Sports Tights for Women | Puma",
@@ -1558,8 +1571,9 @@ export const productsV4 = [
     tags: ["Blue", "Jeans", "Denim", "Women", "Flared"],
     stock: 42,
     availability: "In Stock",
-    isNew: true,
-    isBestSeller: false,
+    isNew: false,
+    isBestSeller: true,
+    isFeatured: false,
     wishlist: false,
     seo: {
       metaTitle: "Light Fade Blue Jeans for Women | H&M",
@@ -1673,6 +1687,7 @@ export const productsV4 = [
     availability: "In Stock",
     isNew: true,
     isBestSeller: false,
+    isFeatured: false,
     wishlist: false,
     seo: {
       metaTitle: "Straight High Waist Scarf-Detail Jeans for Women | Levi's",
@@ -1784,8 +1799,9 @@ export const productsV4 = [
     tags: ["Light Blue", "Jeans", "Denim", "Women", "Straight Fit"],
     stock: 42,
     availability: "In Stock",
-    isNew: true,
+    isNew: false,
     isBestSeller: false,
+    isFeatured: true,
     wishlist: false,
     seo: {
       metaTitle:
@@ -1907,6 +1923,7 @@ export const productsV4 = [
     availability: "In Stock",
     isNew: true,
     isBestSeller: false,
+    isFeatured: false,
     wishlist: false,
     seo: {
       metaTitle:
@@ -2023,8 +2040,9 @@ export const productsV4 = [
     tags: ["Beige", "Dress", "Ethnic", "Women", "Festive"],
     stock: 35,
     availability: "In Stock",
-    isNew: true,
-    isBestSeller: false,
+    isNew: false,
+    isBestSeller: true,
+    isFeatured: false,
     wishlist: false,
     seo: {
       metaTitle:
@@ -2141,6 +2159,7 @@ export const productsV4 = [
     availability: "In Stock",
     isNew: true,
     isBestSeller: false,
+    isFeatured: false,
     wishlist: false,
     seo: {
       metaTitle:
@@ -2261,8 +2280,9 @@ export const productsV4 = [
     tags: ["Red", "Cotton", "Casual", "Men", "Basic"],
     stock: 56,
     availability: "In Stock",
-    isNew: true,
-    isBestSeller: false,
+    isNew: false,
+    isBestSeller: true,
+    isFeatured: false,
     wishlist: false,
     seo: {
       metaTitle: "Red T-Shirt for Men | U.S. Polo Assn.",
@@ -2377,8 +2397,9 @@ export const productsV4 = [
     tags: ["White", "Cotton", "Casual", "Men", "Basic"],
     stock: 56,
     availability: "In Stock",
-    isNew: true,
-    isBestSeller: false,
+    isNew: false,
+    isBestSeller: true,
+    isFeatured: false,
     wishlist: false,
     seo: {
       metaTitle: "White T-Shirt for Men | U.S. Polo Assn.",
@@ -2494,6 +2515,7 @@ export const productsV4 = [
     availability: "In Stock",
     isNew: true,
     isBestSeller: false,
+    isFeatured: false,
     wishlist: false,
     seo: {
       metaTitle: "Black T-Shirt for Men | U.S. Polo Assn.",
@@ -2607,8 +2629,9 @@ export const productsV4 = [
     tags: ["Black", "Cotton", "Casual", "Men", "Basic"],
     stock: 56,
     availability: "In Stock",
-    isNew: true,
-    isBestSeller: false,
+    isNew: false,
+    isBestSeller: true,
+    isFeatured: false,
     wishlist: false,
     seo: {
       metaTitle: "Black T-Shirt for Men | U.S. Polo Assn.",
@@ -2718,6 +2741,7 @@ export const productsV4 = [
     availability: "In Stock",
     isNew: true,
     isBestSeller: false,
+    isFeatured: false,
     wishlist: false,
     seo: {
       metaTitle: "White T-Shirt for Men | Nike",
@@ -2825,8 +2849,9 @@ export const productsV4 = [
     tags: ["Black", "Polyester", "Casual", "Men", "Sports"],
     stock: 56,
     availability: "In Stock",
-    isNew: true,
-    isBestSeller: false,
+    isNew: false,
+    isBestSeller: true,
+    isFeatured: false,
     wishlist: false,
     seo: {
       metaTitle: "Black T-Shirt for Men | Nike",
@@ -2943,8 +2968,9 @@ export const productsV4 = [
     tags: ["Black", "Oversized", "Cotton", "Casual", "Men"],
     stock: 56,
     availability: "In Stock",
-    isNew: true,
-    isBestSeller: false,
+    isNew: false,
+    isBestSeller: true,
+    isFeatured: false,
     wishlist: false,
     seo: {
       metaTitle: "Black Drop Shoulder Oversized T-Shirt for Men | Damensch",
@@ -3066,6 +3092,7 @@ export const productsV4 = [
     availability: "In Stock",
     isNew: true,
     isBestSeller: false,
+    isFeatured: false,
     wishlist: false,
     seo: {
       metaTitle: "Navy Blue Drop Shoulder Oversized T-Shirt for Men | Damensch",
@@ -3183,8 +3210,9 @@ export const productsV4 = [
     tags: ["Light Blue", "Jeans", "Denim", "Men", "Distressed"],
     stock: 42,
     availability: "In Stock",
-    isNew: true,
-    isBestSeller: false,
+    isNew: false,
+    isBestSeller: true,
+    isFeatured: false,
     wishlist: false,
     seo: {
       metaTitle:
@@ -3304,6 +3332,7 @@ export const productsV4 = [
     availability: "In Stock",
     isNew: true,
     isBestSeller: false,
+    isFeatured: false,
     wishlist: false,
     seo: {
       metaTitle: "Loose Straight Jeans (Sky Blue) for Men | Spykar",
@@ -3420,8 +3449,9 @@ export const productsV4 = [
     tags: ["Black", "Jeans", "Denim", "Men", "Straight Fit"],
     stock: 42,
     availability: "In Stock",
-    isNew: true,
-    isBestSeller: false,
+    isNew: false,
+    isBestSeller: true,
+    isFeatured: false,
     wishlist: false,
     seo: {
       metaTitle: "Loose Straight Jeans (Black) for Men | Spykar",
@@ -3644,8 +3674,9 @@ export const productsV4 = [
     tags: ["Black", "Jeans", "Denim", "Men", "Baggy"],
     stock: 42,
     availability: "In Stock",
-    isNew: true,
+    isNew: false,
     isBestSeller: false,
+    isFeatured: true,
     wishlist: false,
     seo: {
       metaTitle: "Baggy Jeans (Black) for Men | Spykar",

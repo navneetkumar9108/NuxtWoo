@@ -1,8 +1,7 @@
 // server/utils/filter.js
 export function filterProducts(products, query = {}) {
   let filtered = [...products];
-
-  // Brand
+  console.log("QUERY RECEIVED:", query, typeof query.isBestSeller); // Brand
   if (query.brand) {
     filtered = filtered.filter(
       (product) => product.brandId === Number(query.brand),
@@ -146,7 +145,14 @@ export function filterProducts(products, query = {}) {
 
   // Best Seller
   if (query.isBestSeller === "true") {
+    console.log("BEFORE:", filtered.length);
     filtered = filtered.filter((product) => product.isBestSeller);
+    console.log("AFTER:", filtered.length);
+  }
+
+  // Featured
+  if (query.isFeatured === "true") {
+    filtered = filtered.filter((product) => product.isFeatured);
   }
 
   return filtered;

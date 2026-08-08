@@ -1,16 +1,4 @@
 <script setup>
-// const categories = [
-//   { src: "/images/Clothing.jpg", alt: "Clothing" },
-//   { src: "/images/Tshirt.jpg", alt: "Tshirt" },
-//   { src: "/images/Hoodies.jpg", alt: "Hoodies" },
-//   { src: "/images/Music.jpg", alt: "Music" },
-//   { src: "/images/Albums.jpg", alt: "Albums" },
-//   { src: "/images/Posters.jpg", alt: "Posters" },
-//   { src: "/images/Accessories.jpg", alt: "Accessories" },
-//   { src: "/images/Decor.jpg", alt: "Decor" },
-// ];
-
-
 const { data: categories } = await useFetch("/api/categories");
 
 const categoryImages = {
@@ -23,7 +11,7 @@ const categoryImages = {
 </script>
 
 <template>
-  <UContainer>
+  <UContainer class="mt-10">
     <div class="flex items-center justify-between mb-4">
       <h2 class="text-sm lg:text-xl font-bold text-gray-900">Shop by Category</h2>
       <UButton label="Browse all Categories" variant="link" class="text-red-400 text-xs"

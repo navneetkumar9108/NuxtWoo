@@ -6,7 +6,7 @@ const { product } = defineProps({
 </script>
 
 <template>
-  <UPageCard class="w-full lg:w-52.5 bg-neutral ring-0   lg:mx-2.5 mb-5 lg:mb-7.5 
+  <UPageCard class="w-full lg:w-52.5 bg-neutral ring-0 mx-auto  mb-5 lg:mb-7.5 
   " :to="`/products/${product.slug}`" :ui="{
     root: 'hover:bg-neutral hover:bg-white hover:shadow-lg transition-all duration-300 rounded-xs',
     container: 'p-0 sm:p-0 gap-0  w-full',

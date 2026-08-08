@@ -15,6 +15,8 @@ export default defineEventHandler((event) => {
   // console.log("Enriched Products:", result.slice(0, 5));
 
   result = filterProducts(result, query);
+  console.log("FILTERED COUNT:", result.length); // ← add this
+
   result = searchProducts(result, query.search);
   // console.log(
   //   "Before sort",

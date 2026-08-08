@@ -1,18 +1,17 @@
 <script setup>
 const { data: products } = await useFetch("/api/products", {
     query: {
-        isBestSeller: true, limit: 8
+        isNew: true, limit: 8
     },
 
 });
 </script>
 
 <template>
-
     <UContainer>
         <div class="flex items-center justify-between mb-6">
             <h2 class="text-sm sm:text-xl font-bold text-gray-900">
-                Best Sellers
+                New Arrivals
             </h2>
             <UButton label="Browse all" to="/products" variant="link" class="text-red-400 text-xs"
                 trailing-icon="i-lucide-arrow-right" />

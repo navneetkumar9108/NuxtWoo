@@ -210,7 +210,7 @@ const formatCategory = (category) => {
             <USelect v-model="sortBy" :items="sortOptions" placeholder="Sort by" class="w-48 flex self-end" />
           </div>
           <USeparator class="py-1 lg:py-7 flex items-center justify-center" />
-          <UPageGrid class="h-fit gap-2  grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4">
+          <UPageGrid class=" gap-2 sm:gap-3 md:gap-4 lg:gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 xl:grid-cols-4">
             <CardProductCard v-for="product in products?.data || []" :key="product.id" :product="product" />
           </UPageGrid>
           <div class="mt-10 flex justify-center">
