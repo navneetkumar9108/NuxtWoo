@@ -10,8 +10,8 @@ useSeoMeta({
     <PromoSectionsHeroBanner />
     <!-- <PromoSectionsHeroSection /> -->
     <!-- <TrustedBy /> -->
-    <ShopByCategory />
     <WhyChooseUs />
+    <ShopByCategory />
     <!-- <PromoSectionsLongTerm /> -->
     <!-- <PopularProduct /> -->
     <OurFavorites />

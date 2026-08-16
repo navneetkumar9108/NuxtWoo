@@ -9,7 +9,7 @@ const { data: products } = await useFetch("/api/products", {
 
 <template>
 
-    <UContainer>
+    <UContainer class="mt-10">
         <div class="flex items-center justify-between mb-6">
             <h2 class="text-sm sm:text-xl font-bold text-gray-900">
                 Best Sellers

@@ -74,7 +74,7 @@ async function onSubmit(event) {
             <div class="flex py-3">
                 <span class="w-40 text-sm text-neutral-500">Gender</span>
                 <span class="text-sm font-medium capitalize">{{ authStore.user?.gender || '- not added -'
-                }}</span>
+                    }}</span>
             </div>
             <div class="flex py-3">
                 <span class="w-40 text-sm text-neutral-500">Date of Birth</span>

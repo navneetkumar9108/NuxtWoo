@@ -62,7 +62,7 @@ const items = [
             <UPageHero :title="item.title" :description="item.subtitle" orientation="vertical"
                 :links="[{ label: item.cta, to: item.to, size: 'lg', class: 'bg-red-400/50 text-white text-sm sm:text-lg rounded-sm', variant: 'solid' }]"
                 :ui="{
-                    root: 'relative isolate overflow-hidden bg-cover bg-center h-[280px] sm:h-[400px] md:h-[512px] rounded-sm',
+                    root: 'relative isolate overflow-hidden bg-cover bg-center h-[280px] sm:h-[400px] md:h-[555px] rounded-sm',
                     container: 'py-16 sm:py-24 md:py-32',
                     title: 'text-white text-2xl sm:text-4xl',
                     description: 'text-white/90 text-sm sm:text-lg mt-2',
