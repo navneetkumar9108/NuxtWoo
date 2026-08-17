@@ -14,6 +14,12 @@ const itemsPerPage = 12;
 const selectedCategories = ref(
   route.query.categories ? route.query.categories.split(",") : [],
 );
+const selectedBrands = ref(
+  route.query.brands ? route.query.brands.split(",") : [],
+);
+const selectedGenders = ref(
+  route.query.genders ? route.query.genders.split(",") : [],
+);
 const priceRange = ref([
   Number(route.query.minPrice) || 0,
   Number(route.query.maxPrice) || 10000,
@@ -30,6 +36,16 @@ const { data: products } = await useFetch("/api/products", {
         ? selectedCategories.value.join(",")
         : undefined,
     ),
+    brand: computed(() =>
+      selectedBrands.value.length
+        ? selectedBrands.value.join(",")
+        : undefined,
+    ),
+    gender: computed(() =>
+      selectedGenders.value.length
+        ? selectedGenders.value.join(",")
+        : undefined,
+    ),
 
     minPrice: computed(() => priceRange.value[0]),
 
@@ -42,7 +58,23 @@ const { data: products } = await useFetch("/api/products", {
   },
 });
 const { data: categories } = await useFetch("/api/categories");
+const { data: brands } = await useFetch("/api/brands");
+const { data: genders } = await useFetch("/api/genders");
 
+console.log('genders', genders.value?.data);
+const brandItems = computed(() =>
+  (brands.value?.data || []).map((brand) => ({
+    label: brand.name,
+    value: brand.slug,
+  })),
+);
+const genderItems = computed(() =>
+  (genders.value?.data || []).map((gender) => ({
+    label: gender.name,
+    value: gender.slug,
+  })),
+);
+console.log('genderItems', genderItems.value);
 const categoryItems = computed(() =>
   (categories.value?.data || []).map((category) => ({
     label: category.name,
@@ -70,7 +102,7 @@ watchEffect(() => {
 //   console.log("Sort Changed:", value);
 // });
 
-watch([selectedCategories, priceRange, selectedRating, sortBy], () => {
+watch([selectedCategories, selectedBrands, selectedGenders, priceRange, selectedRating, sortBy], () => {
   currentPage.value = 1;
 });
 
@@ -79,7 +111,7 @@ watch([selectedCategories, priceRange, selectedRating, sortBy], () => {
 // (also clears the old 'category' param from the Categories page,
 // in the SAME router.replace call so it doesn't race with this one)
 watch(
-  [selectedCategories, priceRange, selectedRating, sortBy, currentPage],
+  [selectedCategories, selectedBrands, selectedGenders, priceRange, selectedRating, sortBy, currentPage],
   () => {
     router.replace({
       query: {
@@ -87,6 +119,12 @@ watch(
         category: undefined,
         categories: selectedCategories.value.length
           ? selectedCategories.value.join(",")
+          : undefined,
+        brands: selectedBrands.value.length
+          ? selectedBrands.value.join(",")
+          : undefined,
+        genders: selectedGenders.value.length
+          ? selectedGenders.value.join(",")
           : undefined,
         minPrice: priceRange.value[0] ? priceRange.value[0] : undefined,
         maxPrice:
@@ -118,14 +156,32 @@ const items = [
   {
     label: "Category",
     icon: "i-lucide-grid-2x2",
+    trailingIcon: 'i-lucide-plus'
+
+  },
+  {
+    label: "Brands",
+    icon: "i-lucide-award",
+    trailingIcon: 'i-lucide-plus'
+
   },
   {
     label: "Price",
     icon: "i-lucide-indian-rupee",
+    trailingIcon: 'i-lucide-plus'
+
+  },
+  {
+    label: "Gender",
+    icon: "i-lucide-venus-and-mars",
+    trailingIcon: 'i-lucide-plus'
+
   },
   {
     label: "Rating",
     icon: "i-lucide-star",
+    trailingIcon: 'i-lucide-plus'
+
   },
 ];
 
@@ -150,66 +206,28 @@ const formatCategory = (category) => {
         <!-- <p class="text-muted mt-1">{{ filteredProducts.length }} results</p> -->
       </div>
       <UPageGrid class="sm:grid-cols-1 lg:grid-cols-[22%_auto] gap-4">
-        <UCard class="hidden lg:block h-fit bg-neutral sticky top-18 rounded-xs ring-0">
+        <UCard class="hidden lg:block h-fit bg-neutral sticky top-18 rounded-xs ring-0" :ui="{
+          body: 'sm:p-1'
+        }">
           <template #header>
             <h2 class="font-semibold text-lg">Filters</h2>
           </template>
-          <FilterPanel :items="items" :category-items="categoryItems" v-model:selected-categories="selectedCategories"
+          <FilterPanel :items="items" :category-items="categoryItems" :brand-items="brandItems"
+            :gender-items="genderItems" v-model:selected-categories="selectedCategories"
+            v-model:selected-brands="selectedBrands" v-model:selected-genders="selectedGenders"
             v-model:price-range="priceRange" v-model:selected-rating="selectedRating" />
-          <!-- <UAccordion :items="items" type="multiple">
-                <template #body="{ item }">
-                  <div v-if="item.label === 'Category'" class="space-y-3">
-                    <UCheckboxGroup
-                      :items="categoryItems"
-                      v-model="selectedCategories"
-                      :ui="{
-                        label: 'text-black font-normal',
-                      }"
-                    />
-                  </div>
-
-                  <div
-                    v-else-if="item.label === 'Price'"
-                    class="space-y-3 mt-2"
-                  >
-                    <USlider
-                      size="xs"
-                      v-model="priceRange"
-                      :min="0"
-                      :max="10000"
-                      :ui="{
-                        track: 'bg-gray-300',
-                        range: 'bg-blue-500',
-                        thumb: 'bg-white ring-gray-300',
-                      }"
-                    />
-
-                    <p class="text-sm text-black">
-                      ₹{{ priceRange[0] }} - ₹{{ priceRange[1] }}
-                    </p>
-                  </div>
-
-                  <div v-else-if="item.label === 'Rating'" class="space-y-2">
-                    <URadioGroup
-                      v-model="selectedRating"
-                      :items="[
-                        { label: '4★ & Above', value: '4' },
-                        { label: '3★ & Above', value: '3' },
-                        { label: '2★ & Above', value: '2' },
-                      ]"
-                      :ui="{
-                        label: 'text-black font-normal',
-                      }"
-                    />
-                  </div>
-                </template>
-              </UAccordion> -->
         </UCard>
         <div class="">
           <div class="hidden lg:flex items-center justify-end sticky top-18 z-2">
-            <USelect v-model="sortBy" :items="sortOptions" placeholder="Sort by" class="w-48 flex self-end" />
+            <USelect v-model="sortBy" size="xl" :items="sortOptions" placeholder="Sort by"
+              class="w-48 flex self-end bg-white text-gray-800 hover:bg-white rounded-sm focus:ring-gray-800" :ui="{
+                content: 'bg-white rounded-sm text-gray-800',
+                viewport: 'text-gray-800',
+                item: 'text-gray-800 hover:bg-gray-100 hover:text-gray-800 data-highlighted:not-data-disabled:before:bg-gray-200 data-highlighted:not-data-disabled:text-gray-800'
+
+              }" />
           </div>
-          <USeparator class="py-1 lg:py-7 flex items-center justify-center" />
+          <USeparator class="py-1 lg:pt-5 flex items-center justify-center" />
           <UPageGrid class=" gap-2 sm:gap-3 md:gap-4 lg:gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 xl:grid-cols-4">
             <CardProductCard v-for="product in products?.data || []" :key="product.id" :product="product" />
           </UPageGrid>
@@ -257,7 +275,7 @@ const formatCategory = (category) => {
         <h2 class="font-semibold text-lg">Sort By</h2>
       </template>
       <template #body>
-        <URadioGroup v-model="sortOption" :items="sortOptions" />
+        <URadioGroup v-model="sortBy" :items="sortOptions" />
       </template>
     </USlideover>
   </UContainer>

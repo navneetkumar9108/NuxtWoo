@@ -385,6 +385,19 @@ onMounted(() => {
 
 
     <UContainer class="flex  md:h-200 mt-5 md:mt-10">
+
+        <!-- Right: editorial hero panel -->
+        <UPageHero orientation="vertical" :ui="{
+            root: 'relative h-full flex flex-col justify-end text-white lg:w-1/2 hidden lg:block',
+            container: 'relative z-10 py-16 px-12',
+            title: 'text-4xl leading-tight max-w-md font-serif tracking-tight'
+        }"
+            :style="{ backgroundImage: `url(https://images.unsplash.com/photo-1555529771-4f81423a1207?q=80&w=1200&auto=format&fit=crop)`, backgroundSize: 'cover', backgroundPosition: 'center' }">
+            <template #top>
+                <div class="absolute inset-0 -z-10 bg-linear-to-t from-black/70 via-black/20 to-transparent" />
+            </template>
+        </UPageHero>
+
         <!-- Left: form panel -->
         <UPageCard class="w-full lg:w-1/2 ring-0 shadow-none bg-gray-200 rounded-none flex items-center  md:h-200"
             :ui="{ container: 'sm:p-16 w-full', header: 'mb-0' }">
@@ -616,17 +629,7 @@ onMounted(() => {
             <!-- </UTabs> -->
         </UPageCard>
 
-        <!-- Right: editorial hero panel -->
-        <UPageHero orientation="vertical" :ui="{
-            root: 'relative h-full flex flex-col justify-end text-white lg:w-1/2 hidden lg:block',
-            container: 'relative z-10 py-16 px-12',
-            title: 'text-4xl leading-tight max-w-md font-serif tracking-tight'
-        }"
-            :style="{ backgroundImage: `url(https://images.unsplash.com/photo-1555529771-4f81423a1207?q=80&w=1200&auto=format&fit=crop)`, backgroundSize: 'cover', backgroundPosition: 'center' }">
-            <template #top>
-                <div class="absolute inset-0 -z-10 bg-linear-to-t from-black/70 via-black/20 to-transparent" />
-            </template>
-        </UPageHero>
+
     </UContainer>
 
 

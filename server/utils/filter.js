@@ -1,38 +1,12 @@
 // server/utils/filter.js
 export function filterProducts(products, query = {}) {
   let filtered = [...products];
-  console.log("QUERY RECEIVED:", query, typeof query.isBestSeller); // Brand
+  console.log("QUERY RECEIVED:", query);
+
   if (query.brand) {
-    filtered = filtered.filter(
-      (product) => product.brandId === Number(query.brand),
-    );
+    const brand = query.brand.split(",");
+    filtered = filtered.filter((product) => brand.includes(product.brand.slug));
   }
-
-  // Category
-  // if (query.category) {
-  //   filtered = filtered.filter(
-  //     (product) => product.categoryId === Number(query.category),
-  //   );
-  // }
-
-  // Category
-  // if (query.category) {
-  //   const categorySlugs = query.category.split(",");
-
-  //   const categoryIds = categories
-  //     .filter((category) => categorySlugs.includes(category.slug))
-  //     .map((category) => category.id);
-
-  //   // console.log("Query Category:", query.category);
-  //   // console.log("Category Slugs:", categorySlugs);
-  //   // console.log("Category IDs:", categoryIds);
-
-  //   filtered = filtered.filter((product) =>
-  //     categoryIds.includes(product.categoryId),
-  //   );
-
-  //   // console.log("Total Products After Filter:", filtered.length);
-  // }
 
   if (query.category) {
     const category = query.category.split(",");
@@ -51,9 +25,13 @@ export function filterProducts(products, query = {}) {
     //   })),
     // );
     // Gender
-    filtered = filtered.filter(
-      (product) => product.genderId === Number(query.gender),
+    const gender = query.gender.split(",");
+    filtered = filtered.filter((product) =>
+      gender.includes(product.gender.slug),
     );
+    // filtered = filtered.filter(
+    //   (product) => product.genderId === Number(query.gender),
+    // );
   }
 
   // Material
