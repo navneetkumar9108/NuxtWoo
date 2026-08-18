@@ -84,7 +84,24 @@ const categoryItems = computed(() =>
 
 const activeCategory = computed(() => route.query.category || "");
 
+const hasActiveFilters = computed(() => {
+  return (
+    selectedCategories.value.length > 0 ||
+    selectedBrands.value.length > 0 ||
+    selectedGenders.value.length > 0 ||
+    selectedRating.value ||
+    priceRange.value[0] !== 0 ||
+    priceRange.value[1] !== 10000
+  )
+})
 
+function clearFilters() {
+  selectedCategories.value = []
+  selectedBrands.value = []
+  selectedGenders.value = []
+  priceRange.value = [0, 10000]
+  selectedRating.value = undefined
+}
 // when activeCategory arrives from the Categories page, pre-select it
 // in the sidebar checkbox group. The URL cleanup (removing 'category'
 // and writing 'categories') happens in the single watch below so the
@@ -194,8 +211,11 @@ const formatCategory = (category) => {
 </script>
 <template>
   <UContainer class="px-2.5">
-    <div class="py-10">
-      <div class="mb-1 lg:mb-8">
+    <div class="py-2">
+      <PromoSectionsBanner
+        src="https://prod-img.thesouledstore.com/public/theSoul/storage/mobile-cms-media-prod/banner-images/Cult_Classic_Cat.jpg?format=webp&w=1500&dpr=1&q=80"
+        class="rounded-sm" />
+      <!-- <div class="mb-1 lg:mb-8">
         <h1 class="text-xl lg:text-3xl font-bold">
           {{
             selectedCategories.length === 1
@@ -203,14 +223,21 @@ const formatCategory = (category) => {
               : "All Products"
           }}
         </h1>
-        <!-- <p class="text-muted mt-1">{{ filteredProducts.length }} results</p> -->
-      </div>
+      </div> -->
       <UPageGrid class="sm:grid-cols-1 lg:grid-cols-[22%_auto] gap-4">
         <UCard class="hidden lg:block h-fit bg-neutral sticky top-18 rounded-xs ring-0" :ui="{
-          body: 'sm:p-1'
+          body: 'sm:p-1',
+          header: 'sm:px-1'
         }">
           <template #header>
-            <h2 class="font-semibold text-lg">Filters</h2>
+            <div class="flex items-center justify-between">
+              <h2 class="font-semibold text-lg text-gray-800">
+                Filters
+              </h2>
+
+              <UButton v-if="hasActiveFilters" variant="link" size="sm" label="Clear All" @click="clearFilters"
+                class="text-red-600/50 hover:text-red-700 active:text-red-600/50  " />
+            </div>
           </template>
           <FilterPanel :items="items" :category-items="categoryItems" :brand-items="brandItems"
             :gender-items="genderItems" v-model:selected-categories="selectedCategories"
@@ -231,11 +258,18 @@ const formatCategory = (category) => {
           <UPageGrid class=" gap-2 sm:gap-3 md:gap-4 lg:gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 xl:grid-cols-4">
             <CardProductCard v-for="product in products?.data || []" :key="product.id" :product="product" />
           </UPageGrid>
-          <div class="mt-10 flex justify-center">
-            <!-- <UPagination v-model:page="currentPage" :total="filteredProducts.length" :items-per-page="itemsPerPage" /> -->
-            <UPagination v-model:page="currentPage" :total="products?.meta?.total || 0"
-              :items-per-page="itemsPerPage" />
+          <div class="mt-10  flex justify-center p-2 sm:p-4  backdrop-blur-sm">
+            <UPagination size="xl" v-model:page="currentPage" :total="products?.meta?.total || 0"
+              :items-per-page="itemsPerPage" :ui="{
+                list: 'bg-white p-2 lg:p-4 rounded-full gap-2  ring-1 ring-gray-800',
+                first: 'bg-white hover:bg-white active:bg-white text-gray-800 disabled:bg-white rounded-full  ring-1 ring-gray-800 ',
+                prev: 'bg-white hover:bg-white active:bg-white text-gray-800 disabled:bg-white rounded-full ring-1 ring-gray-800',
+                item: 'bg-white hover:bg-white active:bg-white text-gray-800 rounded-full font-medium transition-all duration-200 hover:scale-110  ring-1 ring-gray-800',
+                next: 'bg-white hover:bg-white active:bg-white text-gray-800 disabled:bg-white rounded-full ring-1 ring-gray-800',
+                last: 'bg-white hover:bg-white active:bg-white text-gray-800 disabled:bg-white rounded-full ring-1 ring-gray-800'
+              }" />
           </div>
+
         </div>
       </UPageGrid>
     </div>
@@ -256,26 +290,42 @@ const formatCategory = (category) => {
     </div>
 
     <!-- Filter bottom sheet -->
-    <USlideover v-model:open="isFilterOpen" side="bottom" :ui="{ content: 'h-[85vh] rounded-t-xl' }">
+    <USlideover v-model:open="isFilterOpen" side="bottom" :ui="{ content: 'h-[60vh] rounded-t-sm bg-white' }">
       <template #header>
-        <h2 class="font-semibold text-lg">Filters</h2>
+        <div class="flex items-center justify-between w-full">
+          <h2 class="font-semibold text-lg text-gray-800">
+            Filters
+          </h2>
+
+          <UButton v-if="hasActiveFilters" variant="link" size="sm" label="Clear All" @click="clearFilters"
+            class="text-red-600/50 hover:text-red-700 active:text-red-600/50  " />
+        </div>
       </template>
       <template #body>
-        <FilterPanel :items="items" :category-items="categoryItems" v-model:selected-categories="selectedCategories"
+        <!-- <FilterPanel :items="items" :category-items="categoryItems" v-model:selected-categories="selectedCategories"
+          v-model:price-range="priceRange" v-model:selected-rating="selectedRating" /> -->
+        <FilterPanel :items="items" :category-items="categoryItems" :brand-items="brandItems"
+          :gender-items="genderItems" v-model:selected-categories="selectedCategories"
+          v-model:selected-brands="selectedBrands" v-model:selected-genders="selectedGenders"
           v-model:price-range="priceRange" v-model:selected-rating="selectedRating" />
       </template>
       <template #footer>
-        <ButtonUButton label="Apply Filters" block @click="isFilterOpen = false" />
+        <ButtonUButton label="Apply Filters" block @click="isFilterOpen = false"
+          class="bg-red-400 hover:bg-red-400 active:bg-red-400 text-white" />
       </template>
     </USlideover>
 
     <!-- Sort bottom sheet -->
-    <USlideover v-model:open="isSortOpen" side="bottom" :ui="{ content: 'h-[50vh] rounded-t-xl' }">
+    <USlideover v-model:open="isSortOpen" side="bottom" :ui="{ content: 'h-[50vh] rounded-t-sm bg-white ' }">
       <template #header>
         <h2 class="font-semibold text-lg">Sort By</h2>
       </template>
       <template #body>
-        <URadioGroup v-model="sortBy" :items="sortOptions" />
+        <URadioGroup size="xl" v-model="sortBy" :items="sortOptions" :ui="{
+          label: 'text-black font-normal', fieldset: '  py-2 ',
+          base: 'ring-gray-800 ring-2 rounded-sm p-1',
+          indicator: 'bg-white after:bg-red-400  after:rounded-sm after:size-full'
+        }" />
       </template>
     </USlideover>
   </UContainer>
