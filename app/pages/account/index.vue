@@ -50,7 +50,7 @@ async function onSubmit(event) {
 
 <template>
     <!-- <div class="lg:col-span-3"> -->
-    <UCard class="bg-white  rounded-xs px-32.5 py-10.75 ring-neutral-200 " :ui="{
+    <UCard class="bg-white  rounded-xs lg:px-32.5 lg:py-10.75 ring-neutral-200 " :ui="{
         header: 'border-b-neutral-200'
     }">
         <template #header>
@@ -59,36 +59,36 @@ async function onSubmit(event) {
 
         <!-- Read-only view -->
         <div v-if="!isEditing" class="divide-y divide-neutral-100">
-            <div class="flex py-3">
+            <div class="flex lg:flex-row flex-col py-3">
                 <span class="w-40 text-sm text-neutral-500">Full Name</span>
                 <span class="text-sm font-medium">{{ authStore.user?.name }}</span>
             </div>
-            <div class="flex py-3">
+            <div class="flex lg:flex-row flex-col py-3">
                 <span class="w-40 text-sm text-neutral-500">Mobile Number</span>
                 <span class="text-sm font-medium">{{ authStore.user?.phone }}</span>
             </div>
-            <div class="flex py-3">
+            <div class="flex lg:flex-row flex-col py-3">
                 <span class="w-40 text-sm text-neutral-500">Email ID</span>
                 <span class="text-sm font-medium">{{ authStore.user?.email }}</span>
             </div>
-            <div class="flex py-3">
+            <div class="flex lg:flex-row flex-col py-3">
                 <span class="w-40 text-sm text-neutral-500">Gender</span>
                 <span class="text-sm font-medium capitalize">{{ authStore.user?.gender || '- not added -'
                     }}</span>
             </div>
-            <div class="flex py-3">
+            <div class="flex lg:flex-row flex-col py-3">
                 <span class="w-40 text-sm text-neutral-500">Date of Birth</span>
                 <span class="text-sm font-medium">{{ authStore.user?.dob || '- not added -' }}</span>
             </div>
-            <div class="flex py-3">
+            <div class="flex lg:flex-row flex-col py-3">
                 <span class="w-40 text-sm text-neutral-500">Location</span>
                 <span class="text-sm font-medium">{{ authStore.user?.location || '- not added -' }}</span>
             </div>
         </div>
-        <div v-if="!isEditing" class="flex justify-center">
+        <div v-if="!isEditing" class="flex justify-center ">
 
-            <UButton size="lg"
-                class="mt-6 px-40 py-3 rounded-xs bg-red-400 text-white hover:bg-red-400 uppercase active:bg-red-400"
+            <UButton size="lg" block
+                class="mt-6  lg:w-1/2 lg:mx-auto py-3 rounded-xs bg-red-400 text-white hover:bg-red-400 uppercase active:bg-red-400"
                 @click="isEditing = true">
                 EDIT
             </UButton>

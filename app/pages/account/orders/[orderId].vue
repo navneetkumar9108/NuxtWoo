@@ -348,7 +348,7 @@ onMounted(() => {
                 </div>
             </div>
             <div class="flex items-center gap-3 mt-3">
-                <UIcon name="i-lucide-map-pin" />
+                <UIcon name="i-lsicon-location-outline" class="size-10" />
                 <div>
                     <p class="text-[16px] font-semibold">Delivery Address</p>
                     <p class="text-xs text-balance">{{ order.address?.addressLine1 }}{{ order.address?.addressLine2 }},

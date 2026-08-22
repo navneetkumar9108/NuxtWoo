@@ -5,6 +5,8 @@ export const useWishlistStore = defineStore("wishlist", () => {
   const items = ref([]);
   console.log("wishlist items", items.value);
 
+  const totalItems = computed(() => items.value.length);
+  console.log("totalItems", totalItems.value);
   function addToWishlist(product) {
     console.log("wishlist product", product);
     const existingItem = items.value.find((item) => item.id === product.id);
@@ -33,6 +35,7 @@ export const useWishlistStore = defineStore("wishlist", () => {
 
   return {
     items,
+    totalItems,
     addToWishlist,
     removeFromWishlist,
     clearWishlist,

@@ -35,86 +35,40 @@ onMounted(() => {
 })
 
 const columns = [
-    // {
-    //     accessorKey: 'orderId',
-    //     header: 'Order ID'
-    // },
-    // {
-    //     accessorKey: 'items',
-    //     header: 'Product',
-
-    //     cell: ({ row }) => {
-    //         const items = row.original.items || []
-
-    //         return h(
-    //             'div',
-    //             { class: 'flex flex-col gap-3 min-w-60' },
-    //             items.map((product) =>
-    //                 h(
-    //                     'div',
-    //                     { class: 'flex items-center gap-3' },
-    //                     [
-    //                         h('img', {
-    //                             src: product?.image,
-    //                             alt: product?.name,
-    //                             class: 'w-20 h-full object-cover rounded-xl shrink-0'
-    //                         }),
-
-    //                         h('div', undefined, [
-    //                             h('p', { class: 'font-medium text-gray-800' }, product?.name),
-    //                             h('p', { class: 'text-xs text-muted mt-0.5' }, product?.title),
-    //                             h('p', { class: 'text-xs text-muted' }, `Size: ${product?.size}`)
-    //                         ])
-    //                     ]
-    //                 )
-    //             )
-    //         )
-    //     }
-    // },
     {
         accessorKey: 'items',
         header: 'Product',
 
         cell: ({ row }) => {
-            // const product = row.original.items?.[0]
             const product = row.original.product
-
 
             return h(
                 'div',
-                {
-                    class: 'flex items-start gap-3 min-w-60'
-                },
+                { class: 'flex items-start gap-2 sm:gap-3 min-w-0 w-fit' },
                 [
                     h('img', {
                         src: product?.image,
                         alt: product?.name,
-                        class: 'w-20 h-full object-cover rounded-xl shrink-0'
+                        class: 'w-14 sm:w-20 h-full object-cover rounded-lg sm:rounded-xl shrink-0'
                     }),
 
-                    h('div', undefined, [
+                    h('div', { class: 'min-w-0' }, [
                         h(
                             'p',
-                            {
-                                class: 'font-medium text-gray-800'
-                            },
+                            { class: 'font-medium text-gray-800 text-sm sm:text-base line-clamp-1' },
                             product?.name
                         ),
 
                         h(
                             'p',
-                            {
-                                class: 'text-xs text-muted mt-0.5'
-                            },
+                            { class: 'text-xs text-muted mt-0.5 ' },
                             product?.title
                         ),
 
                         h(
                             'p',
-                            {
-                                class: 'text-xs text-muted'
-                            },
-                            `Size: ${product?.size} · Quantity: ${product?.quantity}`
+                            { class: 'text-xs text-muted' },
+                            `Size: ${product?.size} · Qty: ${product?.quantity}`
                         )
                     ])
                 ]
@@ -125,6 +79,12 @@ const columns = [
     {
         accessorKey: 'date',
         header: 'Date',
+        meta: {
+            class: {
+                th: 'hidden md:table-cell',
+                td: 'hidden md:table-cell'
+            }
+        },
         cell: ({ row }) => {
             return new Date(row.getValue('date')).toLocaleString('en-US', {
                 day: 'numeric',
@@ -156,21 +116,12 @@ const columns = [
 
             return h(
                 'div',
-                {
-                    class: `font-medium capitalize ${statusClasses[status] || 'text-neutral-600'
-                        }`
-                },
+                { class: `font-medium capitalize text-xs sm:text-sm ${statusClasses[status] || 'text-neutral-600'}` },
                 [
                     status?.replace('_', ' ') || 'Placed',
 
                     status === 'cancelled' && cancelReason
-                        ? h(
-                            'p',
-                            {
-                                class: 'text-xs text-red-400 mt-1'
-                            },
-                            cancelReason
-                        )
+                        ? h('p', { class: 'text-xs text-red-400 mt-1 hidden sm:block' }, cancelReason)
                         : null
                 ]
             )
@@ -188,8 +139,12 @@ const columns = [
                     icon: 'i-lucide-chevron-right',
                     variant: 'ghost',
                     color: 'neutral',
+                    size: 'sm',
                     class: 'text-red-500 hover:bg-neutral-100',
-                    to: { path: `/account/orders/${row.original.orderId}`, query: { itemId: row.original.product.id } }
+                    to: {
+                        path: `/account/orders/${row.original.orderId}`,
+                        query: { itemId: row.original.product.id }
+                    }
                 }
             )
         }
@@ -202,7 +157,7 @@ const columns = [
 <template>
     <section>
         <!-- No Orders -->
-        <div v-if="!orders.length" class="text-center py-16">
+        <div v-if="!orders.length" class="text-center py-16 ">
             <UIcon name="i-lucide-package-x" class="size-12 text-neutral-300 mx-auto mb-3" />
 
             <p class="text-neutral-500">
@@ -235,7 +190,11 @@ const columns = [
                 <UPagination :page="(table?.tableApi?.getState().pagination.pageIndex || 0) + 1"
                     :items-per-page="table?.tableApi?.getState().pagination.pageSize"
                     :total="table?.tableApi?.getFilteredRowModel().rows.length"
-                    @update:page="(p) => table?.tableApi?.setPageIndex(p - 1)" />
+                    @update:page="(p) => table?.tableApi?.setPageIndex(p - 1)" active-color="error"
+                    active-variant="solid" color="error" :ui="{
+                        root: 'w-fit',
+                        list: 'bg-white p-2 rounded-lg ring-1 ring-gray-300 gap-1',
+                    }" />
             </div>
         </div>
     </section>

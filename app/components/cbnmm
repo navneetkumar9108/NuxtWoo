@@ -200,3 +200,151 @@
         </UCard>
     </div>
 </template>
+
+
+<!-- <UCard class="hidden lg:block h-fit bg-neutral sticky top-18 rounded-xs ring-0" :ui="{
+          body: 'sm:p-1',
+          header: 'sm:px-1'
+        }">
+          <template #header>
+            <div class="flex items-center justify-between">
+              <h2 class="font-semibold text-lg text-gray-800">
+                Filters
+              </h2>
+
+              <UButton v-if="hasActiveFilters" variant="link" size="sm" label="Clear All" @click="clearFilters"
+                class="text-red-600/50 hover:text-red-700 active:text-red-600/50  " />
+            </div>
+          </template>
+<FilterPanel :items="items" :category-items="categoryItems" :brand-items="brandItems" :gender-items="genderItems"
+  v-model:selected-categories="selectedCategories" v-model:selected-brands="selectedBrands"
+  v-model:selected-genders="selectedGenders" v-model:price-range="priceRange"
+  v-model:selected-rating="selectedRating" />
+</UCard> -->
+
+
+
+<script setup>
+    import { useAuthStore } from '~~/store/auth'
+    import { useWishlistStore } from '~~/store/wishlist'
+    import { useCartStore } from '~~/store/cart'
+
+    const authStore = useAuthStore()
+    const wishlistStore = useWishlistStore()
+    const cartStore = useCartStore()
+
+    const search = ref("")
+    const isMobileMenuOpen = ref(false)
+    const isSearchOpen = ref(false)
+    const searchQuery = ref('')
+
+    const items = ref([
+        { label: "Home", to: "/" },
+        { label: "Products", to: "/products" },
+        { label: "Contact", to: "/contact" },
+        { label: "Account", to: "/account" },
+    ])
+
+    const desktopNavItems = computed(() =>
+        items.value.filter(item => item.to !== '/account')
+    )
+
+    const accountMenuItems = computed(() => [
+        [
+            { label: 'Orders', icon: 'i-lucide-package', to: '/account/orders' },
+            { label: 'Wishlist', icon: 'i-lucide-heart', to: '/wishlist' }
+        ],
+        [
+            { label: 'Profile', icon: 'i-lucide-user-pen', to: '/account', exact: true },
+            { label: 'Logout', icon: 'i-lucide-log-out', onSelect: () => authStore.logout() }
+        ]
+    ])
+
+    const cartCount = computed(() => cartStore.items?.length || 0)
+    const wishlistCount = computed(() => wishlistStore.items?.length || 0)
+
+    function submitSearch() {
+        if (!searchQuery.value.trim()) return
+        navigateTo({ path: '/products', query: { search: searchQuery.value } })
+        isSearchOpen.value = false
+    }
+</script>
+
+<template>
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 lg:px-8">
+            <div class="flex items-center justify-between h-16 gap-4">
+
+                <!-- Mobile menu trigger -->
+                <UButton icon="i-lucide-menu" variant="ghost" color="neutral" class="lg:hidden"
+                    @click="isMobileMenuOpen = true" />
+
+                <!-- Logo -->
+                <NuxtLink to="/" class="text-xl font-bold tracking-tight shrink-0">
+                    MyStore
+                </NuxtLink>
+
+                <!-- Desktop nav -->
+                <UNavigationMenu :items="desktopNavItems" class="hidden lg:flex"
+                    :ui="{ link: 'font-medium text-gray-700 data-[active]:text-red-500' }" />
+
+                <!-- Desktop search -->
+                <UInput v-model="searchQuery" icon="i-lucide-search" placeholder="Search for products, brands..."
+                    class="hidden md:block flex-1 max-w-md" size="lg" @keyup.enter="submitSearch" />
+
+                <!-- Right actions -->
+                <div class="flex items-center gap-1 sm:gap-2 shrink-0">
+                    <UButton icon="i-lucide-search" variant="ghost" color="neutral" class="md:hidden"
+                        @click="isSearchOpen = true" />
+
+                    <UButton icon="i-lucide-heart" variant="ghost" color="neutral" to="/wishlist"
+                        class="hidden sm:flex relative">
+                        <UBadge v-if="wishlistCount" :label="wishlistCount" color="red" size="xs"
+                            class="absolute -top-1 -right-1" />
+                    </UButton>
+
+                    <UButton icon="i-lucide-shopping-bag" variant="ghost" color="neutral" to="/cart" class="relative">
+                        <UBadge v-if="cartCount" :label="cartCount" color="red" size="xs"
+                            class="absolute -top-1 -right-1" />
+                    </UButton>
+
+                    <UDropdownMenu v-if="authStore.user" :items="accountMenuItems">
+                        <UAvatar :alt="authStore.user?.name" size="sm" class="cursor-pointer hidden sm:flex" />
+                    </UDropdownMenu>
+
+                    <UButton v-else label="Login" color="neutral" variant="outline" to="/account"
+                        class="hidden sm:flex" />
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile search bar (toggle) -->
+        <div v-if="isSearchOpen" class="md:hidden px-4 pb-3">
+            <UInput v-model="searchQuery" icon="i-lucide-search" placeholder="Search products..." autofocus
+                class="w-full" @keyup.enter="submitSearch" />
+        </div>
+    </header>
+
+    <!-- Mobile slideover menu -->
+    <USlideover v-model:open="isMobileMenuOpen" side="left" class="max-w-xs">
+        <template #content>
+            <div class="p-4">
+                <div class="flex items-center justify-between mb-6">
+                    <span class="text-lg font-bold">MyStore</span>
+                    <UButton icon="i-lucide-x" variant="ghost" color="neutral" @click="isMobileMenuOpen = false" />
+                </div>
+
+                <UNavigationMenu :items="items" orientation="vertical" class="mb-6" @click="isMobileMenuOpen = false" />
+
+                <div v-if="!authStore.user" class="flex gap-2">
+                    <UButton label="Login" to="/account" block @click="isMobileMenuOpen = false" />
+                </div>
+                <div v-else class="flex flex-col gap-1">
+                    <UButton v-for="item in accountMenuItems.flat()" :key="item.label" :label="item.label"
+                        :icon="item.icon" :to="item.to" variant="ghost" color="neutral" class="justify-start"
+                        @click="item.onSelect ? item.onSelect() : (isMobileMenuOpen = false)" />
+                </div>
+            </div>
+        </template>
+    </USlideover>
+</template>

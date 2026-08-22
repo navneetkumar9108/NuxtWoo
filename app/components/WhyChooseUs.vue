@@ -16,7 +16,7 @@ const usps = [
         container: ' sm:p-0',
       }">
         <div class="flex items-center  gap-4 p-5 rounded-lg bg-white">
-          <UIcon :name="usp.icon" class="size-10 shrink-0 text-indigo-300" />
+          <UIcon :name="usp.icon" class="size-10 shrink-0 text-red-400/50 " />
 
           <div class="leading-tight w-full flex flex-col items-start">
             <h3 class="text-[1rem] sm:text-xl font-semibold ">{{ usp.title }}</h3>

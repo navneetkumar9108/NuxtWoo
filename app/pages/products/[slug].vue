@@ -1,6 +1,7 @@
 <script setup>
 import { useWishlistStore } from '~~/store/wishlist';
 import { useCartStore } from '~~/store/cart';
+import { date } from 'zod';
 const route = useRoute();
 const qty = ref(1);
 const selectedSize = ref("");
@@ -15,6 +16,10 @@ const wishlistStore = useWishlistStore() // agar nahi banaya to bata dena, wo bh
 const { data: product } = await useFetch(
   `/api/products/${route.params.slug}`,
 );
+
+console.log('product pdp', product.value.data);
+const selectedColor = ref(product.value?.data?.colors?.[0]?.slug || null)
+
 
 const discount = computed(() => {
   if (!product.value?.originalPrice) return null;
@@ -215,6 +220,21 @@ function handleAddToWishlist() {
             </UButton>
           </div>
         </div> -->
+        <div v-if="product.data?.colors?.length" class="space-y-2">
+          <p class="font-medium mb-1">MORE COLORS</p>
+          <p class="text-sm font-medium text-gray-800">
+            Color: <span class="font-normal text-gray-600">{{product.data?.colors.find(c => c.slug ===
+              selectedColor)?.name
+            }}</span>
+          </p>
+
+          <div class="flex items-center gap-3">
+            <button v-for="color in product.data.colors" :key="color.id" type="button"
+              class="size-8 rounded-full ring-2 ring-offset-2 transition-all"
+              :class="selectedColor === color.slug ? 'ring-gray-900' : 'ring-gray-300'"
+              :style="{ backgroundColor: color.hex }" :title="color.name" @click="selectedColor = color.slug" />
+          </div>
+        </div>
         <div class="flex flex-col mt-2.5 mb-6">
           <p class="font-medium mb-2.5">SELECT SIZE</p>
           <div class="flex  flex-row  gap-1">

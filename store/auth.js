@@ -113,6 +113,7 @@ export const useAuthStore = defineStore("auth", () => {
 
     user.value = null;
     isLoggedIn.value = false;
+    navigateTo("/");
   };
 
   const updateProfile = (data) => {

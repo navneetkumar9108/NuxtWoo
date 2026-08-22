@@ -17,7 +17,10 @@ export const productsV4 = [
     gender: { id: 1, name: "Men", slug: "men" },
     material: { id: 1, name: "Cotton", slug: "cotton" },
     fit: { id: 2, name: "Oversized", slug: "oversized" },
-    colors: [{ id: 1, name: "Black", hex: "#000000", slug: "black" }],
+    colors: [
+      { id: 1, name: "Black", hex: "#000000", slug: "black" },
+      { id: 5, name: "Green", hex: "#16A34A", slug: "green" },
+    ],
     sizes: [
       { id: 1, name: "XS", slug: "xs", stock: 5 },
       { id: 2, name: "S", slug: "s", stock: 8 },
@@ -2771,7 +2774,10 @@ export const productsV4 = [
       { id: 5, name: "XL", slug: "xl", stock: 9 },
       { id: 6, name: "XXL", slug: "xxl", stock: 5 },
     ],
-    colors: [{ id: 1, name: "Black", hex: "#000000", slug: "black" }],
+    colors: [
+      { id: 1, name: "Black", hex: "#000000", slug: "black" },
+      { id: 6, name: "Navy", hex: "#1E3A8A", slug: "navy" },
+    ],
     images: [
       "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/FEBRUARY/22/gnT8Latr_23730506ba6745a4bb69531d9b11a002.jpg",
       "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/FEBRUARY/22/BycHm3E1_eb255ee7ee3b4ce88d918f96c6ac8fc1.jpg",
