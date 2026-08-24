@@ -123,7 +123,7 @@ async function placeOrder() {
         orderNote: cartStore.orderNote,
         // status: 'placed',
         // date: new Date().toLocaleDateString('en-IN')
-        date: new Date().toLocaleString('en-IN')
+        date: new Date().toISOString()
     }
 
     const existing = JSON.parse(localStorage.getItem('orders') || '[]')

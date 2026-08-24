@@ -111,12 +111,13 @@ function submitSearch() {
           </template>
 </UDropdownMenu>-->
 
-        <UPopover v-if="authStore.user" mode="hover" :ui="{ content: 'w-64 bg-white ring-0 rounded-xs' }">
+        <UPopover v-if="authStore.user" mode="hover" :content="{ side: 'bottom', sideOffset: 18 }"
+          :ui="{ content: 'w-64  bg-white ring-0 rounded-xs' }">
           <UAvatar :alt="authStore.user.name" size="md" class="bg-white text-gray-800"
             :ui="{ fallback: 'text-gray-800' }" />
 
           <template #content>
-            <div class="px-3 py-3 border-b border-gray-200">
+            <div class="px-3 py-3 border-b border-gray-200 ">
               <p class="text-sm font-semibold">Hello {{ authStore.user.name }}</p>
               <p class="text-xs text-gray-500 mt-0.5">{{ authStore.user.phone }}</p>
             </div>

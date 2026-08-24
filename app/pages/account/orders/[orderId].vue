@@ -252,7 +252,18 @@ function updateStatus(newStatus) {
 
     updateOrders(updatedItems)
 }
+function formatOrderDate(date) {
+    if (!date) return ''
 
+    return new Date(date).toLocaleString('en-US', {
+        weekday: 'short',
+        day: 'numeric',
+        month: 'short',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+    })
+}
 
 // onMounted(loadOrders)
 onMounted(() => {
@@ -295,7 +306,7 @@ onMounted(() => {
                         </div>
                         <div>
                             <p class="text-sm font-semibold capitalize text-white">
-                                {{ item.status?.replace('_', ' ') || 'Placed' }} on {{ order.date }}
+                                {{ item.status?.replace('_', ' ') || 'Placed' }} on {{ formatOrderDate(order.date) }}
                             </p>
                             <p class="text-xs text-white text-start">
                                 <span v-if="item.status === 'cancelled' && item.cancelReason">

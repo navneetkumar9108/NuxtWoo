@@ -79,20 +79,19 @@ const columns = [
     {
         accessorKey: 'date',
         header: 'Date',
-        meta: {
-            class: {
-                th: 'hidden md:table-cell',
-                td: 'hidden md:table-cell'
-            }
-        },
         cell: ({ row }) => {
-            return new Date(row.getValue('date')).toLocaleString('en-US', {
+            const date = row.original.date
+            console.log('Date', date);
+            return new Date(date).toLocaleString('en-US', {
+                weekday: 'short',
                 day: 'numeric',
                 month: 'short',
-                hour: '2-digit',
+                hour: 'numeric',
                 minute: '2-digit',
-                hour12: false
+                hour12: true
+
             })
+
         }
     },
 

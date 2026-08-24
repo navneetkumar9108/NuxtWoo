@@ -13,7 +13,7 @@ const { data: products } = await useFetch("/api/products", {
             <h2 class="text-sm sm:text-xl font-bold text-gray-900">
                 New Arrivals
             </h2>
-            <UButton label="Browse all" to="/products" variant="link" class="text-red-400 text-xs"
+            <UButton label="Browse all" to="/products?sort=newest" variant="link" class="text-red-400 text-xs"
                 trailing-icon="i-lucide-arrow-right" />
         </div>
 
