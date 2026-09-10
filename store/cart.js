@@ -3,7 +3,7 @@ import { ref, computed } from "vue";
 
 export const useCartStore = defineStore("cart", () => {
   const items = ref([]);
-  console.log("cart items", items.value);
+  // console.log("cart items", items.value);
   const appliedCoupon = ref(null); // { code, discount }
   // Delivery
   const deliveryMethod = ref("standard");
@@ -15,9 +15,33 @@ export const useCartStore = defineStore("cart", () => {
   const orderNote = ref("");
   const COUPONS = { SAVE50: 50, WELCOME10: 100 };
 
+  // function addToCart(product) {
+  //   console.log("product", product);
+  //   const existingItem = items.value.find((item) => item.id === product.id);
+
+  //   if (existingItem) {
+  //     existingItem.quantity++;
+  //     return;
+  //   }
+
+  //   items.value.push({
+  //     id: product.id,
+  //     name: product.brand?.name || product.name,
+  //     title: product.title,
+  //     price: product.price,
+  //     originalPrice: product.originalPrice,
+  //     discount: product.discount,
+  //     image: product.thumbnail || product.image,
+  //     size: product.selectedSize,
+  //     sizes: product.sizes,
+  //     quantity: 1,
+  //   });
+  // }
   function addToCart(product) {
-    console.log("product", product);
-    const existingItem = items.value.find((item) => item.id === product.id);
+    // console.log("product", product);
+    const cartId = `${product.productId}-${product.color.id}-${product.size || product.selectedSize}`;
+
+    const existingItem = items.value.find((item) => item.cartId === cartId);
 
     if (existingItem) {
       existingItem.quantity++;
@@ -25,15 +49,22 @@ export const useCartStore = defineStore("cart", () => {
     }
 
     items.value.push({
-      id: product.id,
-      name: product.brand?.name || product.name,
+      cartId,
+
+      productId: product.productId,
+
+      name: product.brand?.name,
       title: product.title,
+
       price: product.price,
       originalPrice: product.originalPrice,
       discount: product.discount,
-      image: product.thumbnail || product.image,
-      size: product.selectedSize,
-      sizes: product.sizes,
+
+      image: product.image,
+
+      color: product.color.name,
+      size: product.size || product.selectedSize,
+
       quantity: 1,
     });
   }
@@ -76,7 +107,7 @@ export const useCartStore = defineStore("cart", () => {
     return { success: true };
   }
 
-  console.log("appliedCoupon.value", appliedCoupon.value);
+  // console.log("appliedCoupon.value", appliedCoupon.value);
 
   function removeCoupon() {
     appliedCoupon.value = null;

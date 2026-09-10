@@ -14,8 +14,10 @@ const categoryImages = {
   <UContainer class="mt-10">
     <div class="flex items-center justify-between mb-4">
       <h2 class="text-sm lg:text-xl font-bold text-gray-900">Shop by Category</h2>
-      <UButton label="Browse all Categories" variant="link" class="text-red-400 text-xs"
+      <ButtonUButton label="Browse all Categories" variant="link" class="text-red-400 text-xs"
         trailing-icon="i-lucide-arrow-right" to="/products" />
+      <!-- <UButton label="Browse all Categories" variant="link" class="text-red-400 text-xs"
+        trailing-icon="i-lucide-arrow-right" to="/products" /> -->
     </div>
 
     <UScrollArea v-slot="{ item }" :items="categories?.data || []" orientation="horizontal" class="w-full"

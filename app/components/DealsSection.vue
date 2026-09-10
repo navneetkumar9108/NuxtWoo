@@ -17,7 +17,26 @@ const { data: products, pending } = await useFetch("/api/products", {
     query: computed(() => ({ ...queryForTab.value, limit: 8 })),
     watch: [activeTab],
 });
-console.log('dealar section', products.value.data.length);
+// console.log('dealar section', products.value.data.length);
+// console.log('dealar section', products.value.data);
+const scrollItems = computed(() =>
+    (products.value?.data || []).map(p => ({
+        ...p,
+        id: p.plpId,       // UScrollArea ke internal tracking ke liye unique ban gaya
+        productId: p.id    // asli product id, API calls/navigation ke liye
+    }))
+)
+// watch(products, (newData) => {
+//     console.log("API DATA LENGTH:", newData?.data?.length);
+//     console.log("LENGTH:", products.value?.data?.length)
+//     console.log(
+//         "IDS:",
+//         products.value?.data?.map(item => item.id)
+//     )
+//     console.log("ACTIVE TAB:", activeTab.value);
+//     console.log("API QUERY:", queryForTab.value);
+//     console.log("NEW DATA:", newData?.data);
+// });
 </script>
 
 <template>
@@ -35,11 +54,16 @@ console.log('dealar section', products.value.data.length);
                     : 'bg-white text-gray-700 border-gray-300 '" class="rounded-full font-medium "
                 @click="activeTab = tab.value" />
         </div>
+        <p class="mb-4">
+            API Products: {{ products?.data?.length }}
+        </p>
 
-        <UScrollArea v-slot="{ item }" :items="products?.data || []" orientation="horizontal" class="w-full"
+        <UScrollArea v-slot="{ item }" :items="scrollItems" orientation="horizontal" class="w-full"
             :ui="{ root: 'scrollbar-none', viewport: 'gap-4 md:gap-6' }">
+
             <CardProductCard :product="item" class="w-40 lg:mx-0" />
         </UScrollArea>
+
 
         <!-- <div v-if="pending" class="flex gap-4 overflow-x-auto">
             <USkeleton v-for="i in 4" :key="i" class="min-w-[220px] h-[320px] rounded-lg" />

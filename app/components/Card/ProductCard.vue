@@ -4,10 +4,10 @@ const { product } = defineProps({
 });
 // console.log('product', product);
 </script>
-
+<!-- :to="`/products/${product.slug}`"  -->
 <template>
   <UPageCard class="w-full lg:w-52.5 bg-neutral ring-0 mx-auto  mb-5 lg:mb-7.5 
-  " :to="`/products/${product.slug}`" :ui="{
+  " :to="`/products/${product.slug}?color=${product.colorSlug}`" :ui="{
     root: 'hover:bg-neutral hover:bg-white hover:shadow-lg transition-all duration-300 rounded-xs',
     container: 'p-0 sm:p-0 gap-0  w-full',
     header: 'w-full  lg:h-70 mb-0 relative  bg-gray-200 ',

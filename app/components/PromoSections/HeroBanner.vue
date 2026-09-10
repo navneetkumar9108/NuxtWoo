@@ -1,24 +1,24 @@
 <script setup>
 const items = [
     {
-        title: "New Season Arrivals",
-        subtitle: "Up to 50% off on trending styles",
+        title: "WEAR YOUR CONFIDENCE",
+        subtitle: "Modern and stylish fashion store website design with a clean layout and elegant product showcase. Perfect for clothing brands, boutiques, and online fashion shops.",
         cta: "Shop Now",
-        to: "/collections/new-arrivals",
+        to: "",
         image: "https://images.unsplash.com/photo-1721152531882-eb1dd6dd9c1d?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
     {
         title: "Festive Collection",
         subtitle: "Handpicked ethnic wear for every occasion",
         cta: "Explore",
-        to: "/collections/festive",
+        to: "",
         image: "https://plus.unsplash.com/premium_photo-1700824490393-c9355c267144?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     },
     {
         title: "Footwear Fest",
         subtitle: "Buy 1 Get 1 on select styles",
         cta: "Grab Deal",
-        to: "/collections/footwear",
+        to: "",
         image: "https://images.unsplash.com/photo-1618659394332-0800e880f478?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
 ];
@@ -59,13 +59,13 @@ const items = [
             dots: 'bottom-4 gap-2',
             dot: 'size-1 rounded-full bg-white/50  data-[state=active]:bg-white data-[state=active]:w-6 transition-all'
         }">
-            <UPageHero :title="item.title" :description="item.subtitle" orientation="vertical"
-                :links="[{ label: item.cta, to: item.to, size: 'lg', class: 'bg-red-400/50 text-white text-sm sm:text-lg rounded-sm', variant: 'solid' }]"
+            <UPageHero :title="item.title" :description="item.subtitle" orientation="vertical" class=""
+                :links="[{ label: item.cta, to: item.to, size: 'lg', class: 'bg-white hover:bg-white active:bg-white text-sm sm:text-lg rounded-full', variant: 'solid' }]"
                 :ui="{
                     root: 'relative isolate overflow-hidden bg-cover bg-center h-[280px] sm:h-[400px] md:h-[555px] rounded-sm',
                     container: 'py-16 sm:py-24 md:py-32',
-                    title: 'text-white text-2xl sm:text-4xl',
-                    description: 'text-white/90 text-sm sm:text-lg mt-2',
+                    title: 'text-white text-2xl sm:text-6xl font-semibold',
+                    description: 'text-white/90 text-sm sm:text-lg mt-2 leading-tight',
                     header: 'leading-tight',
                     footer: 'mt-5',
                     links: 'justify-center',

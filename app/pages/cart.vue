@@ -43,7 +43,7 @@ function confirmQty() {
     qtyModalOpen.value = false
 }
 
-console.log('cart', cartStore);
+// console.log('cart', cartStore);
 function goToAddress() {
     router.push('/checkout/address')
 }
@@ -54,7 +54,8 @@ function goToAddress() {
         <div v-if="!cartStore.items.length" class="text-center py-16 h-screen ">
             <UIcon name="i-lucide-shopping-bag" class="size-12 text-neutral-300 mx-auto mb-3" />
             <p class="text-neutral-500">Your bag is empty</p>
-            <UButton to="/products" class="mt-4">Explore Products</UButton>
+            <ButtonUButton label="Explore Products" to="/products" class="mt-4" />
+            <!-- <UButton to="/products" class="mt-4">Explore Products</UButton> -->
         </div>
         <div v-else>
             <h1 class="mb-10 text-4xl text-gray-800 font-bold">Shopping Carts</h1>
@@ -101,13 +102,19 @@ function goToAddress() {
                                             base: 'bg-neutral-100 text-gray-800 p-2 ring-gray-200 focus-visible:ring-gray-200 focus-visible:ring-1 rounded-xs '
                                         }">
                                         <template #decrement>
-                                            <UButton size="xs" icon="i-lucide-minus" color="neutral" variant="outline"
+                                            <ButtonUButton size="xs" icon="i-lucide-minus" color="neutral"
+                                                variant="outline"
                                                 class="bg-white ring-0 text-gray-800  hover:bg-white active:bg-white disabled:bg-gray-200 cursor-pointer" />
+                                            <!-- <UButton size="xs" icon="i-lucide-minus" color="neutral" variant="outline"
+                                                class="bg-white ring-0 text-gray-800  hover:bg-white active:bg-white disabled:bg-gray-200 cursor-pointer" /> -->
                                         </template>
 
                                         <template #increment>
-                                            <UButton size="xs" icon="i-lucide-plus" color="neutral" variant="outline"
+                                            <ButtonUButton size="xs" icon="i-lucide-plus" color="neutral"
+                                                variant="outline"
                                                 class="bg-white ring-0 text-gray-800 hover:bg-white active:bg-white cursor-pointer" />
+                                            <!-- <UButton size="xs" icon="i-lucide-plus" color="neutral" variant="outline"
+                                                class="bg-white ring-0 text-gray-800 hover:bg-white active:bg-white cursor-pointer" /> -->
                                         </template>
                                     </UInputNumber>
                                 </div>
@@ -116,11 +123,16 @@ function goToAddress() {
                                 border: 'border-t-neutral-200'
                             }" />
                             <div class="flex items-center justify-end w-full pt-3">
-                                <UButton label="Remove From Cart" variant="ghost" color="error" icon="i-lucide-trash-2"
-                                    class="rounded-xs" @click="() => {
+                                <ButtonUButton label="Remove From Cart" variant="ghost" color="error"
+                                    icon="i-lucide-trash-2" class="rounded-xs" @click="() => {
                                         cartStore.removeFromCart(item.id)
                                         toast.add({ title: 'Item removed from cart', color: 'success', icon: 'i-lucide-check-circle' })
                                     }" />
+                                <!-- <UButton label="Remove From Cart" variant="ghost" color="error" icon="i-lucide-trash-2"
+                                    class="rounded-xs" @click="() => {
+                                        cartStore.removeFromCart(item.id)
+                                        toast.add({ title: 'Item removed from cart', color: 'success', icon: 'i-lucide-check-circle' })
+                                    }" /> -->
                                 <ButtonUButton label="Move To Wishlist" icon="i-lucide-heart" variant="ghost"
                                     class="rounded-xs" color="error" @click="() => {
                                         moveToWishlist(item)
@@ -206,11 +218,15 @@ function goToAddress() {
                             </div>
                         </div>
 
-                        <UButton block
+                        <ButtonUButton label="Checkout" block
+                            class="mt-4 bg-indigo-600 text-white p-3 hover:bg-indigo-600 active:bg-indigo-600"
+                            to="/checkout" />
+
+                        <!-- <UButton block
                             class="mt-4 bg-indigo-600 text-white p-3 hover:bg-indigo-600 active:bg-indigo-600"
                             to="/checkout">
                             Checkout
-                        </UButton>
+                        </UButton> -->
                     </UCard>
                 </div>
             </div>

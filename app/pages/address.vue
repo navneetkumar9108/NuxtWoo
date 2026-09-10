@@ -170,13 +170,17 @@ function onSubmit() {
                                 border: 'border-t-neutral-200'
                             }" />
                             <div class="flex items-center justify-around gap-1 shrink-0 h-8 pt-3">
-                                <UButton label="Edit" icon="i-lucide-pencil" color="error" variant="ghost"
+                                <ButtonUButton label="Edit" icon="i-lucide-pencil" color="error" variant="ghost"
                                     aria-label="Edit address" @click.stop="openEditForm(address)" />
+                                <!-- <UButton label="Edit" icon="i-lucide-pencil" color="error" variant="ghost"
+                                    aria-label="Edit address" @click.stop="openEditForm(address)" /> -->
                                 <USeparator orientation="vertical" :ui="{
                                     border: 'border-s-gray-800'
                                 }" />
-                                <UButton label="Delete" icon="i-lucide-trash-2" color="error" variant="ghost"
+                                <ButtonUButton label="Delete" icon="i-lucide-trash-2" color="error" variant="ghost"
                                     aria-label="Remove address" @click.stop="addressStore.removeAddress(address.id)" />
+                                <!-- <UButton label="Delete" icon="i-lucide-trash-2" color="error" variant="ghost"
+                                    aria-label="Remove address" @click.stop="addressStore.removeAddress(address.id)" /> -->
                             </div>
                         </UCard>
                     </div>
@@ -300,8 +304,10 @@ function onSubmit() {
                                     label: 'text-gray-800'
                                 }" />
 
-                                <UButton label="Save Address" type="submit" block size="lg" color=""
+                                <ButtonUButton label="Save Address" type="submit" block size="lg" color=""
                                     class="bg-indigo-600 text-white p-3 rounded-xs" />
+                                <!-- <UButton label="Save Address" type="submit" block size="lg" color=""
+                                    class="bg-indigo-600 text-white p-3 rounded-xs" /> -->
                             </UForm>
                         </template>
                     </UModal>
@@ -371,10 +377,13 @@ function onSubmit() {
                     </div>
                 </div>
 
-                <UButton block class="mt-4 bg-indigo-600 text-white p-3 hover:bg-indigo-600 active:bg-indigo-600"
+                <ButtonUButton label="Checkout" block
+                    class="mt-4 bg-indigo-600 text-white p-3 hover:bg-indigo-600 active:bg-indigo-600" to="/checkout" />
+
+                <!-- <UButton block class="mt-4 bg-indigo-600 text-white p-3 hover:bg-indigo-600 active:bg-indigo-600"
                     to="/checkout">
                     Checkout
-                </UButton>
+                </UButton> -->
             </UCard>
 
             <!-- <UCard class="h-fit">

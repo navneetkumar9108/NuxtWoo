@@ -149,26 +149,26 @@ const footerLinks = [
     label: 'Company',
     children: [
       { label: 'About Us', to: '/about' },
-      { label: 'Careers', to: '/careers' },
+      { label: 'Careers', to: '' },
       { label: 'Contact', to: '/contact' },
-      { label: 'Blog', to: '/blog' }
+      { label: 'Blog', to: '' }
     ]
   },
   {
     label: 'Support',
     children: [
       { label: 'Track Order', to: '/account/orders' },
-      { label: 'Returns', to: '/returns' },
-      { label: 'Shipping Info', to: '/shipping' },
-      { label: 'FAQs', to: '/faq' }
+      { label: 'Returns', to: '' },
+      { label: 'Shipping Info', to: '' },
+      { label: 'FAQs', to: '' }
     ]
   },
   {
     label: 'Legal',
     children: [
-      { label: 'Privacy Policy', to: '/privacy' },
-      { label: 'Terms of Service', to: '/terms' },
-      { label: 'Cookie Policy', to: '/cookies' }
+      { label: 'Privacy Policy', to: '' },
+      { label: 'Terms of Service', to: '' },
+      { label: 'Cookie Policy', to: '' }
     ]
   }
 ]
@@ -215,8 +215,10 @@ function subscribe() {
                 :ui="{ base: 'rounded-xs bg-gray-50 border border-gray-300 ring-0 focus:ring-0' }"
                 @keyup.enter="subscribe">
                 <template #trailing>
-                  <UButton icon="i-lucide-arrow-right" size="xs" color="neutral" variant="solid" class="rounded-xs"
-                    @click="subscribe" />
+                  <ButtonUButton icon="i-lucide-arrow-right" size="xs" color="neutral" variant="solid"
+                    class="rounded-xs" @click="subscribe" />
+                  <!-- <UButton icon="i-lucide-arrow-right" size="xs" color="neutral" variant="solid" class="rounded-xs"
+                    @click="subscribe" /> -->
                 </template>
               </UInput>
             </div>
@@ -247,9 +249,12 @@ function subscribe() {
           <span class="text-sm text-gray-500">© {{ new Date().getFullYear() }} WooNuxt. All rights reserved.</span>
 
           <div class="flex gap-2">
-            <UButton v-for="social in socialLinks" :key="social.icon" :icon="social.icon" :to="social.href"
+            <ButtonUButton v-for="social in socialLinks" :key="social.icon" :icon="social.icon" :to="social.href"
               target="_blank" color="neutral" variant="ghost" size="sm"
               class="text-gray-500 hover:text-gray-900 bg-white hover:bg-white active:bg-white" />
+            <!-- <UButton v-for="social in socialLinks" :key="social.icon" :icon="social.icon" :to="social.href"
+              target="_blank" color="neutral" variant="ghost" size="sm"
+              class="text-gray-500 hover:text-gray-900 bg-white hover:bg-white active:bg-white" /> -->
           </div>
         </div>
       </UContainer>

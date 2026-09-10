@@ -368,6 +368,9 @@ const tabs = [
 // if (auth.isLoggedIn) {
 //     redirectAfterAuth()
 // }
+const handleGoogleLogin = () => {
+    window.location.href = 'https://your-wp-site.com/wp-login.php?action=google-login&redirect_to=' + encodeURIComponent(window.location.origin)
+}
 
 onMounted(() => {
     auth.init()
@@ -455,10 +458,14 @@ onMounted(() => {
                                 trailing: 'pe-1', base: 'bg-white text-sky-600  rounded-full ring-0 focus-visible:ring-2 focus-visible:ring-sky-600', leadingIcon: 'size-5'
                             }">
                             <template #trailing>
-                                <UButton class="text-sky-600  hover:text-sky-700 active:text-sky-600" variant="link"
-                                    size="sm" :icon="show ? 'i-lucide-eye-off' : 'i-lucide-eye'"
+                                <ButtonUButton class="text-sky-600  hover:text-sky-700 active:text-sky-600"
+                                    variant="link" size="sm" :icon="show ? 'i-lucide-eye-off' : 'i-lucide-eye'"
                                     :aria-label="show ? 'Hide password' : 'Show password'" :aria-pressed="show"
                                     aria-controls="password" @click="show = !show" />
+                                <!-- <UButton class="text-sky-600  hover:text-sky-700 active:text-sky-600" variant="link"
+                                    size="sm" :icon="show ? 'i-lucide-eye-off' : 'i-lucide-eye'"
+                                    :aria-label="show ? 'Hide password' : 'Show password'" :aria-pressed="show"
+                                    aria-controls="password" @click="show = !show" /> -->
                             </template>
                         </UInput>
                     </UFormField>
@@ -470,16 +477,19 @@ onMounted(() => {
                             indicator: 'bg-white text-sky-600 '
 
                         }" />
-                        <NuxtLink to="/forgot-password" class="text-xs text-sky-600 hover:text-neutral-900">
+                        <NuxtLink to="" class="text-xs text-sky-600 hover:text-neutral-900">
                             Forgot password?
                         </NuxtLink>
                     </div>
                     <p v-if="errorMsg" class="text-sm text-red-500">{{ errorMsg }}</p>
 
-                    <UButton type="submit" block size="xl" :loading="loading"
+                    <ButtonUButton label="Login" type="submit" block size="xl" :loading="loading"
+                        class=" bg-sky-600 rounded-full text-white  hover:bg-sky-700 active:bg-sky-600 font-medium tracking-wide" />
+
+                    <!-- <UButton type="submit" block size="xl" :loading="loading"
                         class=" bg-sky-600 rounded-full text-white  hover:bg-sky-700 active:bg-sky-600 font-medium tracking-wide">
                         Login
-                    </UButton>
+                    </UButton> -->
 
                     <!-- Divider -->
                     <!-- <div class="flex items-center gap-3 py-1">
@@ -493,11 +503,15 @@ onMounted(() => {
                     }" />
                     <!-- Social logins -->
                     <div class="flex items-center justify-center gap-3">
-                        <UButton block size="xl" variant="outline" color="neutral"
+                        <ButtonUButton label="Google" block size="xl" variant="outline" color="neutral"
+                            class="rounded-full  bg-white hover:bg-white active:bg-white ring-2 ring-gray-800 text-gray-800 "
+                            icon="i-logos-google-icon" @click="handleGoogleLogin" />
+
+                        <!-- <UButton block size="xl" variant="outline" color="neutral"
                             class="rounded-full  bg-white hover:bg-white active:bg-white ring-2 ring-gray-800 text-gray-800 "
                             icon="i-logos-google-icon" @click="handleGoogleLogin">
                             Google
-                        </UButton>
+                        </UButton> -->
                         <!-- <UButton block size="xl" variant="outline" color="neutral"
                             class="rounded-full bg-white hover:bg-white active:bg-white ring-sky-600 text-sky-600 border-neutral-200"
                             icon="i-simple-icons-apple" @click="handleAppleLogin">
@@ -507,9 +521,8 @@ onMounted(() => {
                 </UForm>
                 <p class="text-sm text-neutral-500 text-center mt-6">
                     New here?
-                    <button type="button" class="text-gray-800 font-medium hover:underline" @click="mode = 'signup'">
-                        Create account
-                    </button>
+                    <ButtonUButton label="Create account" type="button"
+                        class="text-gray-800 font-medium hover:underline" @click="mode = 'signup'" />
                 </p>
             </div>
             <!-- </template> -->
@@ -613,16 +626,19 @@ onMounted(() => {
                     <p v-if="errorMsg" class="text-sm text-red-500">{{ errorMsg }}</p>
 
 
-                    <UButton type="submit" block size="xl" :loading="loading"
+                    <ButtonUButton label="Sign up" type="submit" block size="xl" :loading="loading"
+                        class=" bg-sky-600 rounded-full text-white  hover:bg-sky-700 active:bg-sky-600 font-medium tracking-wide" />
+
+                    <!-- <UButton type="submit" block size="xl" :loading="loading"
                         class=" bg-sky-600 rounded-full text-white  hover:bg-sky-700 active:bg-sky-600 font-medium tracking-wide">
                         Sign up
-                    </UButton>
+                    </UButton> -->
                 </UForm>
                 <p class="text-sm text-neutral-500 text-center mt-6">
                     Already have an account?
-                    <button type="button" class="text-gray-800 font-medium hover:underline" @click="mode = 'login'">
-                        Login
-                    </button>
+                    <ButtonUButton label="Login" class="text-gray-800 font-medium hover:underline"
+                        @click="mode = 'login'" />
+
                 </p>
             </div>
             <!-- </template> -->

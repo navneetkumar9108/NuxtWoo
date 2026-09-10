@@ -74,7 +74,7 @@ async function onSubmit(event) {
             <div class="flex lg:flex-row flex-col py-3">
                 <span class="w-40 text-sm text-neutral-500">Gender</span>
                 <span class="text-sm font-medium capitalize">{{ authStore.user?.gender || '- not added -'
-                    }}</span>
+                }}</span>
             </div>
             <div class="flex lg:flex-row flex-col py-3">
                 <span class="w-40 text-sm text-neutral-500">Date of Birth</span>
@@ -87,11 +87,15 @@ async function onSubmit(event) {
         </div>
         <div v-if="!isEditing" class="flex justify-center ">
 
-            <UButton size="lg" block
+            <ButtonUButton label="EDIT" size="lg" block
+                class="mt-6  lg:w-1/2 lg:mx-auto py-3 rounded-xs bg-red-400 text-white hover:bg-red-400 uppercase active:bg-red-400"
+                @click="isEditing = true" />
+
+            <!-- <UButton size="lg" block
                 class="mt-6  lg:w-1/2 lg:mx-auto py-3 rounded-xs bg-red-400 text-white hover:bg-red-400 uppercase active:bg-red-400"
                 @click="isEditing = true">
                 EDIT
-            </UButton>
+            </UButton> -->
         </div>
         <!-- Edit form -->
         <UForm v-else :schema="schema" :state="state" class="space-y-4 " @submit="onSubmit">
@@ -140,14 +144,20 @@ async function onSubmit(event) {
             </UFormField>
 
             <div class="flex gap-3">
-                <UButton type="submit" block :loading="loading"
+                <ButtonUButton label="Save Changes" type="submit" block :loading="loading"
+                    class="bg-red-400 hover:bg-red-400 active:bg-red-400  p-3 text-white rounded-xs" />
+
+                <ButtonUButton label="Cancel" variant="outline" block color="neutral" @click="isEditing = false"
+                    class="bg-white ring-red-400 text-red-400 rounded-xs hover:bg-white active:bg-white  p-3" />
+
+                <!-- <UButton type="submit" block :loading="loading"
                     class="bg-red-400 hover:bg-red-400 active:bg-red-400  p-3 text-white rounded-xs">
                     Save Changes
                 </UButton>
                 <UButton variant="outline" block color="neutral" @click="isEditing = false"
                     class="bg-white ring-red-400 text-red-400 rounded-xs hover:bg-white active:bg-white  p-3">
                     Cancel
-                </UButton>
+                </UButton> -->
             </div>
         </UForm>
     </UCard>

@@ -6,9 +6,9 @@ import { useCartStore } from '~~/store/cart'
 const addressStore = useAddressStore()
 const cartStore = useCartStore()
 const router = useRouter()
-console.log('router', router);
+// console.log('router', router);
 const route = useRoute()
-console.log('route', route);
+// console.log('route', route);
 const orderId = route.query.orderid
 
 
@@ -53,11 +53,15 @@ onMounted(() => {
                         <UIcon name="i-lucide-bike" class="size-10 text-red-400 shrink-0" />
                     </div>
 
-                    <UButton variant="outline" color="primary" size="sm"
+                    <ButtonUButton label="Order Details" variant="outline" color="primary" size="sm"
                         class="mt-3 ring-red-400 rounded-xs text-red-400" trailing-icon="i-lucide-chevron-right"
-                        to="/orders">
+                        to="account/orders" />
+
+                    <!-- <UButton variant="outline" color="primary" size="sm"
+                        class="mt-3 ring-red-400 rounded-xs text-red-400" trailing-icon="i-lucide-chevron-right"
+                        to="account/orders">
                         Order Details
-                    </UButton>
+                    </UButton> -->
 
                     <USeparator class="mt-2 mb-2" :ui="{
                         border: 'border-t-neutral-200',
@@ -89,14 +93,21 @@ onMounted(() => {
         </UCard> -->
 
                 <div class="grid grid-cols-2 gap-3">
-                    <UButton variant="outline" color="neutral" block @click="router.push('/')"
+                    <ButtonUButton label="Continue Shopping" variant="outline" color="neutral" block
+                        @click="router.push('/')"
+                        class="p-3 rounded-xs bg-white ring-red-400 text-red-400 hover:bg-white active:bg-white cursor-pointer" />
+
+                    <ButtonUButton label="View Order" color="primary" block to="account/orders"
+                        class="p-3 rounded-xs bg-red-400 text-white hover:bg-red-400 active:bg-red-400" />
+
+                    <!-- <UButton variant="outline" color="neutral" block @click="router.push('/')"
                         class="p-3 rounded-xs bg-white ring-red-400 text-red-400 hover:bg-white active:bg-white cursor-pointer">
                         Continue Shopping
                     </UButton>
                     <UButton color="primary" block to="account/orders"
                         class="p-3 rounded-xs bg-red-400 text-white hover:bg-red-400 active:bg-red-400">
                         View Order
-                    </UButton>
+                    </UButton> -->
                 </div>
             </div>
         </UCard>

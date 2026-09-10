@@ -81,7 +81,7 @@ const columns = [
         header: 'Date',
         cell: ({ row }) => {
             const date = row.original.date
-            console.log('Date', date);
+            // console.log('Date', date);
             return new Date(date).toLocaleString('en-US', {
                 weekday: 'short',
                 day: 'numeric',
@@ -133,7 +133,7 @@ const columns = [
 
         cell: ({ row }) => {
             return h(
-                resolveComponent('UButton'),
+                resolveComponent('ButtonUButton'),
                 {
                     icon: 'i-lucide-chevron-right',
                     variant: 'ghost',
@@ -163,9 +163,11 @@ const columns = [
                 No orders yet
             </p>
 
-            <UButton to="/products" class="mt-4">
+            <ButtonUButton label="Start Shopping" to="/products" class="mt-4" />
+
+            <!-- <UButton to="/products" class="mt-4">
                 Start Shopping
-            </UButton>
+            </UButton> -->
         </div>
 
         <!-- Orders Table -->

@@ -9,7 +9,8 @@ const auth = useAuthStore()
 const addressStore = useAddressStore();
 
 const deliveryAddress = addressStore.selectedAddress
-console.log('deliveryAddress', deliveryAddress);
+// console.log('deliveryAddress', deliveryAddress);
+// console.log('cartStore', cartStore.items);
 // const form = reactive({
 //     email: '',
 //     firstName: '',
@@ -81,7 +82,7 @@ const isOpen = defineModel('open', { default: false })
 function applyNote() {
     cartStore.setOrderNote(orderNote.value)
     noteOpen.value = false
-    console.log('store orderNote:', cartStore.orderNote)
+    // console.log('store orderNote:', cartStore.orderNote)
 
 }
 // Note: this only validates UI input. Actual payment capture (Razorpay/Stripe
@@ -108,7 +109,7 @@ async function placeOrder() {
 
     // Order ID generate karo (real backend hone tak temporary/local hi rahega)
     const orderId = `${Date.now()}${Math.floor(Math.random() * 1000)}`
-    console.log('orderId', orderId);
+    // console.log('orderId', orderId);
     const order = {
         orderId,
         userEmail: auth.user?.email,
@@ -168,9 +169,12 @@ const openItems = reactive({})
                             </p>
                         </div>
                         <!-- <UIcon name="i-lucide-bike" class="size-10 text-gray-800 shrink-0" /> -->
-                        <UButton variant="outline" class=" ring-red-400 text-red-400 p-4 text-xs" to="/address">
+                        <ButtonUButton label="Change Address" variant="outline"
+                            class=" ring-red-400 text-red-400 p-4 text-xs" to="/address" />
+
+                        <!-- <UButton variant="outline" class=" ring-red-400 text-red-400 p-4 text-xs" to="/address">
                             Change Address
-                        </UButton>
+                        </UButton> -->
                     </div>
                 </UCard>
                 <ButtonUButton v-else label="Add New Address" icon="i-lucide-plus" variant="outline" color="neutral"
@@ -263,9 +267,12 @@ const openItems = reactive({})
                                 class="w-full mt-4"
                                 :ui="{ base: 'bg-neutral-100 border-0 text-gray-800 ring-gray-200 focus-visible:ring-gray-200 focus-visible:ring-1' }" />
 
-                            <UButton label="Apply"
+                            <ButtonUButton label="Apply"
                                 class="mt-4  px-6 bg-indigo-600 text-white  hover:bg-indigo-600 active:bg-indigo-600"
                                 color="primary" @click="applyNote" />
+                            <!-- <UButton label="Apply"
+                                class="mt-4  px-6 bg-indigo-600 text-white  hover:bg-indigo-600 active:bg-indigo-600"
+                                color="primary" @click="applyNote" /> -->
                         </template>
                     </UCollapsible>
                     <p v-if="!noteOpen && cartStore.orderNote" class="text-xs text-neutral-500 mt-2 line-clamp-2">
@@ -303,12 +310,12 @@ const openItems = reactive({})
                 <UCard class="bg-white ring-0 rounded-xs ">
                     <UAccordion :items="cartStore.items.map(item => ({
                         label: item.name,
-                        slot: `item-${item.id}`,
+                        slot: `item-${item.cartId}`,
                         item
                     }))">
-                        <template v-for="item in cartStore.items" :key="item.id" #[`item-${item.id}`]>
+                        <template v-for="item in cartStore.items" :key="item.cartId" #[`item-${item.cartId}`]>
                             <div class="flex gap-5 leading-tight">
-                                <Img :src="item.image" class="w-20 h-full object-cover rounded-xs" />
+                                <img :src="item.image" class="w-20 h-full object-cover rounded-xs" />
                                 <div>
                                     <ProductInfo :brand="item.name" :title="item.title" />
                                     <ProductPrice :price="item.price" :originalPrice="item.originalPrice"
@@ -365,10 +372,14 @@ const openItems = reactive({})
                             <span>₹{{ cartStore.finalPrice }}</span>
                         </div>
                     </div>
-                    <UButton block class="mt-4 bg-indigo-600 text-white p-3 hover:bg-indigo-600 active:bg-indigo-600"
+                    <ButtonUButton label="Place Order" block
+                        class="mt-4 bg-indigo-600 text-white p-3 hover:bg-indigo-600 active:bg-indigo-600"
+                        @click="placeOrder" />
+
+                    <!-- <UButton block class="mt-4 bg-indigo-600 text-white p-3 hover:bg-indigo-600 active:bg-indigo-600"
                         @click="placeOrder">
                         Place Order
-                    </UButton>
+                    </UButton> -->
                 </UCard>
             </div>
 

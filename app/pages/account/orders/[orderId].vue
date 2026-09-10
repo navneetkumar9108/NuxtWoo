@@ -54,11 +54,17 @@ const order = computed(() =>
 
 // currently expanded/selected item — sab actions isi item pe apply honge
 const expandedItem = computed(() =>
-    order.value?.items?.find(i => String(i.id) === String(expandedItemId.value))
+    order.value?.items?.find(i => String(i.cartId) === String(expandedItemId.value))
 )
+// const expandedItem = computed(() =>
+//     order.value?.items?.find(i => String(i.id) === String(expandedItemId.value))
+// )
 
+// function toggleItem(item) {
+//     expandedItemId.value = String(expandedItemId.value) === String(item.id) ? null : item.id
+// }
 function toggleItem(item) {
-    expandedItemId.value = String(expandedItemId.value) === String(item.id) ? null : item.id
+    expandedItemId.value = String(expandedItemId.value) === String(item.cartId) ? null : item.cartId
 }
 const sizeOptions = computed(() =>
     expandedItem.value?.sizes?.map(s => ({ label: s.name, value: s.id })) || []
@@ -99,12 +105,12 @@ watch(order, (val) => {
     if (!val?.items?.length) return
 
     const queryItemId = route.query.itemId
-    const matchedItem = val.items.find(i => String(i.id) === String(queryItemId))
+    const matchedItem = val.items.find(i => String(i.cartId) === String(queryItemId))
 
     if (matchedItem) {
-        expandedItemId.value = matchedItem.id
+        expandedItemId.value = matchedItem.cartId
     } else if (!expandedItemId.value) {
-        expandedItemId.value = val.items[0].id
+        expandedItemId.value = val.items[0].cartId
     }
 }, { immediate: true })
 
@@ -126,7 +132,7 @@ const sortedItems = computed(() => {
     if (!order.value?.items) return []
 
     const items = [...order.value.items]
-    const expandedIndex = items.findIndex(i => String(i.id) === String(expandedItemId.value))
+    const expandedIndex = items.findIndex(i => String(i.cartId) === String(expandedItemId.value))
 
     if (expandedIndex > -1) {
         const [expandedItem] = items.splice(expandedIndex, 1)
@@ -172,7 +178,7 @@ function confirmCancel() {
     if (!cancelReason.value || !expandedItemId.value) return
 
     const updatedItems = order.value.items.map(item =>
-        String(item.id) === String(expandedItemId.value)
+        String(item.cartId) === String(expandedItemId.value)
             ? {
                 ...item,
                 status: 'cancelled',
@@ -277,11 +283,11 @@ onMounted(() => {
 
     <!-- <UContainer class="py-8 max-w-2xl" v-if="order"> -->
     <section class=" max-w-2xl" v-if="order">
-        <UCard v-for="item in sortedItems" :key="item.id" class="ring-0 rounded-xs mb-3 cursor-pointer"
-            :class="String(expandedItemId) === String(item.id) ? 'bg-neutral-200' : 'bg-neutral-100'"
+        <UCard v-for="item in sortedItems" :key="item.cartId" class="ring-0 rounded-xs mb-3 cursor-pointer"
+            :class="String(expandedItemId) === String(item.cartId) ? 'bg-neutral-200' : 'bg-neutral-100'"
             @click="toggleItem(item)" :ui="{ body: 'bg-white' }">
             <!-- Expanded: full detail -->
-            <div v-if="String(expandedItemId) === String(item.id)"
+            <div v-if="String(expandedItemId) === String(item.cartId)"
                 class="flex flex-col justify-center items-center text-center gap-3">
                 <img :src="item.image" class="w-35 h-full object-cover rounded-2xl" />
                 <div class="text-sm w-full">
@@ -359,7 +365,7 @@ onMounted(() => {
                 </div>
             </div>
             <div class="flex items-center gap-3 mt-3">
-                <UIcon name="i-lsicon-location-outline" class="size-10" />
+                <UIcon name="i-lsicon-location-outline" class="" />
                 <div>
                     <p class="text-[16px] font-semibold">Delivery Address</p>
                     <p class="text-xs text-balance">{{ order.address?.addressLine1 }}{{ order.address?.addressLine2 }},
@@ -368,14 +374,20 @@ onMounted(() => {
             </div>
         </UCard>
 
-        <UButton v-if="expandedItem?.status === 'placed' || !expandedItem?.status" block color="error" variant="outline"
+        <ButtonUButton label="Cancel Order" v-if="expandedItem?.status === 'placed' || !expandedItem?.status" block
+            color="error" variant="outline" @click="cancelModalOpen = true" />
+
+        <ButtonUButton label="Return / Exchange" v-if="expandedItem?.status === 'delivered'" block color="primary"
+            variant="outline" @click="returnModalOpen = true" />
+
+        <!-- <UButton v-if="expandedItem?.status === 'placed' || !expandedItem?.status" block color="error" variant="outline"
             @click="cancelModalOpen = true">
             Cancel Order
         </UButton>
         <UButton v-if="expandedItem?.status === 'delivered'" block color="primary" variant="outline"
             @click="returnModalOpen = true">
             Return / Exchange
-        </UButton>
+        </UButton> -->
 
         <p v-if="expandedItem?.status === 'cancelled'" class="text-sm text-red-500 mt-3">
             Cancelled — {{ expandedItem.cancelReason }}
@@ -391,8 +403,10 @@ onMounted(() => {
         <UCard class="bg-yellow-50 ring-0 rounded-xs mb-3 p-3">
             <p class="text-xs text-neutral-500 mb-2">Dev tools (testing only) — applies to selected item</p>
             <div class="flex gap-2 flex-wrap">
-                <UButton size="xs" variant="outline" @click="updateStatus('shipped')">Mark Shipped</UButton>
-                <UButton size="xs" variant="outline" @click="updateStatus('delivered')">Mark Delivered</UButton>
+                <ButtonUButton label="Mark Shipped" size="xs" variant="outline" @click="updateStatus('shipped')" />
+                <ButtonUButton label="Mark Delivered" size="xs" variant="outline" @click="updateStatus('delivered')" />
+                <!-- <UButton size="xs" variant="outline" @click="updateStatus('shipped')">Mark Shipped</UButton>
+                <UButton size="xs" variant="outline" @click="updateStatus('delivered')">Mark Delivered</UButton> -->
             </div>
         </UCard>
 
@@ -403,9 +417,11 @@ onMounted(() => {
             <template #body>
                 <p class="text-sm text-neutral-500 mb-3">Please select a reason</p>
                 <URadioGroup v-model="cancelReason" :items="cancelReasons.map(r => ({ label: r, value: r }))" />
-                <UButton block color="error" class="mt-6" :disabled="!cancelReason" @click="confirmCancel">
+                <ButtonUButton label="Confirm Cancellation" block color="error" class="mt-6" :disabled="!cancelReason"
+                    @click="confirmCancel" />
+                <!-- <UButton block color="error" class="mt-6" :disabled="!cancelReason" @click="confirmCancel">
                     Confirm Cancellation
-                </UButton>
+                </UButton> -->
             </template>
         </UModal>
 
@@ -446,11 +462,15 @@ onMounted(() => {
                     }" />
                 </UFormField>
 
-                <UButton block color="primary" class="mt-6 p-3 rounded-xs bg-red-400 text-white hover:bg-red-400
+                <ButtonUButton label="Submit Request" block color="primary" class="mt-6 p-3 rounded-xs bg-red-400 text-white hover:bg-red-400
+                    uppercase active:bg-red-400"
+                    :disabled="!returnReason || (returnType === 'exchange' && !exchangeSize)" @click="confirmReturn" />
+
+                <!-- <UButton block color="primary" class="mt-6 p-3 rounded-xs bg-red-400 text-white hover:bg-red-400
                     uppercase active:bg-red-400"
                     :disabled="!returnReason || (returnType === 'exchange' && !exchangeSize)" @click="confirmReturn">
                     Submit Request
-                </UButton>
+                </UButton> -->
             </template>
         </UModal>
     </section>

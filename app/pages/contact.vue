@@ -256,8 +256,10 @@ useHead({
                   }" />
               </UFormField>
 
-              <UButton type="submit" label="Send Message" trailing-icon="i-lucide-send" color="neutral" size="lg"
+              <ButtonUButton type="submit" label="Send Message" trailing-icon="i-lucide-send" color="neutral" size="lg"
                 :loading="isSubmitting" class="rounded-xs bg-sky-600 hover:bg-sky-600 text-white  mx-auto flex w-fit" />
+              <!-- <UButton type="submit" label="Send Message" trailing-icon="i-lucide-send" color="neutral" size="lg"
+                :loading="isSubmitting" class="rounded-xs bg-sky-600 hover:bg-sky-600 text-white  mx-auto flex w-fit" /> -->
             </UForm>
           </div>
         </div>

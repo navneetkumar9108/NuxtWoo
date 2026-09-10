@@ -57,11 +57,12 @@ const { data: products } = await useFetch("/api/products", {
     limit: itemsPerPage,
   },
 });
+
+// console.log('products', products.value.data);
 const { data: categories } = await useFetch("/api/categories");
 const { data: brands } = await useFetch("/api/brands");
 const { data: genders } = await useFetch("/api/genders");
 
-console.log('genders', genders.value?.data);
 const brandItems = computed(() =>
   (brands.value?.data || []).map((brand) => ({
     label: brand.name,
@@ -74,7 +75,7 @@ const genderItems = computed(() =>
     value: gender.slug,
   })),
 );
-console.log('genderItems', genderItems.value);
+// console.log('genderItems', genderItems.value);
 const categoryItems = computed(() =>
   (categories.value?.data || []).map((category) => ({
     label: category.name,
@@ -310,8 +311,10 @@ function removeChip(chip) {
                 Filters
               </h2>
 
-              <UButton v-if="hasActiveFilters" variant="link" size="sm" label="Clear All" @click="clearFilters"
+              <ButtonUButton v-if="hasActiveFilters" variant="link" size="sm" label="Clear All" @click="clearFilters"
                 class="text-red-600/50 hover:text-red-700 active:text-red-600/50  " />
+              <!-- <UButton v-if="hasActiveFilters" variant="link" size="sm" label="Clear All" @click="clearFilters"
+                class="text-red-600/50 hover:text-red-700 active:text-red-600/50  " /> -->
             </div>
             <div v-if="activeFilterChips.length" class="flex flex-wrap gap-2 pb-1">
               <UBadge v-for="chip in activeFilterChips" :key="`${chip.group}-${chip.value}`" :label="chip.label"
@@ -357,7 +360,7 @@ function removeChip(chip) {
           </div> -->
           <USeparator class="py-1 lg:pt-5 flex items-center justify-center" />
           <UPageGrid class=" gap-2 sm:gap-3 md:gap-4 lg:gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 xl:grid-cols-4">
-            <CardProductCard v-for="product in products?.data || []" :key="product.id" :product="product" />
+            <CardProductCard v-for="product in products?.data || []" :key="product.plpId" :product="product" />
           </UPageGrid>
           <div class="mt-10  flex justify-center p-2 sm:p-4  backdrop-blur-sm">
             <!-- <UPagination size="xl" v-model:page="currentPage" :total="products?.meta?.total || 0"
@@ -405,8 +408,10 @@ function removeChip(chip) {
             Filters
           </h2>
 
-          <UButton v-if="hasActiveFilters" variant="link" size="sm" label="Clear All" @click="clearFilters"
+          <ButtonUButton v-if="hasActiveFilters" variant="link" size="sm" label="Clear All" @click="clearFilters"
             class="text-red-600/50 hover:text-red-700 active:text-red-600/50  " />
+          <!-- <UButton v-if="hasActiveFilters" variant="link" size="sm" label="Clear All" @click="clearFilters"
+            class="text-red-600/50 hover:text-red-700 active:text-red-600/50  " /> -->
         </div>
       </template>
       <template #body>

@@ -1,6 +1,7 @@
 <script setup>
 import { useCartStore } from '~~/store/cart'
 const cartStore = useCartStore()
+//  console.log("object", cartStore.items);
 </script>
 
 <template>

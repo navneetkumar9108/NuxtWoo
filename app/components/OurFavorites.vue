@@ -14,8 +14,10 @@ const { data: products } = await useFetch("/api/products", {
             <h2 class="text-sm sm:text-xl font-bold text-gray-900">
                 Best Sellers
             </h2>
-            <UButton label="Browse all" to="/products" variant="link" class="text-red-400 text-xs"
+            <ButtonUButton label="Browse all" to="/products" variant="link" class="text-red-400 text-xs"
                 trailing-icon="i-lucide-arrow-right" />
+            <!-- <UButton label="Browse all" to="/products" variant="link" class="text-red-400 text-xs"
+                trailing-icon="i-lucide-arrow-right" /> -->
         </div>
 
         <UScrollArea v-slot="{ item }" :items="products?.data || []" orientation="horizontal" class="w-full"
@@ -23,9 +25,9 @@ const { data: products } = await useFetch("/api/products", {
             <CardProductCard :key="item.id" :product="item" class="w-40 lg:mx-0" />
         </UScrollArea>
 
-        <div v-if="pending" class="flex gap-4 overflow-x-auto">
+        <!-- <div v-if="pending" class="flex gap-4 overflow-x-auto">
             <USkeleton v-for="i in 4" :key="i" class="min-w-55 h-80 rounded-lg" />
-        </div>
+        </div> -->
     </UContainer>
 </template>
 

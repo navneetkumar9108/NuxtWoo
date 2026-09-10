@@ -1,4 +1,5 @@
-import { productsV4 } from "~~/server/data/data";
+// import { productsV4 } from "~~/server/data/data";
+import { productsV4 } from "~~/server/data/data2";
 import { successResponse, errorResponse } from "../../utils/response";
 
 export default defineEventHandler((event) => {

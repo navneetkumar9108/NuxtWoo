@@ -63,10 +63,14 @@ function removeCoupon() {
                     <UInput v-model="code" placeholder="Enter coupon code" class="flex-1"
                         :ui="{ base: 'bg-neutral-100 text-gray-800 py-2 ring-gray-200 focus-visible:ring-gray-200 focus-visible:ring-1' }"
                         @keyup.enter="handleApplyCoupon" />
-                    <UButton :loading="applying" color="primary" @click="handleApplyCoupon"
+                    <ButtonUButton label="Apply" color="primary" @click="handleApplyCoupon"
+                        class="bg-indigo-600 text-white  hover:bg-indigo-600 active:bg-indigo-600 py-2" />
+
+
+                    <!-- <UButton color="primary" @click="handleApplyCoupon"
                         class="bg-indigo-600 text-white  hover:bg-indigo-600 active:bg-indigo-600 py-2">
                         Apply
-                    </UButton>
+                    </UButton> -->
                 </div>
             </UFormField>
         </template>
@@ -94,10 +98,13 @@ function removeCoupon() {
                     <UIcon name="i-lucide-ticket-percent" class="size-4" />
                     {{ cartStore.appliedCoupon.code }} applied — You saved ₹{{ cartStore.appliedCoupon.discount }}
                 </span>
-                <UButton variant="ghost" color="neutral" size="xs" class="hover:bg-red-400 hover:text-white rounded-xs"
+                <ButtonUButton label="Remove" variant="ghost" color="neutral" size="xs"
+                    class="hover:bg-red-400 hover:text-white rounded-xs" @click="removeCoupon" />
+
+                <!-- <UButton variant="ghost" color="neutral" size="xs" class="hover:bg-red-400 hover:text-white rounded-xs"
                     @click="removeCoupon">
-                    Remove
-                </UButton>
+                        
+                </UButton> -->
             </div>
         </template>
     </UCard>

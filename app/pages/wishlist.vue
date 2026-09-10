@@ -5,7 +5,7 @@ import { useCartStore } from '~~/store/cart'
 
 const wishlistStore = useWishlistStore() // agar nahi banaya to bata dena, wo bhi bana du
 const cartStore = useCartStore()
-
+// console.log("wishlistStore", wishlistStore.items);
 // function moveToBag(item) {
 //     console.log('item', item);
 //     cartStore.addToCart(item)
@@ -29,9 +29,9 @@ function confirmMoveToBag() {
         toast.add({ title: 'Please select a size', color: 'error', icon: 'i-lucide-alert-circle' })
         return
     }
-    console.log('item', activeItem.value)
+    // console.log('item', activeItem.value)
     cartStore.addToCart({ ...activeItem.value, selectedSize: selectedSize.value })
-    wishlistStore.removeFromWishlist(activeItem.value.id)
+    wishlistStore.removeFromWishlist(activeItem.value.productId, activeItem.value.color.id)
     toast.add({ title: 'Item moved to bag', color: 'success', icon: 'i-lucide-check-circle' })
     sizeModalOpen.value = false
 }
@@ -44,7 +44,7 @@ function confirmMoveToBag() {
         <div v-if="!wishlistStore.items.length" class="text-center py-16">
             <UIcon name="i-lucide-heart" class="size-12 text-neutral-300 mx-auto mb-3" />
             <p class="text-neutral-500">Your wishlist is empty</p>
-            <UButton to="/products" class="mt-4">Explore Products</UButton>
+            <ButtonUButton label="Explore Products" to="/products" class="mt-4" />
         </div>
 
         <div v-else class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
@@ -59,7 +59,7 @@ function confirmMoveToBag() {
                     <ImageImg :src="item.image" :alt="item.title" class=" w-full h-full object-contain " />
                     <!-- <img :src="item.image" class="w-full h-70 object-cover rounded-xs" /> -->
                 </template>
-                <ProductInfo :brand="item.name" :title="item.title" />
+                <ProductInfo :brand="item.brand.name" :title="item.title" />
                 <ProductPrice :price="item.price" :originalPrice="item.originalPrice" :discount="item.discount"
                     class="text-sm text-gray-800 mt-1.5 sm:mt-2.5 mb-1.5" />
                 <!-- <p class="text-sm font-medium line-clamp-1">{{ item.name }}</p>
@@ -67,14 +67,21 @@ function confirmMoveToBag() {
 
                 <div class="flex gap-2 mt-3">
                     <!-- <UButton size="xs" block @click="moveToBag(item)">Move to Bag</UButton> -->
-                    <UButton size="xs" block @click="moveToBag(item)"
+                    <ButtonUButton label="Move to Bag" size="xs" block @click="moveToBag(item)"
+                        class="bg-red-400 text-white hover:bg-red-500 active:bg-red-600 rounded-xs p-1" />
+
+                    <ButtonUButton size="xs" variant="ghost" color="error" icon="i-lucide-trash-2" @click="() => {
+                        wishlistStore.removeFromWishlist(item.productId, item.color.id)
+                        toast.add({ title: 'Item removed from wishlist', color: 'success', icon: 'i-lucide-check-circle' })
+                    }" />
+                    <!-- <UButton size="xs" block @click="moveToBag(item)"
                         class="bg-red-400 text-white hover:bg-red-500 active:bg-red-600 rounded-xs p-1">
                         Move to Bag
                     </UButton>
                     <UButton size="xs" variant="ghost" color="error" icon="i-lucide-trash-2" @click="() => {
-                        wishlistStore.removeFromWishlist(item.id)
+                        wishlistStore.removeFromWishlist(item.productId, item.color.id)
                         toast.add({ title: 'Item removed from wishlist', color: 'success', icon: 'i-lucide-check-circle' })
-                    }" />
+                    }" /> -->
                 </div>
             </UCard>
         </div>
@@ -99,10 +106,13 @@ function confirmMoveToBag() {
                     </button>
                 </div>
 
-                <UButton block size="lg" color="primary" class="mt-6  bg-red-400 text-white hover:bg-red-500
+                <ButtonUButton label="Done" block size="lg" color="primary" class="mt-6  bg-red-400 text-white hover:bg-red-500
+                    active:bg-red-600 rounded-xs p-3" @click="confirmMoveToBag" />
+
+                <!-- <UButton block size="lg" color="primary" class="mt-6  bg-red-400 text-white hover:bg-red-500
                     active:bg-red-600 rounded-xs p-3" @click="confirmMoveToBag">
                     Done
-                </UButton>
+                </UButton> -->
             </template>
         </UModal>
 
