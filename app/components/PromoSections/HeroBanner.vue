@@ -60,7 +60,7 @@ const items = [
             dot: 'size-1 rounded-full bg-white/50  data-[state=active]:bg-white data-[state=active]:w-6 transition-all'
         }">
             <UPageHero :title="item.title" :description="item.subtitle" orientation="vertical" class=""
-                :links="[{ label: item.cta, to: item.to, size: 'lg', class: 'bg-white hover:bg-white active:bg-white text-sm sm:text-lg rounded-full', variant: 'solid' }]"
+                :links="[{ label: item.cta, to: item.to, size: 'lg', class: 'bg-white/50 hover:bg-white active:bg-white text-sm sm:text-lg rounded-full text-gray-800', variant: 'solid' }]"
                 :ui="{
                     root: 'relative isolate overflow-hidden bg-cover bg-center h-[280px] sm:h-[400px] md:h-[555px] rounded-sm',
                     container: 'py-16 sm:py-24 md:py-32',
