@@ -3,37 +3,17 @@ import { useAuthStore } from '~~/store/auth'
 import { useAddressStore } from '~~/store/address';
 import { useCartStore } from '~~/store/cart'
 
+const router = useRouter()
+const paymentMethod = ref('upi')
+const upiId = ref('')
+const noteOpen = ref(true)
+const orderNote = ref('')
 
 const cartStore = useCartStore() // ~~/store/cart
 const auth = useAuthStore()
 const addressStore = useAddressStore();
 
-const deliveryAddress = addressStore.selectedAddress
-// console.log('deliveryAddress', deliveryAddress);
-// console.log('cartStore', cartStore.items);
-// const form = reactive({
-//     email: '',
-//     firstName: '',
-//     lastName: '',
-//     company: '',
-//     address: '',
-//     apartment: '',
-//     city: '',
-//     country: 'us',
-//     state: '',
-//     postalCode: '',
-//     phone: '',
-// })
-
-// const deliveryMethod = ref('standard')
-// const paymentMethod = ref('card')
-
-// const card = reactive({
-//     number: '',
-//     name: '',
-//     expiry: '',
-//     cvc: '',
-// })
+const deliveryAddress = computed(() => addressStore.selectedAddress)
 
 const deliveryOptions = [
     { value: 'standard', label: 'Standard', note: '4-10 business days', price: 0 },
@@ -44,10 +24,6 @@ const deliveryMethod = computed({
     get: () => cartStore.deliveryMethod,
     set: (value) => cartStore.setDeliveryMethod(value),
 });
-const countries = [
-    { label: 'United States', value: 'us' },
-    { label: 'India', value: 'in' },
-]
 
 const subtotal = computed(() =>
     cart.items.reduce((sum, i) => sum + i.price * i.qty, 0)
@@ -58,14 +34,6 @@ const shipping = computed(() =>
 const taxes = computed(() => +(subtotal.value * 0.0862).toFixed(2))
 const total = computed(() => subtotal.value + shipping.value + taxes.value)
 
-
-
-
-const router = useRouter()
-
-
-const paymentMethod = ref('upi')
-const upiId = ref('')
 const card = reactive({ number: '', name: '', expiry: '', cvv: '' })
 
 const methods = [
@@ -75,15 +43,11 @@ const methods = [
     { value: 'cod', label: 'Cash on Delivery', icon: 'i-lucide-banknote', description: 'Pay when your order arrives' }
 ]
 
-const noteOpen = ref(true)
-const orderNote = ref('')
 const isOpen = defineModel('open', { default: false })
 
 function applyNote() {
     cartStore.setOrderNote(orderNote.value)
     noteOpen.value = false
-    // console.log('store orderNote:', cartStore.orderNote)
-
 }
 // Note: this only validates UI input. Actual payment capture (Razorpay/Stripe
 // etc.) needs a real gateway SDK + a server route — wire that into placeOrder()
@@ -101,43 +65,44 @@ const isValid = computed(() => {
 
 defineExpose({ isValid, paymentMethod })
 
-
-// const paymentMode = ref('cod')
-
 async function placeOrder() {
     if (!isValid.value) return
 
-    // Order ID generate karo (real backend hone tak temporary/local hi rahega)
-    const orderId = `${Date.now()}${Math.floor(Math.random() * 1000)}`
-    // console.log('orderId', orderId);
-    const order = {
-        orderId,
-        userEmail: auth.user?.email,
-        // items: cartStore.items,
-        items: cartStore.items.map(item => ({
-            ...item,
-            status: 'placed'   // ← har item ka apna status
-        })),
-        totalAmount: cartStore.finalPrice,
-        address: addressStore.selectedAddress,
-        paymentMethod: paymentMethod.value,
-        orderNote: cartStore.orderNote,
-        // status: 'placed',
-        // date: new Date().toLocaleDateString('en-IN')
-        date: new Date().toISOString()
+    if (!deliveryAddress.value?._id) {
+        alert('Please select a delivery address')
+        return
     }
 
-    const existing = JSON.parse(localStorage.getItem('orders') || '[]')
-    localStorage.setItem('orders', JSON.stringify([order, ...existing]))
+    if (!cartStore.selectedItemIds.length) {
+        alert('Please select at least one item to order')
+        return
+    }
 
-    // TODO: yahan actual order-placement API call hoga, jo backend se real orderId return karega
-    // const res = await $fetch('/api/order/place', { method: 'POST', body: {...} })
-    // const orderId = res.orderId
+    try {
+        const res = await $fetch('/api/orders/create', {
+            method: 'POST',
+            body: {
+                addressId: deliveryAddress.value._id,
+                paymentMethod: paymentMethod.value,
+                deliveryCharge: cartStore.deliveryCharge,
+                discount: cartStore.appliedCoupon?.discount || 0,
+                itemIds: cartStore.selectedItemIds,   // ← sirf selected items
+            },
+        })
 
-    router.push({ path: '/confirm', query: { orderid: orderId } })
+        if (res.success) {
+            cartStore.removeCoupon()
+            cartStore.setDeliveryMethod('standard')
+            cartStore.clearSelection()
+            router.push({ path: '/confirm', query: { orderid: res.data._id } })
+        } else {
+            alert(res.message || 'Failed to place order')
+        }
+    } catch (err) {
+        alert(err.data?.message || 'Something went wrong while placing order')
+    }
 }
 
-const openItems = reactive({})
 </script>
 
 <template>
@@ -146,18 +111,9 @@ const openItems = reactive({})
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <!-- Left: form -->
             <div class="lg:col-span-2 space-y-4">
-                <!-- <h2 class="text-sm font-medium mb-4">Order summary</h2> -->
-                <!-- <section>
-                    <h2 class="text-sm font-medium mb-4">Contact information</h2>
-                    <UFormField label="Email address">
-                        <UInput v-model="form.email" type="email" class="w-full" />
-                    </UFormField>
-                </section>-->
-
                 <UCard v-if="deliveryAddress" class="bg-neutral-50 rounded-xs ring-0">
                     <div class="flex justify-between items-center gap-4">
                         <div>
-                            <!-- <p class="text-xs text-neutral-500">Delivering to:</p> -->
                             <p class="text-sm font-semibold mt-1">
                                 <span class="font-normal">Deliver to: </span>{{ deliveryAddress.fullName }} | {{
                                     deliveryAddress.phone }}
@@ -171,19 +127,13 @@ const openItems = reactive({})
                         <!-- <UIcon name="i-lucide-bike" class="size-10 text-gray-800 shrink-0" /> -->
                         <ButtonUButton label="Change Address" variant="outline"
                             class=" ring-red-400 text-red-400 p-4 text-xs" to="/address" />
-
-                        <!-- <UButton variant="outline" class=" ring-red-400 text-red-400 p-4 text-xs" to="/address">
-                            Change Address
-                        </UButton> -->
                     </div>
                 </UCard>
                 <ButtonUButton v-else label="Add New Address" icon="i-lucide-plus" variant="outline" color="neutral"
                     block
                     class="mt-0 bg-white ring-neutral-200 rounded-xs text-gray-800  p-5 hover:bg-neutral-200 active:bg-neutral-200 justify-start"
                     to="/address" />
-                <!-- <div class="flex flex-col gap-6"> -->
                 <section>
-                    <!-- <h2 class="text-sm font-medium mb-4">Delivery method</h2> -->
                     <URadioGroup v-model="deliveryMethod" variant="card" orientation="horizontal"
                         legend="Delivery method" :items="deliveryOptions" value-key="value" label-key="label"
                         description-key="note"
@@ -249,7 +199,6 @@ const openItems = reactive({})
                         </p>
                     </UCard>
                 </div>
-                <!-- </div> -->
 
                 <UCard class="bg-white ring-1 ring-neutral-200 rounded-xs w-full">
                     <UCollapsible v-model:open="noteOpen">
@@ -270,9 +219,6 @@ const openItems = reactive({})
                             <ButtonUButton label="Apply"
                                 class="mt-4  px-6 bg-indigo-600 text-white  hover:bg-indigo-600 active:bg-indigo-600"
                                 color="primary" @click="applyNote" />
-                            <!-- <UButton label="Apply"
-                                class="mt-4  px-6 bg-indigo-600 text-white  hover:bg-indigo-600 active:bg-indigo-600"
-                                color="primary" @click="applyNote" /> -->
                         </template>
                     </UCollapsible>
                     <p v-if="!noteOpen && cartStore.orderNote" class="text-xs text-neutral-500 mt-2 line-clamp-2">
@@ -282,48 +228,25 @@ const openItems = reactive({})
             </div>
 
             <!-- Right: order summary -->
-            <!-- <div> -->
             <div class="space-y-4">
-                <!-- <h2 class="text-sm font-medium mb-4">Order summary</h2> -->
-                <!-- <UCard v-for="item in cartStore.items" :key="item.id" class="bg-white ring-0 rounded-xs ">
-                    <div class="flex flex-col justify-between items-start ">
-                        <div class="flex gap-5 leading-tight">
-                            <ImageImg :src="item.image" class="w-20 h-full object-cover rounded-xs " />
-                            <div>
-                                <ProductInfo :brand="item.name" :title="item.title" />
-                                <ProductPrice :price="item.price" :originalPrice="item.originalPrice"
-                                    :discount="item.discount" class="text-sm text-gray-800 mt-1.5 sm:mt-0 mb-0" />
-
-                                <p v-if="item.size || item.color"
-                                    class=" text-xs text-neutral-500 mt-0.5 mb-0.5 font-bold">
-                                    <span v-if="item.size">Size: {{ item.size }}</span>
-                                    <span v-if="item.size && item.color"> · </span>
-                                    <span v-if="item.color">{{ item.color }}</span>
-                                </p>
-                                <span class=" text-xs text-neutral-500 mt-0.5 mb-0.5 font-bold"
-                                    v-if="item.quantity">Qty: {{
-                                        item.quantity }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </UCard> -->
-                <UCard class="bg-white ring-0 rounded-xs ">
-                    <UAccordion :items="cartStore.items.map(item => ({
-                        label: item.name,
-                        slot: `item-${item.cartId}`,
+                <UCard class="bg-white ring-0 rounded-xs">
+                    <UAccordion :items="cartStore.selectedItems.map(item => ({
+                        label: item.brandName,
+                        slot: `item-${item._id}`,
                         item
                     }))">
-                        <template v-for="item in cartStore.items" :key="item.cartId" #[`item-${item.cartId}`]>
+                        <template v-for="item in cartStore.selectedItems" :key="item._id" #[`item-${item._id}`]>
                             <div class="flex gap-5 leading-tight">
                                 <img :src="item.image" class="w-20 h-full object-cover rounded-xs" />
                                 <div>
-                                    <ProductInfo :brand="item.name" :title="item.title" />
+                                    <ProductInfo :brand="item.brandName" :title="item.title" />
                                     <ProductPrice :price="item.price" :originalPrice="item.originalPrice"
                                         :discount="item.discount" />
-                                    <p v-if="item.size || item.color" class="text-xs text-neutral-500 font-bold">
-                                        <span v-if="item.size">Size: {{ item.size }}</span>
-                                        <span v-if="item.size && item.color"> · </span>
-                                        <span v-if="item.color">{{ item.color }}</span>
+                                    <p v-if="item.sizeName || item.colorName"
+                                        class="text-xs text-neutral-500 font-bold">
+                                        <span v-if="item.sizeName">Size: {{ item.sizeName }}</span>
+                                        <span v-if="item.sizeName && item.colorName"> · </span>
+                                        <span v-if="item.colorName">Color: {{ item.colorName }}</span>
                                     </p>
                                     <span class="text-xs text-neutral-500 font-bold" v-if="item.quantity">Qty: {{
                                         item.quantity }}</span>
@@ -336,13 +259,13 @@ const openItems = reactive({})
                     border: 'border-t-neutral-200'
                 }" />
 
-                <UCard class="h-fit bg-white ring-0 rounded-xs " v-if="cartStore.totalPrice">
+                <!-- <UCard class="h-fit bg-white ring-0 rounded-xs " v-if="cartStore.totalPrice">
                     <template #header>
-                        <!-- <p class="font-semibold" icon="i-lucide-receipt">Price Details ({{ cartStore.items.length
-                                        }})</p> -->
+                   
                         <span class="flex items-center gap-1 font-medium text-sm">
                             <UIcon name="i-lucide-receipt" class="size-4" />
-                            Price Details ({{ cartStore.items?.length }} {{ cartStore.items?.length === 1 ? 'item'
+                            Price Details ({{ cartStore.items?.length }} {{ cartStore.items?.length === 1 ?
+                                'item'
                                 : 'items' }})
                         </span>
                     </template>
@@ -376,14 +299,50 @@ const openItems = reactive({})
                         class="mt-4 bg-indigo-600 text-white p-3 hover:bg-indigo-600 active:bg-indigo-600"
                         @click="placeOrder" />
 
-                    <!-- <UButton block class="mt-4 bg-indigo-600 text-white p-3 hover:bg-indigo-600 active:bg-indigo-600"
-                        @click="placeOrder">
-                        Place Order
-                    </UButton> -->
+                   
+                </UCard> -->
+                <UCard class="h-fit bg-white ring-0 rounded-xs" v-if="cartStore.selectedTotalPrice">
+                    <template #header>
+                        <span class="flex items-center gap-1 font-medium text-sm">
+                            <UIcon name="i-lucide-receipt" class="size-4" />
+                            Price Details ({{ cartStore.selectedItemIds.length }} {{ cartStore.selectedItemIds.length
+                                === 1 ? 'item' : 'items' }})
+                        </span>
+                    </template>
+
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span>Total MRP</span>
+                            <span>₹ {{ cartStore.selectedTotalOriginalPrice }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Discount On MRP</span>
+                            <span>- ₹ {{ cartStore.selectedDiscountAmount }}</span>
+                        </div>
+                        <div v-if="cartStore.appliedCoupon" class="flex justify-between text-green-600">
+                            <span>Coupon Discount</span>
+                            <span>- ₹{{ cartStore.appliedCoupon.discount }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Delivery Charges</span>
+                            <span :class="cartStore.deliveryCharge === 0 ? 'text-green-600' : ''">
+                                {{ cartStore.deliveryCharge === 0 ? 'FREE' : `₹${cartStore.deliveryCharge}` }}
+                            </span>
+                        </div>
+                        <USeparator />
+                        <div class="flex justify-between font-semibold">
+                            <span>Total Amount</span>
+                            <span>₹{{ cartStore.selectedFinalPrice }}</span>
+                        </div>
+                    </div>
+
+                    <ButtonUButton label="Place Order" block
+                        class="mt-4 bg-indigo-600 text-white p-3 hover:bg-indigo-600 active:bg-indigo-600"
+                        @click="placeOrder" />
                 </UCard>
+
             </div>
 
         </div>
-        <!-- </div> -->
     </UContainer>
 </template>

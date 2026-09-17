@@ -1,24 +1,35 @@
 <script setup>
-import { useAddressStore } from '~~/store/address'
 import { useCartStore } from '~~/store/cart'
-// definePageMeta({ layout: 'checkout' })
 
-const addressStore = useAddressStore()
 const cartStore = useCartStore()
 const router = useRouter()
-// console.log('router', router);
 const route = useRoute()
-// console.log('route', route);
+
 const orderId = route.query.orderid
 
+const order = ref(null)
+const pending = ref(true)
 
-// Snapshot address before cart/address gets cleared, so this page still
-// shows correct info even after reset.
-const deliveryAddress = addressStore.selectedAddress
+async function fetchOrder() {
+    try {
+        const res = await $fetch(`/api/orders/${orderId}`)
+        if (res.success) {
+            order.value = res.data
+        }
+    } catch (err) {
+        console.error('Failed to fetch order', err)
+    } finally {
+        pending.value = false
+    }
+}
 
-onMounted(() => {
-    cartStore.items = []
-    cartStore.appliedCoupon = null
+onMounted(async () => {
+    if (orderId) {
+        await fetchOrder()
+    }
+    // Backend ne already cart clear kar diya hai order create hote waqt
+    // Yahan sirf local state ko sync karo
+    await cartStore.fetchCart()
 })
 </script>
 
@@ -38,16 +49,18 @@ onMounted(() => {
                     </div>
                 </UCard>
 
-                <UCard v-if="deliveryAddress" class="bg-white ring-neutral-200 rounded-xs ">
+                <USkeleton v-if="pending" class="h-32 w-full rounded-xs" />
+
+                <UCard v-else-if="order?.shippingAddress" class="bg-white ring-neutral-200 rounded-xs ">
                     <div class="flex justify-between items-start gap-4">
                         <div>
                             <p class="text-xs text-neutral-500">Delivering to:</p>
                             <p class="text-sm font-semibold mt-1">
-                                {{ deliveryAddress.fullName }} | {{ deliveryAddress.phone }}
+                                {{ order.shippingAddress.fullName }} | {{ order.shippingAddress.phone }}
                             </p>
                             <p class="text-sm text-neutral-500 line-clamp-1">
-                                {{ deliveryAddress.addressLine1 }}, {{ deliveryAddress.city }}, {{ deliveryAddress.state
-                                }}
+                                {{ order.shippingAddress.addressLine1 }}, {{ order.shippingAddress.city }}, {{
+                                    order.shippingAddress.state }}
                             </p>
                         </div>
                         <UIcon name="i-lucide-bike" class="size-10 text-red-400 shrink-0" />
@@ -55,17 +68,9 @@ onMounted(() => {
 
                     <ButtonUButton label="Order Details" variant="outline" color="primary" size="sm"
                         class="mt-3 ring-red-400 rounded-xs text-red-400" trailing-icon="i-lucide-chevron-right"
-                        to="account/orders" />
+                        to="/account/orders" />
 
-                    <!-- <UButton variant="outline" color="primary" size="sm"
-                        class="mt-3 ring-red-400 rounded-xs text-red-400" trailing-icon="i-lucide-chevron-right"
-                        to="account/orders">
-                        Order Details
-                    </UButton> -->
-
-                    <USeparator class="mt-2 mb-2" :ui="{
-                        border: 'border-t-neutral-200',
-                    }" />
+                    <USeparator class="mt-2 mb-2" :ui="{ border: 'border-t-neutral-200' }" />
 
                     <p class="text-xs text-neutral-500 flex items-center gap-1 ">
                         <UIcon name="i-lucide-sparkles" class="size-3.5" />
@@ -73,41 +78,41 @@ onMounted(() => {
                     </p>
                 </UCard>
 
-                <!-- <UCard>
-            <div class="flex justify-between items-start gap-4">
-                <div>
-                    <div class="flex items-center gap-2">
-                        <p class="text-sm font-semibold">Now pay at your convenience</p>
-                        <UBadge color="success" variant="soft" size="xs">New</UBadge>
+                <UCard v-if="order" class="bg-white ring-neutral-200 rounded-xs">
+                    <template #header>
+                        <span class="text-sm font-medium">Order Summary</span>
+                    </template>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span>Items Total</span>
+                            <span>₹ {{ order.itemsTotal }}</span>
+                        </div>
+
+                        <div v-if="order.discount" class="flex justify-between text-green-600">
+                            <span>Coupon Discount</span>
+                            <span>- ₹{{ order.discount }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Delivery Charges</span>
+                            <span :class="order.deliveryCharge === 0 ? 'text-green-600' : ''">
+                                {{ order.deliveryCharge === 0 ? 'FREE' : `₹${order.deliveryCharge}` }}
+                            </span>
+                        </div>
+                        <USeparator />
+                        <div class="flex justify-between font-semibold">
+                            <span>Total Amount</span>
+                            <span>₹{{ order.totalAmount }}</span>
+                        </div>
                     </div>
-                    <p class="text-xs text-neutral-500 mt-2">
-                        Now you can pay online using Pay Now option from orders or you
-                        can Pay on Delivery (Cash/UPI).
-                    </p>
-                    <UButton variant="link" color="primary" size="xs" class="p-0 mt-1">
-                        See How
-                    </UButton>
-                </div>
-                <UIcon name="i-lucide-user-round" class="size-12 text-primary shrink-0" />
-            </div>
-        </UCard> -->
+                </UCard>
 
                 <div class="grid grid-cols-2 gap-3">
                     <ButtonUButton label="Continue Shopping" variant="outline" color="neutral" block
                         @click="router.push('/')"
                         class="p-3 rounded-xs bg-white ring-red-400 text-red-400 hover:bg-white active:bg-white cursor-pointer" />
 
-                    <ButtonUButton label="View Order" color="primary" block to="account/orders"
+                    <ButtonUButton label="View Order" color="primary" block to="/account/orders"
                         class="p-3 rounded-xs bg-red-400 text-white hover:bg-red-400 active:bg-red-400" />
-
-                    <!-- <UButton variant="outline" color="neutral" block @click="router.push('/')"
-                        class="p-3 rounded-xs bg-white ring-red-400 text-red-400 hover:bg-white active:bg-white cursor-pointer">
-                        Continue Shopping
-                    </UButton>
-                    <UButton color="primary" block to="account/orders"
-                        class="p-3 rounded-xs bg-red-400 text-white hover:bg-red-400 active:bg-red-400">
-                        View Order
-                    </UButton> -->
                 </div>
             </div>
         </UCard>

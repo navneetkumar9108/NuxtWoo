@@ -2,11 +2,10 @@
 import { useAddressStore } from '~~/store/address'
 import { useCartStore } from '~~/store/cart'
 import { z } from 'zod'
-//definePageMeta({ layout: 'checkout' })
+
 
 const addressStore = useAddressStore()
 const cartStore = useCartStore()
-
 
 const isFormOpen = ref(false)
 const editingId = ref(null)
@@ -52,87 +51,31 @@ function openAddForm() {
 }
 
 function openEditForm(address) {
-    editingId.value = address.id
+    editingId.value = address._id   // ← id se _id
     Object.assign(state, emptyForm(), address)
     isFormOpen.value = true
 }
 
-function onSubmit() {
+async function onSubmit() {
+    let res
     if (editingId.value) {
-        addressStore.updateAddress(editingId.value, { ...state })
+        res = await addressStore.updateAddress(editingId.value, { ...state })
     } else {
-        addressStore.addAddress({ ...state })
+        res = await addressStore.addAddress({ ...state })
     }
-    isFormOpen.value = false
+
+    if (res?.success !== false) {
+        isFormOpen.value = false
+    }
 }
-// const router = useRouter()
 
-// const showAddForm = ref(false)
-// const form = reactive({ name: '', line1: '', city: '', state: '', pincode: '', mobile: '' })
-
-// function saveAddress() {
-//     addressStore.addAddress({ ...form })
-//     Object.keys(form).forEach(k => (form[k] = ''))
-//     showAddForm.value = false
-// }
-
-// function goToPayment() {
-//     if (!addressStore.selectedAddress) return
-//     router.push('/checkout/payment')
-// }
 </script>
 
 <template>
     <UContainer class="mt-10 mb-10">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div class="lg:col-span-2 space-y-4">
-                <!-- <UCard v-for="addr in addressStore.addresses" :key="addr.id"
-                :class="addressStore.selectedAddressId === addr.id ? 'ring-2 ring-primary-500' : ''"
-                @click="addressStore.selectAddress(addr.id)">
-                <div class="flex gap-3 items-start cursor-pointer">
-                    <URadio :model-value="addressStore.selectedAddressId" :value="addr.id" />
-                    <div>
-                        <p class="font-medium">{{ addr.name }}</p>
-                        <p class="text-sm text-neutral-500">{{ addr.line1 }}, {{ addr.city }}, {{ addr.state }} - {{
-                            addr.pincode }}</p>
-                        <p class="text-sm text-neutral-500">Mobile: {{ addr.mobile }}</p>
-                    </div>
-                </div>
-            </UCard>
-
-            <UButton variant="outline" icon="i-lucide-plus" @click="showAddForm = !showAddForm">
-                Add New Address
-            </UButton>
-
-            <UCard v-if="showAddForm">
-                <div class="space-y-3">
-                    <UFormField label="Full Name">
-                        <UInput v-model="form.name" />
-                    </UFormField>
-                    <UFormField label="Address">
-                        <UInput v-model="form.line1" />
-                    </UFormField>
-                    <div class="grid grid-cols-2 gap-3">
-                        <UFormField label="City">
-                            <UInput v-model="form.city" />
-                        </UFormField>
-                        <UFormField label="State">
-                            <UInput v-model="form.state" />
-                        </UFormField>
-                    </div>
-                    <div class="grid grid-cols-2 gap-3">
-                        <UFormField label="Pincode">
-                            <UInput v-model="form.pincode" />
-                        </UFormField>
-                        <UFormField label="Mobile">
-                            <UInput v-model="form.mobile" />
-                        </UFormField>
-                    </div>
-                    <UButton @click="saveAddress">Save Address</UButton>
-                </div>
-            </UCard> -->
                 <div>
-
                     <ButtonUButton label="Add New Address" icon="i-lucide-plus" variant="outline" color="neutral" block
                         class="mt-0 bg-white ring-neutral-200 rounded-xs text-gray-800  p-5 hover:bg-neutral-200 active:bg-neutral-200 justify-start"
                         @click="openAddForm" />
@@ -141,13 +84,13 @@ function onSubmit() {
                         <p>No saved addresses yet</p>
                     </div>
                     <div v-else class="flex flex-col gap-4 mt-5">
-                        <UCard v-for="address in addressStore.addresses" :key="address.id"
+                        <UCard v-for="address in addressStore.addresses" :key="address._id"
                             class="cursor-pointer transition-colors" :ui="{
                                 root: 'rounded-xs bg-white ',
 
                             }"
-                            :class="address.id === addressStore.selectedAddressId ? 'ring-1 ring-neutral-500' : 'ring-1 ring-neutral-200'"
-                            @click="addressStore.selectAddress(address.id)">
+                            :class="address._id === addressStore.selectedAddressId ? 'ring-1 ring-neutral-500' : 'ring-1 ring-neutral-200'"
+                            @click="addressStore.selectAddress(address._id)">
                             <div class="flex justify-between items-start gap-2 pb-3">
                                 <div class="min-w-0">
                                     <div class="flex items-center gap-2 mb-1">
@@ -160,7 +103,7 @@ function onSubmit() {
                                     <p class="text-sm text-neutral-600 text-balance">
                                         {{ address.addressLine1 }}<span v-if="address.addressLine2">, {{
                                             address.addressLine2
-                                            }}</span><span v-if="address.landmark">, near {{ address.landmark
+                                        }}</span><span v-if="address.landmark">, near {{ address.landmark
                                             }}</span>,<br>
                                         {{ address.city }} - {{ address.pincode }}, <br> {{ address.state }} </p>
                                     <p class="text-sm text-neutral-500 mt-1">Mobile: {{ address.phone }}</p>
@@ -172,55 +115,16 @@ function onSubmit() {
                             <div class="flex items-center justify-around gap-1 shrink-0 h-8 pt-3">
                                 <ButtonUButton label="Edit" icon="i-lucide-pencil" color="error" variant="ghost"
                                     aria-label="Edit address" @click.stop="openEditForm(address)" />
-                                <!-- <UButton label="Edit" icon="i-lucide-pencil" color="error" variant="ghost"
-                                    aria-label="Edit address" @click.stop="openEditForm(address)" /> -->
+
                                 <USeparator orientation="vertical" :ui="{
                                     border: 'border-s-gray-800'
                                 }" />
                                 <ButtonUButton label="Delete" icon="i-lucide-trash-2" color="error" variant="ghost"
-                                    aria-label="Remove address" @click.stop="addressStore.removeAddress(address.id)" />
-                                <!-- <UButton label="Delete" icon="i-lucide-trash-2" color="error" variant="ghost"
-                                    aria-label="Remove address" @click.stop="addressStore.removeAddress(address.id)" /> -->
+                                    aria-label="Remove address" @click.stop="addressStore.removeAddress(address._id)" />
                             </div>
                         </UCard>
                     </div>
-                    <!-- <div v-else class="flex flex-col gap-3 mt-5">
-                        <div v-for="address in addressStore.addresses" :key="address.id"
-                            class="border rounded-xs p-4 cursor-pointer transition-colors"
-                            :class="address.id === addressStore.selectedAddressId ? 'border-primary ring-1 ring-primary' : 'border-neutral-200'"
-                            @click="addressStore.selectAddress(address.id)">
-                            <div class="flex justify-between items-start gap-2">
-                                <div class="min-w-0">
-                                    <div class="flex items-center gap-2 mb-1">
-                                        <p class="text-sm font-medium">{{ address.fullName }}</p>
-                                        <BadgeUBadge :label="address.type === 'home' ? 'Home' : 'Work'" variant="subtle"
-                                            color="neutral" size="sm" />
-                                        <BadgeUBadge v-if="address.isDefault" label="Default" variant="subtle"
-                                            color="primary" size="sm" />
-                                    </div>
-                                    <p class="text-sm text-neutral-600">
-                                        {{ address.addressLine1 }}<span v-if="address.addressLine2">, {{
-                                            address.addressLine2
-                                        }}</span><span v-if="address.landmark">, near {{ address.landmark }}</span>,
-                                        {{ address.city }}, {{ address.state }} - {{ address.pincode }}
-                                    </p>
-                                    <p class="text-sm text-neutral-500 mt-1">{{ address.phone }}</p>
-                                </div>
 
-                                <div class="flex gap-1 shrink-0">
-                                    <ButtonUButton icon="i-lucide-pencil" color="neutral" variant="ghost" size="xs"
-                                        aria-label="Edit address" @click.stop="openEditForm(address)" />
-
-                                    <ButtonUButton icon="i-lucide-trash-2" color="error" variant="ghost" size="xs"
-                                        aria-label="Remove address"
-                                        @click.stop="addressStore.removeAddress(address.id)" />
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
-
-                    <!-- <ButtonUButton label="Add New Address" icon="i-lucide-plus" variant="outline" color="neutral" block
-                        class="mt-4" @click="openAddForm" /> -->
                     <UModal v-model:open="isFormOpen" :ui="{ content: 'max-w-md bg-white rounded-xs' }">
                         <template #header>
                             <h2 class="text-base font-semibold">{{ editingId ? 'Edit Address' : 'Add New Address' }}
@@ -306,44 +210,16 @@ function onSubmit() {
 
                                 <ButtonUButton label="Save Address" type="submit" block size="lg" color=""
                                     class="bg-indigo-600 text-white p-3 rounded-xs" />
-                                <!-- <UButton label="Save Address" type="submit" block size="lg" color=""
-                                    class="bg-indigo-600 text-white p-3 rounded-xs" /> -->
+
                             </UForm>
                         </template>
                     </UModal>
 
                 </div>
             </div>
-            <!-- <UCard class="h-fit" v-if="cartStore.totalPrice">
-                <template #header>
-                    <p class="font-semibold">Price Details ({{ cartStore.items.length }})</p>
-                </template>
 
-                <div class="space-y-2 text-sm">
-                    <div class="flex justify-between">
-                        <span>Total MRP</span>
-                        <span>₹ {{ cartStore.totalOriginalPrice }}</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span>Discount On MRP</span>
-                        <span>- ₹ {{ cartStore.discountAmount }}</span>
-                    </div>
-
-                    <USeparator />
-                    <div class="flex justify-between font-semibold">
-                        <span>Total Amount</span>
-                        <span>₹{{ cartStore.finalPrice }}</span>
-                    </div>
-                </div>
-
-                <UButton block class="mt-4" to="/checkout/payment">
-                    Continue
-                </UButton>
-            </UCard> -->
             <UCard class="h-fit bg-white ring-0 rounded-xs " v-if="cartStore.totalPrice">
                 <template #header>
-                    <!-- <p class="font-semibold" icon="i-lucide-receipt">Price Details ({{ cartStore.items.length
-                                }})</p> -->
                     <span class="flex items-center gap-1 font-medium text-sm">
                         <UIcon name="i-lucide-receipt" class="size-4" />
                         Price Details ({{ cartStore.items.length }} {{ cartStore.items.length === 1 ? 'item'
@@ -379,26 +255,7 @@ function onSubmit() {
 
                 <ButtonUButton label="Checkout" block
                     class="mt-4 bg-indigo-600 text-white p-3 hover:bg-indigo-600 active:bg-indigo-600" to="/checkout" />
-
-                <!-- <UButton block class="mt-4 bg-indigo-600 text-white p-3 hover:bg-indigo-600 active:bg-indigo-600"
-                    to="/checkout">
-                    Checkout
-                </UButton> -->
             </UCard>
-
-            <!-- <UCard class="h-fit">
-            <template #header>
-                <p class="font-semibold">Order Summary</p>
-            </template>
-            <div class="flex justify-between font-semibold text-sm">
-                <span>Total Amount</span>
-                <span>₹{{ cartStore.finalPrice }}</span>
-
-            </div>
-            <UButton block class="mt-4" :disabled="!addressStore.selectedAddress" @click="goToPayment">
-                Continue
-            </UButton>
-        </UCard> -->
         </div>
     </UContainer>
 </template>

@@ -1,5 +1,5 @@
 <script setup>
-const { data: products } = await useFetch("/api/products", {
+const { data: products, pending } = await useLazyFetch("/api/products", {
     query: {
         isBestSeller: true, limit: 8
     },
@@ -19,15 +19,16 @@ const { data: products } = await useFetch("/api/products", {
             <!-- <UButton label="Browse all" to="/products" variant="link" class="text-red-400 text-xs"
                 trailing-icon="i-lucide-arrow-right" /> -->
         </div>
-
-        <UScrollArea v-slot="{ item }" :items="products?.data || []" orientation="horizontal" class="w-full"
+        <UScrollArea v-if="pending" :items="Array(8).fill({})" v-slot="{ }" orientation="horizontal" class="w-full"
+            :ui="{ root: 'scrollbar-none', viewport: 'gap-4 md:gap-6' }">
+            <CardProductSkeleton />
+        </UScrollArea>
+        <UScrollArea v-else v-slot="{ item }" :items="products?.data || []" orientation="horizontal" class="w-full"
             :ui="{ root: 'scrollbar-none', viewport: 'gap-4 md:gap-6' }">
             <CardProductCard :key="item.id" :product="item" class="w-40 lg:mx-0" />
         </UScrollArea>
 
-        <!-- <div v-if="pending" class="flex gap-4 overflow-x-auto">
-            <USkeleton v-for="i in 4" :key="i" class="min-w-55 h-80 rounded-lg" />
-        </div> -->
+
     </UContainer>
 </template>
 

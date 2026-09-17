@@ -9,29 +9,12 @@ export default defineEventHandler((event) => {
   if (!product) {
     return errorResponse("Product not found", 404);
   }
-  // console.log("Current Product:", product);
   const relatedProducts = productsV4
     .filter(
       (item) =>
         item.category.id === product.category.id && item.id !== product.id,
     )
     .slice(0, 4);
-
-  // const relatedProducts = productsV3
-  //   .filter(
-  //     (item) =>
-  //       item.categoryId === product.categoryId && item.id !== product.id,
-  //   )
-  //   .slice(0, 4)
-  //   .map(enrichProduct);
-
-  // console.log(
-  //   "Related Products:",
-  //   relatedProducts.map((p) => ({
-  //     id: p.id,
-  //     categoryId: p.categoryId,
-  //   })),
-  // );
 
   return successResponse(
     relatedProducts,

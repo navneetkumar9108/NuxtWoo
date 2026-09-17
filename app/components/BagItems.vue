@@ -1,7 +1,6 @@
 <script setup>
 import { useCartStore } from '~~/store/cart'
 const cartStore = useCartStore()
-//  console.log("object", cartStore.items);
 </script>
 
 <template>
@@ -14,34 +13,41 @@ const cartStore = useCartStore()
     <div v-else class="flex flex-col gap-4">
         <div v-for="item in cartStore.items" :key="item.id"
             class="flex gap-3 border-b border-neutral-200 pb-4 last:border-b-0">
-            <ImageImg :src="item.image" :alt="item.name" class="w-20 h-24 object-contain rounded-md shrink-0" />
+            <ImageImg :src="item.image" :alt="item.name" class="w-20 h-full object-contain rounded-md shrink-0" />
 
             <div class="flex-1 flex flex-col justify-between min-w-0">
                 <div>
-                    <p class="text-sm font-medium line-clamp-1">{{ item.name }}</p>
-                    <p v-if="item.size || item.color" class="text-xs text-neutral-500 mt-0.5">
-                        <span v-if="item.size">Size: {{ item.size }}</span>
-                        <span v-if="item.size && item.color"> · </span>
-                        <span v-if="item.color">{{ item.color }}</span>
+                    <p class="text-sm font-medium line-clamp-1">{{ item.title }}</p>
+                    <p v-if="item.sizeName || item.colorName" class="text-xs text-neutral-500 mt-0.5">
+                        <span v-if="item.sizeName">Size: {{ item.sizeName }}</span>
+                        <span v-if="item.sizeName && item.colorName"> · </span>
+                        <span v-if="item.colorName">Color: {{ item.colorName }}</span>
                     </p>
                     <p class="text-sm font-semibold mt-1">{{ formatPrice(item.price) }}</p>
                 </div>
 
                 <div class="flex items-center justify-between mt-2">
-                    <div class="flex items-center gap-2">
-                        <ButtonUButton icon="i-lucide-minus" color="neutral" variant="outline" size="xs"
-                            :disabled="item.quantity <= 1" aria-label="Decrease quantity"
-                            @click="cartStore.decreaseQuantity(item.id)" />
-                        <span
-                            class="inline-flex items-center justify-center w-10 h-7 text-sm font-medium border border-neutral-200 rounded-md">
-                            {{ item.quantity }}
-                        </span>
-                        <ButtonUButton icon="i-lucide-plus" color="neutral" variant="outline" size="xs"
-                            aria-label="Increase quantity" @click="cartStore.increaseQuantity(item.id)" />
-                    </div>
+                    <UInputNumber :model-value="item.quantity" :min="1" size="sm" class=" w-28 "
+                        @update:model-value="(qty) => cartStore.updateQuantity(item._id, qty)" :ui="{
+                            base: 'bg-neutral-100 text-gray-800 p-2 ring-gray-200 focus-visible:ring-gray-200 focus-visible:ring-1 rounded-xs '
+                        }">
+                        <template #decrement>
+                            <ButtonUButton size="xs" icon="i-lucide-minus" color="neutral" variant="outline"
+                                class="bg-white ring-0 text-gray-800  hover:bg-white active:bg-white disabled:bg-gray-200 cursor-pointer" />
+                            <!-- <UButton size="xs" icon="i-lucide-minus" color="neutral" variant="outline"
+                                                class="bg-white ring-0 text-gray-800  hover:bg-white active:bg-white disabled:bg-gray-200 cursor-pointer" /> -->
+                        </template>
+
+                        <template #increment>
+                            <ButtonUButton size="xs" icon="i-lucide-plus" color="neutral" variant="outline"
+                                class="bg-white ring-0 text-gray-800 hover:bg-white active:bg-white cursor-pointer" />
+                            <!-- <UButton size="xs" icon="i-lucide-plus" color="neutral" variant="outline"
+                                                class="bg-white ring-0 text-gray-800 hover:bg-white active:bg-white cursor-pointer" /> -->
+                        </template>
+                    </UInputNumber>
 
                     <ButtonUButton icon="i-lucide-trash-2" color="error" variant="ghost" size="xs"
-                        aria-label="Remove item" @click="cartStore.removeFromCart(item.id)" />
+                        aria-label="Remove item" @click="cartStore.removeFromCart(item._id)" />
                 </div>
             </div>
         </div>

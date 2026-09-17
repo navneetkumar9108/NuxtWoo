@@ -27,31 +27,6 @@ const items = [
 
 <template>
     <UContainer class="mt-1">
-
-        <!-- <UCarousel v-slot="{ item }" loop arrows wheel-gestures dots :autoplay="{ delay: 4000 }" :items="items" :ui="{
-            item: 'basis-full',
-            prev: 'hidden sm:flex sm:start-5 bg-white text-red-400 rounded-sm ring-0 hover:bg-white active:bg-white z-10',
-            next: 'hidden sm:flex sm:end-5 bg-white text-red-400 rounded-sm ring-0 hover:bg-white active:bg-white z-10',
-            dots: 'bottom-4 gap-2',
-            dot: 'size-1 rounded-full bg-white/50  data-[state=active]:bg-white data-[state=active]:w-6 transition-all'
-        }">
-            <div class="relative w-full h-[280px] sm:h-[400px] md:h-[512px]">
-
-                <img :src="item.image" class="rounded-lg w-full h-full object-cover " loading="lazy">
-                <div
-                    class="absolute inset-0 bg-black/30 flex flex-col justify-center px-6 sm:px-16 rounded-lg leading-tight">
-                    <h2 class="text-white text-2xl sm:text-4xl font-bold mb-2">
-                        {{ item.title }}
-                    </h2>
-                    <p class="text-white/90 text-sm sm:text-lg mb-4">
-                        {{ item.subtitle }}
-                    </p>
-                    <UButton :to="item.link" size="xl" class="w-fit p-3 bg-gray-200 hover:bg-white active:bg-white">
-                        {{ item.cta }}
-                    </UButton>
-                </div>
-            </div>
-        </UCarousel> -->
         <UCarousel v-slot="{ item }" loop arrows wheel-gestures dots :autoplay="{ delay: 4000 }" :items="items" :ui="{
             item: 'basis-full',
             prev: 'hidden sm:flex sm:start-5 bg-white text-red-400 rounded-sm ring-0 hover:bg-white active:bg-white z-10',

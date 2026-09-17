@@ -2,9 +2,7 @@
 const { product } = defineProps({
   product: Object,
 });
-// console.log('product', product);
 </script>
-<!-- :to="`/products/${product.slug}`"  -->
 <template>
   <UPageCard class="w-full lg:w-52.5 bg-neutral ring-0 mx-auto  mb-5 lg:mb-7.5 
   " :to="`/products/${product.slug}?color=${product.colorSlug}`" :ui="{

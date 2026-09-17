@@ -1,9 +1,6 @@
 <script setup>
 import { z } from 'zod'
-
 import { useAuthStore } from '~~/store/auth'
-
-//definePageMeta({ middleware: 'auth' })
 
 const authStore = useAuthStore()
 const toast = useToast()
@@ -37,6 +34,7 @@ const genderOptions = [
 const loading = ref(false)
 
 async function onSubmit(event) {
+    console.log("form submit");
     loading.value = true
     try {
         authStore.updateProfile(event.data)
@@ -49,7 +47,6 @@ async function onSubmit(event) {
 </script>
 
 <template>
-    <!-- <div class="lg:col-span-3"> -->
     <UCard class="bg-white  rounded-xs lg:px-32.5 lg:py-10.75 ring-neutral-200 " :ui="{
         header: 'border-b-neutral-200'
     }">
@@ -90,12 +87,6 @@ async function onSubmit(event) {
             <ButtonUButton label="EDIT" size="lg" block
                 class="mt-6  lg:w-1/2 lg:mx-auto py-3 rounded-xs bg-red-400 text-white hover:bg-red-400 uppercase active:bg-red-400"
                 @click="isEditing = true" />
-
-            <!-- <UButton size="lg" block
-                class="mt-6  lg:w-1/2 lg:mx-auto py-3 rounded-xs bg-red-400 text-white hover:bg-red-400 uppercase active:bg-red-400"
-                @click="isEditing = true">
-                EDIT
-            </UButton> -->
         </div>
         <!-- Edit form -->
         <UForm v-else :schema="schema" :state="state" class="space-y-4 " @submit="onSubmit">
@@ -149,19 +140,9 @@ async function onSubmit(event) {
 
                 <ButtonUButton label="Cancel" variant="outline" block color="neutral" @click="isEditing = false"
                     class="bg-white ring-red-400 text-red-400 rounded-xs hover:bg-white active:bg-white  p-3" />
-
-                <!-- <UButton type="submit" block :loading="loading"
-                    class="bg-red-400 hover:bg-red-400 active:bg-red-400  p-3 text-white rounded-xs">
-                    Save Changes
-                </UButton>
-                <UButton variant="outline" block color="neutral" @click="isEditing = false"
-                    class="bg-white ring-red-400 text-red-400 rounded-xs hover:bg-white active:bg-white  p-3">
-                    Cancel
-                </UButton> -->
             </div>
         </UForm>
     </UCard>
-    <!-- </div> -->
 </template>
 
 <style lang="scss" scoped></style>

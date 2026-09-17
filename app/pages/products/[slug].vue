@@ -1,78 +1,17 @@
 <script setup>
 import { useWishlistStore } from '~~/store/wishlist';
 import { useCartStore } from '~~/store/cart';
-import { date } from 'zod';
 const route = useRoute();
-const qty = ref(1);
 const selectedSize = ref("");
-const activeIndex = ref(0);
-const selectedVariantIndex = ref(0);
 const cartStore = useCartStore()
-const wishlistStore = useWishlistStore() // agar nahi banaya to bata dena, wo bhi bana du
+const wishlistStore = useWishlistStore()
 
 
-// Fetch product by slug
 
 const { data: product, pending, } = await useFetch(
   `/api/products/${route.params.slug}`,
 );
 
-// console.log('product pdp', product.value.data);
-// const selectedColor = ref(product.value?.data?.colors?.[0]?.slug || null)
-// const selectedColor = ref(route.query.color || selectedColorData);
-
-// const selectedColorData = computed(() => {
-//   return product.value?.data?.colors?.find(
-//     (color) => color.slug === selectedColor.value
-//   );
-// });
-
-// watch(
-//   () => product.value?.data,
-//   (newProduct) => {
-//     if (!newProduct) return;
-
-//     selectedColor.value =
-//       route.query.color || newProduct.colors?.[0]?.slug || "";
-//   },
-//   { immediate: true }
-// );
-// async function changeColor(colorSlug) {
-//   selectedColor.value = colorSlug;
-
-//   await navigateTo({
-//     path: route.path,
-//     query: {
-//       ...route.query,
-//       color: colorSlug,
-//     },
-//     replace: true,
-//   });
-// }
-
-
-// const selectedColor = computed(() => {
-//   return route.query.color ||
-//     product.value?.data?.colors?.[0]?.slug ||
-//     ''
-// })
-
-// const selectedColorData = computed(() => {
-//   return product.value?.data?.colors?.find(
-//     color => color.slug === selectedColor.value
-//   )
-// })
-
-// async function changeColor(colorSlug) {
-//   await navigateTo({
-//     path: route.path,
-//     query: {
-//       ...route.query,
-//       color: colorSlug
-//     },
-//     replace: true
-//   })
-// }
 
 const selectedColor = ref(route.query.color || "");
 
@@ -103,49 +42,7 @@ async function changeColor(colorSlug) {
     replace: true,
   });
 }
-// console.log('selectedColorData', selectedColorData.value);
 
-// const discount = computed(() => {
-//   if (!product.value?.originalPrice) return null;
-//   return Math.round(
-//     (1 - product.value.price / product.value.originalPrice) * 100,
-//   );
-// });
-
-// const galleryImages = computed(() => {
-//   return product.value?.data?.variants?.[selectedVariantIndex.value]?.images || [];
-// });
-
-
-
-//function handleAddToCart() {
-//  cartStore.addToCart(product.value)
-//}
-
-// const tabs = [
-//   { label: "Description", slot: "description" },
-//   { label: "Reviews", slot: "reviews" },
-//   { label: "Specifications", slot: "specs" },
-// ];
-
-// const specColumns = [
-//   { accessorKey: "label", header: "Specification" },
-//   { accessorKey: "value", header: "Value" },
-// ];
-
-// const specs = computed(() => [
-//   { label: "brand", value: product.value.brand },
-//   { label: "Weight", value: `${product.value.weight} kg` },
-//   {
-//     label: "Dimensions",
-//     value: `${product.value.dimensions.width} × ${product.value.dimensions.height} × ${product.value.dimensions.depth} cm`,
-//   },
-//   { label: "Warranty", value: product.value.warrantyInformation },
-//   { label: "Shipping", value: product.value.shippingInformation },
-//   { label: "Return Policy", value: product.value.returnPolicy },
-//   { label: "Min. Order Qty", value: product.value.minimumOrderQuantity },
-//   { label: "Barcode", value: product.value.meta.barcode },
-// ]);
 
 const formatter = new Intl.NumberFormat("en", {
   notation: "compact",
@@ -159,45 +56,17 @@ const specRows = computed(() =>
     value,
   }))
 )
-// const items = [
-//   'https://picsum.photos/640/640?random=1',
-//   'https://picsum.photos/640/640?random=2',
-//   'https://picsum.photos/640/640?random=3',
-//   'https://picsum.photos/640/640?random=4',
-//   'https://picsum.photos/640/640?random=5',
-//   'https://picsum.photos/640/640?random=6'
-// ]
+
 
 const toast = useToast() // Nuxt UI v3 ka built-in toast composable
 
-// console.log('selectedSize', selectedSize.value);
-// function handleAddToCart() {
-//   if (!selectedSize.value) {
-//     toast.add({
-//       title: 'Please select a size',
-//       // color: 'error',
-//       icon: 'i-lucide-alert-circle', class: 'bg-red-100 text-red-800 rounded-xs'
-//     })
-//     return
-//   }
-
-//   cartStore.addToCart({ ...product.value.data, selectedSize: selectedSize.value })
-//   // cartStore.addToCart({ selectedColorData, selectedSize: selectedSize.value })
-//   toast.add({
-//     title: 'Item added to cart',
-//     color: 'success',
-//     icon: 'i-lucide-check-circle'
-//   })
-// }
-
-function handleAddToCart() {
+async function handleAddToCart() {
   if (!selectedColorData.value) {
     toast.add({
       title: "Please select a color",
       icon: "i-lucide-alert-circle",
       class: "bg-red-100 text-red-800 rounded-xs",
     });
-
     return;
   }
 
@@ -207,85 +76,78 @@ function handleAddToCart() {
       icon: "i-lucide-alert-circle",
       class: "bg-red-100 text-red-800 rounded-xs",
     });
-
     return;
   }
 
-  cartStore.addToCart({
-    productId: product.value.data.id,
-    title: product.value.data.title,
-    brand: product.value.data.brand,
+  // selectedSize sirf naam (string) hai, poora size object dhoondo
+  const sizeObj = selectedColorData.value.sizes.find(
+    (s) => s.name === selectedSize.value
+  );
 
-    color: {
-      id: selectedColorData.value.id,
-      name: selectedColorData.value.name,
-      slug: selectedColorData.value.slug,
-      hex: selectedColorData.value.hex,
-    },
+  if (!sizeObj) {
+    toast.add({
+      title: "Invalid size selected",
+      icon: "i-lucide-alert-circle",
+      class: "bg-red-100 text-red-800 rounded-xs",
+    });
+    return;
+  }
 
-    size: selectedSize.value,
-
-    price: selectedColorData.value.pricing.price,
-    originalPrice: selectedColorData.value.pricing.originalPrice,
-    discount: selectedColorData.value.pricing.discount,
-
-    image: selectedColorData.value.thumbnail,
+  const result = await cartStore.addToCart({
+    productId: product.value.data._id,
+    colorId: selectedColorData.value._id,
+    sizeId: sizeObj._id,
+    quantity: 1,
   });
 
-  toast.add({
-    title: "Item added to cart",
-    color: "success",
-    icon: "i-lucide-check-circle",
-  });
+  if (result?.success) {
+    toast.add({
+      title: "Item added to cart",
+      color: "success",
+      icon: "i-lucide-check-circle",
+    });
+  } else {
+    toast.add({
+      title: result?.message || "Failed to add item",
+      icon: "i-lucide-alert-circle",
+      class: "bg-red-100 text-red-800 rounded-xs",
+    });
+  }
 }
 
-function handleAddToWishlist() {
+
+
+async function handleAddToWishlist() {
   if (!selectedColorData.value) {
     toast.add({
       title: "Please select a color",
       icon: "i-lucide-alert-circle",
       class: "bg-red-100 text-red-800 rounded-xs",
     });
-
     return;
   }
 
-  wishlistStore.addToWishlist({
-    productId: product.value.data.id,
-    title: product.value.data.title,
-    brand: product.value.data.brand,
-
-    color: {
-      id: selectedColorData.value.id,
-      name: selectedColorData.value.name,
-      slug: selectedColorData.value.slug,
-      hex: selectedColorData.value.hex,
-    },
-
-    price: selectedColorData.value.pricing.price,
-    originalPrice: selectedColorData.value.pricing.originalPrice,
-    discount: selectedColorData.value.pricing.discount,
-
-    image: selectedColorData.value.thumbnail,
-
-    sizes: selectedColorData.value.sizes,
+  const result = await wishlistStore.addToWishlist({
+    productId: product.value.data._id,
+    colorId: selectedColorData.value._id,
   });
 
-  toast.add({
-    title: "Item added to wishlist",
-    color: "success",
-    icon: "i-lucide-check-circle",
-  });
+  if (result?.success) {
+    toast.add({
+      title: "Item added to wishlist",
+      color: "success",
+      icon: "i-lucide-check-circle",
+    });
+  } else {
+    toast.add({
+      title: result?.message || "Failed to add to wishlist",
+      icon: "i-lucide-alert-circle",
+      class: "bg-red-100 text-red-800 rounded-xs",
+    });
+  }
 }
-// function handleAddToWishlist() {
-//   wishlistStore.addToWishlist(product.value.data)
-//   toast.add({
-//     title: 'Item added to wishlist',
-//     color: 'success',
-//     icon: 'i-lucide-check-circle'
-//   })
-// }
-// const loadedImages = ref({})
+
+
 
 </script>
 
@@ -293,49 +155,16 @@ function handleAddToWishlist() {
   <UContainer class="py-10">
     <UPageGrid class="lg:grid-cols-[60%_auto] gap-2 sm:gap-10 items-start">
       <!-- Left: Images -->
-      <!-- <UPageGrid class="hidden sm:grid sm:grid-cols-2 lg:grid-cols-2 gap-2">
-        <div class="overflow-hidden" v-for="(image, index) in galleryImages" :key="index">
 
-          <NuxtImg :src="image"
-            class="w-full rounded-xs object-cover transition-transform duration-500 hover:scale-110 cursor-zoom-in " />
-        </div>
-      </UPageGrid>
-      <UCarousel v-slot="{ item }" wheel-gestures dots :items="galleryImages" class="w-full   mx-auto sm:hidden" :ui="{
-        dot: 'size-1',
-        dots: '-bottom-2'
-      }">
-        <NuxtImg :src="item" height="320" class="w-full rounded-lg" loading="lazy" playsinline />
-
-      </UCarousel> -->
-      <!-- <UPageGrid class="hidden sm:grid sm:grid-cols-2 lg:grid-cols-2 gap-2">
-        <div class="overflow-hidden" v-for="(image, index) in product.data.images" :key="index">
-
-          <NuxtImg :src="image"
-            class="w-full rounded-xs object-cover transition-transform duration-500 hover:scale-110 cursor-zoom-in " />
-        </div>
-      </UPageGrid> -->
       <UPageGrid v-if="pending" class="hidden sm:grid sm:grid-cols-2 lg:grid-cols-2 gap-2">
         <USkeleton v-for="i in 4" :key="i" class="w-full aspect-square rounded-xs" />
       </UPageGrid>
       <UPageGrid v-else class="hidden sm:grid sm:grid-cols-2 lg:grid-cols-2 gap-2">
         <div class="overflow-hidden " v-for="(image, index) in selectedColorData?.images || []" :key="index">
-
-
           <NuxtImg :src="image"
             class="w-full rounded-xs object-cover transition-transform duration-500 hover:scale-110 cursor-zoom-in " />
-
         </div>
       </UPageGrid>
-
-
-      <!-- <UCarousel v-slot="{ item }" wheel-gestures dots :items="product.data.images" class="w-full   mx-auto sm:hidden"
-        :ui="{
-          dot: 'size-1',
-          dots: '-bottom-2'
-        }">
-        <NuxtImg :src="item" height="320" class="w-full rounded-lg" loading="lazy" playsinline />
-
-      </UCarousel> -->
       <UCarousel v-slot="{ item }" wheel-gestures dots :items="selectedColorData?.images || []"
         class="w-full   mx-auto sm:hidden" :ui="{
           dot: 'size-1',
@@ -369,14 +198,11 @@ function handleAddToWishlist() {
             </UBadge>
           </div>
           <USeparator size="xs" class="text-gray-600" />
-          <!-- <span class="text-2xl text-gray-800 mr-3"><strong>₹{{ product.data.price }}</strong></span> -->
           <span class="text-2xl text-gray-800 mr-3">
             <strong>₹{{ selectedColorData?.pricing?.price }}</strong>
           </span>
 
           <p class="text-gray-500 text-xl opacity-[0.8] inline-block mt-3.5">
-            <!-- <span class="mr-3">MRP <s>₹ {{ product.data.originalPrice }}</s></span>
-            <span class="text-xl font-bold text-success">({{ product.data.discount }}% OFF)</span> -->
             <span class="mr-3">
               MRP
               <s>₹ {{ selectedColorData?.pricing?.originalPrice }}</s>
@@ -392,52 +218,10 @@ function handleAddToWishlist() {
           </p>
         </div>
 
-        <!-- Variants (Size/Color) -->
-
-        <!-- <UCarousel v-slot="{ item, index }" :items="product.data.variants" arrows wheel-gestures
-          :prev="{ variant: 'solid' }" :next="{ variant: 'solid' }" :ui="{
-            item: 'basis-1/4 ps-0',
-            prev: 'sm:start-0 ',
-            next: 'sm:end-0',
-            container: 'ms-0'
-          }">
-          <NuxtImg :src="item.images[0]" width="100" height="100" class="rounded-xs cursor-pointer" loading="lazy"
-            @click="selectedVariantIndex = index" />
-        </UCarousel> -->
-
-
-        <!-- <div class="flex flex-col mt-2.5 mb-6">
-          <p class="font-medium mb-2.5">SELECT SIZE</p>
-          <div class="flex  flex-row  gap-1">
-
-            <UButton variant="outline" v-for="item in product.data.variants[selectedVariantIndex].sizes"
-              :key="item.sizeId" @click="selectedSize = item.sizeId"
-              class="rounded-full w-12.5 h-12.5 p-0 flex items-center justify-center text-sm font-bold bg-neutral hover:bg-neutral active:bg-neutral relative"
-              :ui="{
-                base:
-                  selectedSize === item.sizeId
-                    ? 'ring-red-500 text-red-500'
-                    : 'ring-gray-800 text-gray-800',
-              }">
-              {{ item.size.name }}
-
-              <UBadge color="success" class="absolute -bottom-1 flex items-center justify-center w-10 py-0 px-0">
-                {{ item.stock === 0 ? "(Out of Stock) " :
-                  item.stock }}
-              </UBadge>
-            </UButton>
-          </div>
-        </div> -->
         <div v-if="product.data?.colors?.length" class="space-y-2">
           <p class="font-medium mb-1">MORE COLORS</p>
           <p class="text-sm font-medium text-gray-800">
-            <!-- Color: <span class="font-normal text-gray-600">{{product.data?.colors.find(c => c.slug ===
-              selectedColor)?.name
-            }}</span> -->
-            Color:
-            <span>
-              {{ selectedColorData?.name }}
-            </span>
+            Color: <span class="font-normal text-gray-600">{{ selectedColorData?.name }}</span>
           </p>
 
           <div class="flex items-center gap-3">
@@ -446,29 +230,11 @@ function handleAddToWishlist() {
               :class="selectedColor === color.slug ? 'ring-gray-900' : 'ring-gray-300'"
               :style="{ backgroundColor: color.hex }" :title="color.name" @click="changeColor(color.slug)" />
           </div>
-          <!-- @click="selectedColor = color.slug" -->
         </div>
         <div class="flex flex-col mt-2.5 mb-6">
           <p class="font-medium mb-2.5">SELECT SIZE</p>
           <div class="flex  flex-row  gap-1">
 
-
-            <!-- <UButton variant="outline" v-for="item in product.data.sizes" :key="item.sizeId"
-              @click="selectedSize = item.name"
-              class="rounded-full w-12.5 h-12.5 p-0 flex items-center justify-center text-sm font-bold bg-neutral hover:bg-neutral active:bg-neutral relative"
-              :ui="{
-                base:
-                  selectedSize === item.name
-                    ? 'ring-red-500 text-red-500'
-                    : 'ring-gray-800 text-gray-800',
-              }">
-              {{ item.name }}
-
-              <UBadge color="success" class="absolute -bottom-1 flex items-center justify-center w-10 py-0 px-0">
-                {{ item.stock === 0 ? "(Out of Stock) " :
-                  item.stock }}
-              </UBadge>
-            </UButton> -->
             <ButtonUButton variant="outline" v-for="item in selectedColorData?.sizes || []" :key="item.id"
               @click="selectedSize = item.name"
               class="rounded-full w-12.5 h-12.5 p-0 flex items-center justify-center text-sm font-bold bg-neutral hover:bg-neutral active:bg-neutral relative"
@@ -492,10 +258,7 @@ function handleAddToWishlist() {
           <ButtonUButton label="Add to Cart"
             class="w-[50%] justify-center py-3.75 font-bold text-[16px] bg-red-400 hover:bg-red-400 active:bg-red-400 text-white rounded-sm"
             icon="i-lucide-shopping-bag" size="lg" color="primary" variant="solid" @click="handleAddToCart" />
-          <!-- <ButtonUButton label="Add to Cart"
-            class="w-[50%] justify-center py-3.75 font-bold text-[16px] bg-error text-white rounded-sm"
-            icon="i-lucide-shopping-bag" size="lg" color="primary" variant="solid"
-            @click="cartStore.addToCart(product.data)" /> -->
+
 
           <ButtonUButton label="WISHLIST"
             class="w-[40%] justify-center py-3.75 font-bold text-[16px] hover:ring-gray-800 text-gray-800 rounded-sm ring-error"
@@ -512,11 +275,6 @@ function handleAddToWishlist() {
             <!-- <UIcon name="boxicons:list-square" class="size-4" /> -->
           </div>
 
-          <!-- <div class="text-[16px] text-gray-800 font-normal leading-snug mt-3">
-            <ul v-for="highlight in product.data.highlights" :key="highlight">
-              <li>{{ highlight }}</li>
-            </ul>
-          </div> -->
           <ul class="text-[16px] text-gray-800 font-normal leading-snug mt-3 list-disc pl-5">
             <li v-for="highlight in product.data.highlights" :key="highlight">
               {{ highlight }}

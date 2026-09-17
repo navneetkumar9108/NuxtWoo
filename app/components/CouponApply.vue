@@ -3,28 +3,7 @@ import { useCartStore } from '~~/store/cart'
 const cartStore = useCartStore()
 
 const code = ref('')
-// const applying = ref(false)
 const error = ref('')
-
-// async function applyCoupon() {
-// cartStore.applyCoupon(code.value)
-// if (!code.value.trim()) return
-// applying.value = true
-// error.value = ''
-// try {
-//     const res = await $fetch('/api/coupon/apply', {
-//         method: 'POST',
-//         body: { code: code.value.trim(), cartTotal: cartStore.totalPrice }
-//     })
-//     cartStore.applyCoupon(res)
-//     code.value = ''
-// } catch (e) {
-//     error.value = e.data?.message || 'Invalid coupon code'
-// } finally {
-//     applying.value = false
-// }
-// }
-
 
 function handleApplyCoupon() {
     if (!code.value.trim()) return
@@ -65,33 +44,9 @@ function removeCoupon() {
                         @keyup.enter="handleApplyCoupon" />
                     <ButtonUButton label="Apply" color="primary" @click="handleApplyCoupon"
                         class="bg-indigo-600 text-white  hover:bg-indigo-600 active:bg-indigo-600 py-2" />
-
-
-                    <!-- <UButton color="primary" @click="handleApplyCoupon"
-                        class="bg-indigo-600 text-white  hover:bg-indigo-600 active:bg-indigo-600 py-2">
-                        Apply
-                    </UButton> -->
                 </div>
             </UFormField>
         </template>
-        <!-- 
-        <template v-else>
-            <UAlert color="success" variant="soft" icon="i-lucide-badge-check"
-                :title="`${cartStore.appliedCoupon} applied`" :description="`You saved ₹${cartStore.appliedCoupon}`"
-                :ui="{
-                    icon: 'text-gray-800',
-                    title: 'text-gray-800',
-                    description: 'text-gray-800'
-
-                }">
-                <template #actions>
-                    <UButton variant="ghost" color="neutral" size="xs" @click="removeCoupon"
-                        class="bg-red-300 hover:bg-red-300 text-white">
-                        Remove
-                    </UButton>
-                </template>
-            </UAlert>
-        </template> -->
         <template v-else>
             <div class="flex items-center justify-between gap-2">
                 <span class="flex items-center gap-1.5 text-sm text-green-600 font-medium">
@@ -100,11 +55,6 @@ function removeCoupon() {
                 </span>
                 <ButtonUButton label="Remove" variant="ghost" color="neutral" size="xs"
                     class="hover:bg-red-400 hover:text-white rounded-xs" @click="removeCoupon" />
-
-                <!-- <UButton variant="ghost" color="neutral" size="xs" class="hover:bg-red-400 hover:text-white rounded-xs"
-                    @click="removeCoupon">
-                        
-                </UButton> -->
             </div>
         </template>
     </UCard>

@@ -1,7 +1,6 @@
 // server/utils/filter.js
 export function filterProducts(products, query = {}) {
   let filtered = [...products];
-  // console.log("QUERY RECEIVED:", query);
 
   if (query.brand) {
     const brand = query.brand.split(",");
@@ -17,21 +16,11 @@ export function filterProducts(products, query = {}) {
   }
 
   if (query.gender) {
-    // console.log(
-    //   "Filtered Products:",
-    //   filtered.map((p) => ({
-    //     id: p.id,
-    //     categoryId: p.categoryId,
-    //   })),
-    // );
     // Gender
     const gender = query.gender.split(",");
     filtered = filtered.filter((product) =>
       gender.includes(product.gender.slug),
     );
-    // filtered = filtered.filter(
-    //   (product) => product.genderId === Number(query.gender),
-    // );
   }
 
   // Material
@@ -87,21 +76,11 @@ export function filterProducts(products, query = {}) {
     );
   }
 
-  // console.log("Min Price:", query.minPrice);
-  // console.log("Max Price:", query.maxPrice);
-
   // Rating
   if (query.rating) {
     filtered = filtered.filter(
       (product) => product.rating >= Number(query.rating),
     );
-    // console.log(
-    //   "Products After Rating:",
-    //   filtered.map((p) => ({
-    //     id: p.id,
-    //     rating: p.rating,
-    //   })),
-    // );
   }
 
   // Discount
@@ -123,9 +102,7 @@ export function filterProducts(products, query = {}) {
 
   // Best Seller
   if (query.isBestSeller === "true") {
-    // console.log("BEFORE:", filtered.length);
     filtered = filtered.filter((product) => product.isBestSeller);
-    // console.log("AFTER:", filtered.length);
   }
 
   // Featured

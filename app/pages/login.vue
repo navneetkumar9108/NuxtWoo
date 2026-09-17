@@ -270,15 +270,11 @@ const tab = ref('login')
 const show = ref(false)
 const mode = ref('login') // 'login' | 'signup'
 
-
-
 const loginSchema = z.object({
     email: z.string().email('Valid email daalo'),
     password: z.string().min(6, 'Min 6 characters'),
 
 })
-
-
 
 const registerSchema = z.object({
     name: z.string().min(2, 'Name daalo'),
@@ -333,19 +329,6 @@ async function handleLogin(event) {
     }
 }
 
-// async function handleLogin(event) {
-//     loading.value = true
-//     errorMsg.value = ''
-//     try {
-//         await auth.login(event.data)
-//         redirectAfterAuth()
-//     } catch (e) {
-//         errorMsg.value = e?.message || 'Login fail ho gaya'
-//     } finally {
-//         loading.value = false
-//     }
-// }
-
 async function handleRegister(event) {
     loading.value = true
     errorMsg.value = ''
@@ -364,10 +347,6 @@ const tabs = [
     { label: 'Sign Up', value: 'signup', slot: 'signup' }
 ]
 
-// pehle se login hai to login page pe rukna hi nahi
-// if (auth.isLoggedIn) {
-//     redirectAfterAuth()
-// }
 const handleGoogleLogin = () => {
     window.location.href = 'https://your-wp-site.com/wp-login.php?action=google-login&redirect_to=' + encodeURIComponent(window.location.origin)
 }
@@ -417,13 +396,7 @@ onMounted(() => {
                     Create new account
                 </h2>
             </template>
-            <!-- 
-            <UTabs v-model="tab" :items="tabs" class="w-full h-175 " :ui="{
-                list: 'bg-neutral-100 rounded-full p-1 mb-6',
-                indicator: 'bg-white rounded-full shadow-sm ',
-                trigger: 'rounded-full data-[state=active]:text-neutral-900 data-[state=inactive]:text-neutral-500 font-medium'
-            }"> -->
-            <!-- <template #login> -->
+
             <div v-if="mode === 'login'">
 
                 <UForm :schema="loginSchema" :state="loginState" class="space-y-5 mt-2" @submit="handleLogin">
@@ -440,19 +413,6 @@ onMounted(() => {
                     <UFormField label="Password" name="password" :ui="{
                         label: 'text-sky-600'
                     }">
-                        <!-- <UInput v-model="loginState.password" :type="showPassword ? 'text' : 'password'" size="xl"
-                                class="w-full" placeholder="Password"
-                                :ui="{ base: 'bg-white text-gray-400  rounded-xl border-neutral-200 focus-visible:ring-2 focus-visible:ring-neutral-900' }" />
-                                <template #trailing>
-                                    <UButton color="neutral" variant="link" size="sm"
-                                        :icon="showPassword ? 'i-lucide-eye-off' : 'i-lucide-eye'" :padded="false"
-                                        @click="showPassword = !showPassword" />
-                                </template> -->
-                        <!-- <template #hint>
-                            <NuxtLink to="/forgot-password" class="text-xs text-neutral-500 hover:text-neutral-900">
-                                Forgot password?
-                            </NuxtLink>
-                        </template> -->
                         <UInput icon="i-lucide-lock-keyhole" v-model="loginState.password" placeholder="Password"
                             :type="show ? 'text' : 'password'" class="w-full" size="xl" :ui="{
                                 trailing: 'pe-1', base: 'bg-white text-sky-600  rounded-full ring-0 focus-visible:ring-2 focus-visible:ring-sky-600', leadingIcon: 'size-5'
@@ -462,10 +422,6 @@ onMounted(() => {
                                     variant="link" size="sm" :icon="show ? 'i-lucide-eye-off' : 'i-lucide-eye'"
                                     :aria-label="show ? 'Hide password' : 'Show password'" :aria-pressed="show"
                                     aria-controls="password" @click="show = !show" />
-                                <!-- <UButton class="text-sky-600  hover:text-sky-700 active:text-sky-600" variant="link"
-                                    size="sm" :icon="show ? 'i-lucide-eye-off' : 'i-lucide-eye'"
-                                    :aria-label="show ? 'Hide password' : 'Show password'" :aria-pressed="show"
-                                    aria-controls="password" @click="show = !show" /> -->
                             </template>
                         </UInput>
                     </UFormField>
@@ -485,18 +441,6 @@ onMounted(() => {
 
                     <ButtonUButton label="Login" type="submit" block size="xl" :loading="loading"
                         class=" bg-sky-600 rounded-full text-white  hover:bg-sky-700 active:bg-sky-600 font-medium tracking-wide" />
-
-                    <!-- <UButton type="submit" block size="xl" :loading="loading"
-                        class=" bg-sky-600 rounded-full text-white  hover:bg-sky-700 active:bg-sky-600 font-medium tracking-wide">
-                        Login
-                    </UButton> -->
-
-                    <!-- Divider -->
-                    <!-- <div class="flex items-center gap-3 py-1">
-                        <div class="h-px flex-1 bg-neutral-200" />
-                        <span class="text-xs text-neutral-400 uppercase tracking-wide">or continue with</span>
-                        <div class="h-px flex-1 bg-neutral-200" />
-                    </div> -->
                     <USeparator label="OR" :ui="{
                         label: 'text-gray-500',
                         border: 'border-gray-300'
@@ -506,17 +450,6 @@ onMounted(() => {
                         <ButtonUButton label="Google" block size="xl" variant="outline" color="neutral"
                             class="rounded-full  bg-white hover:bg-white active:bg-white ring-2 ring-gray-800 text-gray-800 "
                             icon="i-logos-google-icon" @click="handleGoogleLogin" />
-
-                        <!-- <UButton block size="xl" variant="outline" color="neutral"
-                            class="rounded-full  bg-white hover:bg-white active:bg-white ring-2 ring-gray-800 text-gray-800 "
-                            icon="i-logos-google-icon" @click="handleGoogleLogin">
-                            Google
-                        </UButton> -->
-                        <!-- <UButton block size="xl" variant="outline" color="neutral"
-                            class="rounded-full bg-white hover:bg-white active:bg-white ring-sky-600 text-sky-600 border-neutral-200"
-                            icon="i-simple-icons-apple" @click="handleAppleLogin">
-                            Apple
-                        </UButton> -->
                     </div>
                 </UForm>
                 <p class="text-sm text-neutral-500 text-center mt-6">
@@ -525,9 +458,7 @@ onMounted(() => {
                         class="text-gray-800 font-medium hover:underline" @click="mode = 'signup'" />
                 </p>
             </div>
-            <!-- </template> -->
 
-            <!-- <template #signup> -->
             <div v-else>
 
                 <UForm :schema="registerSchema" :state="registerState" class="space-y-5 mt-2" @submit="handleRegister">
@@ -565,7 +496,6 @@ onMounted(() => {
                             }" />
                     </UFormField>
 
-                    <!-- :ui="{ base: 'border-neutral-300 rounded-full', indicator: 'bg-white after:bg-neutral-900 after:rounded-full after:size-2.5' }"  -->
                     <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
                         <UFormField label="Gender" name="gender" :ui="{
                             label: 'text-sky-600'
@@ -628,11 +558,6 @@ onMounted(() => {
 
                     <ButtonUButton label="Sign up" type="submit" block size="xl" :loading="loading"
                         class=" bg-sky-600 rounded-full text-white  hover:bg-sky-700 active:bg-sky-600 font-medium tracking-wide" />
-
-                    <!-- <UButton type="submit" block size="xl" :loading="loading"
-                        class=" bg-sky-600 rounded-full text-white  hover:bg-sky-700 active:bg-sky-600 font-medium tracking-wide">
-                        Sign up
-                    </UButton> -->
                 </UForm>
                 <p class="text-sm text-neutral-500 text-center mt-6">
                     Already have an account?
@@ -641,138 +566,9 @@ onMounted(() => {
 
                 </p>
             </div>
-            <!-- </template> -->
-            <!-- </UTabs> -->
         </UPageCard>
 
 
     </UContainer>
 
-
-    <!-- <UContainer class="flex h-screen py-5 ">
-        Left: form panel
-        <UPageCard class="w-full lg:w-1/2   ring-0 shadow-none bg-white rounded-none"
-            :ui="{ container: 'sm:p-16', header: 'mb-0' }">
-            <template #header>
-                <div class="flex items-center justify-between">
-                    <NuxtLink to="/" class="text-sm text-neutral-500 hover:text-neutral-900 transition-colors">
-                        Back
-                    </NuxtLink>
-                </div>
-            </template>
-
-            <UTabs v-model="tab" :items="tabs" class="w-full bg-white h-200 " :ui="{
-                list: 'bg-transparent  border-neutral-600 rounded-none  ',
-                indicator: 'bg-transparent duration-500 border-b rounded-none ',
-                trigger: 'data-[state=active]:text-gray-800 hover:data-[state=inactive]:not-disabled:text-gray-800 data-[state=inactive]:text-gray-500',
-
-            }">
-                <template #login>
-                    <UForm :schema="loginSchema" :state="loginState" class="space-y-4 mt-4 h-full"
-                        @submit="handleLogin">
-                        <UFormField label="Email" name="email" :ui="{
-                            label: 'text-red-400'
-                        }">
-                            <UInput v-model="loginState.email" type="email" class="w-full" placeholder="you@example.com"
-                                :ui="{ base: 'bg-white  focus-visible:ring-1 ring-neutral-200 focus-visible:ring-neutral-200 text-red-400 rounded-xs' }" />
-                        </UFormField>
-                        <UFormField label="Password" name="password" :ui="{
-                            label: 'text-red-400'
-                        }">
-                            <UInput v-model="loginState.password" type="password" class="w-full"
-                                :ui="{ base: 'bg-white  focus-visible:ring-1 ring-neutral-200 focus-visible:ring-neutral-200 text-red-400 rounded-xs' }" />
-                        </UFormField>
-                        <p v-if="errorMsg" class="text-sm text-red-500">{{ errorMsg }}</p>
-                        <UButton type="submit" block :loading="loading"
-                            class="p-3 rounded-xs bg-red-400 text-white hover:bg-red-400 uppercase active:bg-red-400">
-                            Login
-                        </UButton>
-                    </UForm>
-                </template>
-
-                <template #signup>
-                    <UForm :schema="registerSchema" :state="registerState" class="space-y-4 mt-4 bg-white h-full"
-                        @submit="handleRegister">
-                        <UFormField label="Name" name="name" :ui="{
-                            label: 'text-red-400'
-                        }">
-                            <UInput v-model="registerState.name" class="w-full"
-                                :ui="{ base: 'bg-white  focus-visible:ring-1 ring-neutral-200 focus-visible:ring-neutral-200 text-red-400 rounded-xs' }" />
-                        </UFormField>
-                        <UFormField label="Email" name="email" :ui="{
-                            label: 'text-red-400'
-                        }">
-                            <UInput v-model="registerState.email" type="email" class="w-full"
-                                :ui="{ base: 'bg-white  focus-visible:ring-1 ring-neutral-200 focus-visible:ring-neutral-200 text-red-400 rounded-xs' }" />
-                        </UFormField>
-                        <UFormField label="Phone" name="phone" :ui="{
-                            label: 'text-red-400'
-                        }">
-                            <UInput v-model="registerState.phone" maxlength="10" placeholder="10-digit mobile number"
-                                class="w-full"
-                                :ui="{ base: 'bg-white  focus-visible:ring-1 ring-neutral-200 focus-visible:ring-neutral-200 text-red-400 rounded-xs' }" />
-                        </UFormField>
-
-                        <UFormField label="Gender" name="gender" :ui="{
-                            label: 'text-red-400'
-                        }">
-                            <URadioGroup v-model="registerState.gender" orientation="horizontal" :items="genderOptions"
-                                :ui="{
-                                    label: 'text-red-400',
-                                    base: 'bg-white border border-red-400  rounded-sm',
-                                    indicator: 'bg-white after:bg-red-400 after:rounded-sm  after:size-3'
-                                }" />
-                        </UFormField>
-
-                        <UFormField label="Date of Birth" name="dob" :ui="{
-                            label: 'text-red-400'
-                        }">
-                            <UInput v-model="registerState.dob" type="date" class="w-full" :ui="{
-                                base: 'bg-white text-red-400 rounded-xs focus-visible:ring-1 ring-neutral-200 focus-visible:ring-neutral-200'
-                            }" style="color-scheme: light;" />
-                        </UFormField>
-
-                        <UFormField label="Location" name="location" :ui="{
-                            label: 'text-red-400'
-                        }">
-                            <UInput v-model="registerState.location" placeholder="City, State" class="w-full"
-                                :ui="{ base: 'bg-white  focus-visible:ring-1 ring-neutral-200 focus-visible:ring-neutral-200 text-red-400 rounded-xs' }" />
-                        </UFormField>
-
-                        <UFormField label="Password" name="password" :ui="{
-                            label: 'text-red-400'
-                        }">
-                            <UInput v-model="registerState.password" type="password" class="w-full"
-                                :ui="{ base: 'bg-white  focus-visible:ring-1 ring-neutral-200 focus-visible:ring-neutral-200 text-red-400 rounded-xs' }" />
-                        </UFormField>
-                        <UFormField label="Confirm Password" name="confirmPassword" :ui="{
-                            label: 'text-red-400'
-                        }">
-                            <UInput v-model="registerState.confirmPassword" type="password" class="w-full"
-                                :ui="{ base: 'bg-white  focus-visible:ring-1 ring-neutral-200 focus-visible:ring-neutral-200 text-red-400 rounded-xs' }" />
-                        </UFormField>
-                        <p v-if="errorMsg" class="text-sm text-red-500">{{ errorMsg }}</p>
-                        <UButton type="submit" block :loading="loading"
-                            class="p-3 rounded-xs bg-red-400 text-white hover:bg-red-400 uppercase active:bg-red-400">
-                            Create Account</UButton>
-                    </UForm>
-                </template>
-            </UTabs>
-        </UPageCard>
-
-
-        Right: editorial hero panel
-        <UPageHero title="We use contrast to bring your brand's truest"
-            description="We use contrast to bring truest essence into the light." orientation="vertical" :ui="{
-                root: 'relative h-full flex flex-col justify-between  text-white lg:w-1/2  hidden lg:block',
-                container: 'relative z-10 py-0 gap-0 sm:py-12 lg:py-20',
-                title: 'text-3xl leading-snug max-w-xs text-left font-sans',
-                description: 'text-sm max-w-[220px] text-right ml-auto leading-relaxed text-white/90 mt-auto'
-            }"
-            :style="{ backgroundImage: `url(https://images.unsplash.com/photo-1555529771-4f81423a1207?q=80&w=715&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)` }">
-            <template #top>
-                <div class="absolute inset-0 -z-10 bg-black/35 " />
-            </template>
-        </UPageHero>
-    </UContainer> -->
 </template>

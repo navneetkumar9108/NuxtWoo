@@ -1,15 +1,14 @@
-// import { categories } from "../data/categories";
+import { Product } from "~~/server/models/Product";
 
-// export default defineEventHandler(() => {
-//   return successResponse(categories);
-// });
+export default defineEventHandler(async () => {
+  const productsFromDB = await Product.find().lean();
 
-import { productsV4 } from "../data/data";
-
-export default defineEventHandler(() => {
   const categories = [
     ...new Map(
-      productsV4.map((product) => [product.category.slug, product.category]),
+      productsFromDB.map((product) => [
+        product.category.slug,
+        product.category,
+      ]),
     ).values(),
   ];
 

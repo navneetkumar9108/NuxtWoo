@@ -28,19 +28,6 @@ defineOptions({ inheritAttrs: false });
 //     ui: Object
 // });
 
-
-
-
-// console.log('label :', label);
-// console.log('icon', icon);
-// console.log('size:', size);
-// console.log('color :', color);
-// console.log('variant :', variant);
-// console.log('to :', to);
-// console.log('type :', type);
-// console.log('trailingIcon :', trailingIcon);
-// console.log('leadingIcon :', leadingIcon);
-// console.log('ui :', ui);
 </script>
 
 <template>

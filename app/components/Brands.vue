@@ -16,10 +16,6 @@ const brandLogos = [
             <img :src="brand.src" :alt="brand.alt" class="max-w-full max-h-full object-contain" />
 
         </UCard>
-        <!-- <div v-for="(brand, index) in brandLogos" :key="index"
-            class="flex items-center justify-center shrink-0 w-32 h-16 rounded-lg bg-gray-50 ring-1 ring-gray-200 px-4">
-            <img :src="brand.src" :alt="brand.alt" class="max-w-full max-h-full object-contain" />
-        </div> -->
     </UMarquee>
 </template>
 

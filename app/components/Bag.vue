@@ -7,14 +7,6 @@ const isOpen = defineModel('open', { default: false })
 </script>
 
 <template>
-    <!-- <div class="relative"> -->
-    <!-- <ButtonUButton icon="i-lucide-shopping-bag" color="neutral" variant="ghost" aria-label="Open bag"
-            class="text-gray-800 active:bg-white hover:bg-white cursor-pointer" @click="isOpen = true" />
-
-        <span v-if="cartStore.totalItems > 0" class="absolute -top-1 -right-1 flex items-center justify-center
-             h-4 w-4 rounded-full bg-primary text-white text-[10px] font-medium">
-            {{ cartStore.totalItems }}
-        </span> -->
     <UChip :show="cartStore.totalItems > 0" :text="cartStore.totalItems" size="3xl" class="" :ui="{
         base: '-top-1 -right-1 -translate-y-0 translate-x-0 h-4 w-4 ring-0 text-white text-[10px]'
     }">

@@ -2,31 +2,30 @@
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineNuxtConfig({
-  compatibilityDate: '2025-07-15',
+  compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
-    app: {
+  app: {
     head: {
-      title: 'Nuxt', // default fallback title
+      title: "Nuxt", // default fallback title
       htmlAttrs: {
-        lang: 'en',
+        lang: "en",
       },
-      link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/NuxtWoo.svg' },
-      ],
+      link: [{ rel: "icon", type: "image/x-icon", href: "/NuxtWoo.svg" }],
     },
   },
-  css: ['./app/assets/css/main.css'],
+  css: ["./app/assets/css/main.css"],
   vite: {
-    plugins: [
-      tailwindcss(),
-    ],
+    plugins: [tailwindcss()],
   },
   modules: [
-    '@nuxt/ui',
-    '@nuxt/icon',
-    '@nuxt/image',
-    '@pinia/nuxt',
-    'nuxt-mongoose'
-  ]
-  
-})
+    "@nuxt/ui",
+    "@nuxt/icon",
+    "@nuxt/image",
+    "@pinia/nuxt",
+    "nuxt-mongoose",
+  ],
+  mongoose: {
+    uri: process.env.NUXT_MONGOOSE_URI,
+    modelsDir: "models",
+  },
+});

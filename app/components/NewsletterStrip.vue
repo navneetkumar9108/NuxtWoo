@@ -1,4 +1,3 @@
-<!-- components/home/NewsletterStrip.vue -->
 <script setup>
 const email = ref("");
 </script>

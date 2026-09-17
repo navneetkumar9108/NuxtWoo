@@ -8,19 +8,12 @@ useSeoMeta({
 <template>
   <div>
     <PromoSectionsHeroBanner />
-    <!-- <PromoSectionsHeroSection /> -->
-    <!-- <TrustedBy /> -->
     <WhyChooseUs />
     <ShopByCategory />
-    <!-- <PromoSectionsLongTerm /> -->
-    <!-- <PopularProduct /> -->
     <OurFavorites />
     <EditorialBanners />
     <NewArrivals />
     <DealsSection />
-    <!-- <NewsletterStrip />
-    <Brands />
-    <PromoSectionsOfferBanner /> -->
   </div>
 </template>
 

@@ -1,5 +1,5 @@
 <script setup>
-const { data: categories } = await useFetch("/api/categories");
+const { data: categories } = await useLazyFetch("/api/categories");
 
 const categoryImages = {
   "men-t-shirts": "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/OCTOBER/22/d5iooF1V_ca6b33d03c764ad7be28e767777eb528.jpg",
@@ -16,10 +16,7 @@ const categoryImages = {
       <h2 class="text-sm lg:text-xl font-bold text-gray-900">Shop by Category</h2>
       <ButtonUButton label="Browse all Categories" variant="link" class="text-red-400 text-xs"
         trailing-icon="i-lucide-arrow-right" to="/products" />
-      <!-- <UButton label="Browse all Categories" variant="link" class="text-red-400 text-xs"
-        trailing-icon="i-lucide-arrow-right" to="/products" /> -->
     </div>
-
     <UScrollArea v-slot="{ item }" :items="categories?.data || []" orientation="horizontal" class="w-full"
       :ui="{ root: 'scrollbar-none', viewport: 'gap-4 md:gap-6' }">
       <UPageCard :key="item.id" :to="`/products?category=${item.slug}`" class="shrink-0 w-28 sm:w-40 lg:w-56" :ui="{

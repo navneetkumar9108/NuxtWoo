@@ -1,133 +1,63 @@
-// import { defineStore } from "pinia";
-
-// export const useAuthStore = defineStore("auth", () => {
-//   const user = ref(null);
-
-//   const isLoggedIn = computed(() => !!user.value);
-
-//   async function login({ email, password }) {
-//     const data = await $fetch("/api/auth/login", {
-//       method: "POST",
-//       body: { email, password },
-//     });
-//     user.value = data.user;
-//     return data;
-//   }
-
-//   async function register({ name, email, password }) {
-//     const data = await $fetch("/api/auth/register", {
-//       method: "POST",
-//       body: { name, email, password },
-//     });
-//     user.value = data.user;
-//     return data;
-//   }
-
-//   async function logout() {
-//     await $fetch("/api/auth/logout", { method: "POST" });
-//     user.value = null;
-//   }
-
-//   async function fetchUser() {
-//     try {
-//       const data = await $fetch("/api/auth/me");
-//       user.value = data.user;
-//     } catch {
-//       user.value = null;
-//     }
-//   }
-
-//   return { user, isLoggedIn, login, register, logout, fetchUser };
-// });
-
 import { defineStore } from "pinia";
+import { ref } from "vue";
 
 export const useAuthStore = defineStore("auth", () => {
   const user = ref(null);
   const isLoggedIn = ref(false);
 
-  const init = () => {
+  const init = async () => {
     if (process.client) {
-      user.value = JSON.parse(localStorage.getItem("user"));
-      isLoggedIn.value = localStorage.getItem("isLoggedIn") === "true";
+      try {
+        const res = await $fetch("/api/auth/me");
+        if (res.success) {
+          user.value = res.data;
+          isLoggedIn.value = true;
+        }
+      } catch (err) {
+        user.value = null;
+        isLoggedIn.value = false;
+      }
     }
   };
 
   const register = async (data) => {
-    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const res = await $fetch("/api/auth/register", {
+      method: "POST",
+      body: data,
+    });
 
-    const exists = users.find((item) => item.email === data.email);
-
-    if (exists) {
-      throw new Error("Email already exists");
+    if (!res.success) {
+      throw new Error(res.message || "Registration failed");
     }
 
-    // const newUser = {
-    //   name: data.name,
-    //   email: data.email,
-    //   phone: data.phone || "",
-    //   password: data.password,
-    // };
-
-    const newUser = {
-      name: data.name,
-      email: data.email,
-      phone: data.phone || "",
-      gender: data.gender || "",
-      dob: data.dob || "",
-      location: data.location || "",
-      password: data.password,
-    };
-
-    users.push(newUser);
-
-    localStorage.setItem("users", JSON.stringify(users));
-    localStorage.setItem("user", JSON.stringify(newUser));
-    localStorage.setItem("isLoggedIn", "true");
-
-    user.value = newUser;
-    isLoggedIn.value = true;
+    // Register ke baad automatically login bhi kar do
+    await login({ email: data.email, password: data.password });
   };
 
   const login = async (data) => {
-    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const res = await $fetch("/api/auth/login", {
+      method: "POST",
+      body: data,
+    });
 
-    const loggedUser = users.find(
-      (item) => item.email === data.email && item.password === data.password,
-    );
-
-    if (!loggedUser) {
-      throw new Error("Invalid Email or Password");
+    if (!res.success) {
+      throw new Error(res.message || "Invalid Email or Password");
     }
 
-    localStorage.setItem("user", JSON.stringify(loggedUser));
-    localStorage.setItem("isLoggedIn", "true");
-
-    user.value = loggedUser;
+    user.value = res.data;
     isLoggedIn.value = true;
   };
 
-  const logout = () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("isLoggedIn");
-
+  const logout = async () => {
+    await $fetch("/api/auth/logout", { method: "POST" });
     user.value = null;
     isLoggedIn.value = false;
     navigateTo("/");
   };
 
-  const updateProfile = (data) => {
-    const updatedUser = { ...user.value, ...data };
-    user.value = updatedUser;
-    localStorage.setItem("user", JSON.stringify(updatedUser));
-
-    // "users" list mein bhi update karo taaki login pe bhi naya data mile
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    const index = users.findIndex((u) => u.email === updatedUser.email);
-    if (index !== -1) {
-      users[index] = { ...users[index], ...data };
-      localStorage.setItem("users", JSON.stringify(users));
-    }
+  const updateProfile = async (data) => {
+    // Ye feature abhi backend me nahi hai, baad me banayenge
+    console.warn("updateProfile API not implemented yet");
   };
 
   return {
