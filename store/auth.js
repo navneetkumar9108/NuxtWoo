@@ -1,5 +1,8 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
+import { useCartStore } from "./cart";
+import { useWishlistStore } from "./wishlist";
+import { useAddressStore } from "./address";
 
 export const useAuthStore = defineStore("auth", () => {
   const user = ref(null);
@@ -46,18 +49,48 @@ export const useAuthStore = defineStore("auth", () => {
 
     user.value = res.data;
     isLoggedIn.value = true;
+
+    const cartStore = useCartStore();
+    const wishlistStore = useWishlistStore();
+    const addressStore = useAddressStore();
+
+    await Promise.all([
+      cartStore.fetchCart(),
+      wishlistStore.fetchWishlist(),
+      addressStore.fetchAddresses(),
+    ]);
   };
 
   const logout = async () => {
     await $fetch("/api/auth/logout", { method: "POST" });
     user.value = null;
     isLoggedIn.value = false;
+
+    const cartStore = useCartStore();
+    const wishlistStore = useWishlistStore();
+    const addressStore = useAddressStore();
+
+    cartStore.items = [];
+    cartStore.selectedItemIds = [];
+    wishlistStore.items = [];
+    addressStore.addresses = [];
+    addressStore.selectedAddressId = null;
+
     navigateTo("/");
   };
 
   const updateProfile = async (data) => {
-    // Ye feature abhi backend me nahi hai, baad me banayenge
-    console.warn("updateProfile API not implemented yet");
+    const res = await $fetch("/api/auth/update-profile", {
+      method: "PATCH",
+      body: data,
+    });
+
+    if (!res.success) {
+      throw new Error(res.message || "Failed to update profile");
+    }
+
+    user.value = res.data;
+    return res;
   };
 
   return {

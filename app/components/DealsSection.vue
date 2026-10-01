@@ -43,7 +43,7 @@ const scrollItems = computed(() =>
                     : 'bg-white text-gray-700 border-gray-300 '" class="rounded-full font-medium "
                 @click="activeTab = tab.value" />
         </div>
-        <UScrollArea v-if="pending" :items="Array(8).fill({})" v-slot="{ }" orientation="horizontal" class="w-full"
+        <UScrollArea v-if="pending" :items="scrollItems" v-slot="{ item }" orientation="horizontal" class="w-full"
             :ui="{ root: 'scrollbar-none', viewport: 'gap-4 md:gap-6' }">
             <CardProductSkeleton />
         </UScrollArea>

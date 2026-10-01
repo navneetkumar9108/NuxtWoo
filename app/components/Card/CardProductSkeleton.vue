@@ -6,7 +6,6 @@
     container: 'p-0 sm:p-0 gap-0  w-full',
     header: 'w-full  lg:h-70 mb-0   bg-gray-200 ',
     body: 'px-2.5 mt-3  w-full lg:w-52.5',
-
 }">
         <template #header>
             <USkeleton class="w-full h-full bg-gray-300" />

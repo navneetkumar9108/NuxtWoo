@@ -3,7 +3,7 @@ import { useAddressStore } from '~~/store/address';
 import { useCartStore } from '~~/store/cart';
 import { useWishlistStore } from '~~/store/wishlist';
 
-//definePageMeta({ layout: 'checkout' })
+definePageMeta({ middleware: 'auth' })
 const addressStore = useAddressStore()
 const cartStore = useCartStore()
 const wishlistStore = useWishlistStore()
@@ -243,7 +243,7 @@ async function bulkMoveToWishlist() {
                             </div>
                         </div>
 
-                        <ButtonUButton label="Place Order" block
+                        <ButtonUButton label="Checkout" block
                             class="mt-4 bg-indigo-600 text-white p-3 hover:bg-indigo-600 active:bg-indigo-600"
                             to="/checkout" />
                     </UCard>

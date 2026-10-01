@@ -362,10 +362,6 @@ onMounted(() => {
 
 
 <template>
-
-
-
-
     <UContainer class="flex  md:h-200 mt-5 md:mt-10">
 
         <!-- Right: editorial hero panel -->

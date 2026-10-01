@@ -8,6 +8,7 @@ useSeoMeta({
 });
 
 // --- Initialize all filters from URL query (fixes reload reset) ---
+const search = computed(() => route.query.search)
 const sortBy = ref(route.query.sort || "featured");
 const currentPage = ref(Number(route.query.page) || 1);
 const itemsPerPage = 12;
@@ -27,8 +28,9 @@ const priceRange = ref([
 const selectedRating = ref(route.query.rating || undefined);
 
 
-const { data: products } = await useFetch("/api/products", {
+const { data: products, pending, error } = await useLazyFetch("/api/products", {
   query: {
+    search: search,
     sort: sortBy,
 
     category: computed(() =>
@@ -57,6 +59,7 @@ const { data: products } = await useFetch("/api/products", {
     limit: itemsPerPage,
   },
 });
+
 
 const { data: categories } = await useFetch("/api/categories");
 const { data: brands } = await useFetch("/api/brands");
@@ -114,7 +117,7 @@ watchEffect(() => {
   }
 });
 
-watch([selectedCategories, selectedBrands, selectedGenders, priceRange, selectedRating, sortBy], () => {
+watch([selectedCategories, selectedBrands, selectedGenders, priceRange, selectedRating, sortBy, search], () => {
   currentPage.value = 1;
 });
 
@@ -166,6 +169,11 @@ const sortOptions = [
 
 const items = [
   {
+    label: "Gender",
+    // icon: "i-lucide-venus-and-mars",
+
+  },
+  {
     label: "Category",
     // icon: "i-lucide-grid-2x2",
 
@@ -178,11 +186,6 @@ const items = [
   {
     label: "Price",
     // icon: "i-lucide-indian-rupee",
-
-  },
-  {
-    label: "Gender",
-    // icon: "i-lucide-venus-and-mars",
 
   },
   {
@@ -287,7 +290,12 @@ function removeChip(chip) {
               }" />
           </div>
           <USeparator class="py-1 lg:pt-5 flex items-center justify-center" />
-          <UPageGrid class=" gap-2 sm:gap-3 md:gap-4 lg:gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 xl:grid-cols-4">
+          <UPageGrid v-if="pending"
+            class=" gap-2 sm:gap-3 md:gap-4 lg:gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 xl:grid-cols-4">
+            <CardProductSkeleton v-for="product in products?.data || []" :key="product.plpId" />
+          </UPageGrid>
+          <UPageGrid v-else
+            class=" gap-2 sm:gap-3 md:gap-4 lg:gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 xl:grid-cols-4">
             <CardProductCard v-for="product in products?.data || []" :key="product.plpId" :product="product" />
           </UPageGrid>
           <div class="mt-10  flex justify-center p-2 sm:p-4  backdrop-blur-sm">

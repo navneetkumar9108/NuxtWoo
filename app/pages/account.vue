@@ -29,6 +29,8 @@ function isActive(path) {
 }
 
 onMounted(() => authStore.init())
+
+definePageMeta({ middleware: 'auth' })
 </script>
 
 <template>

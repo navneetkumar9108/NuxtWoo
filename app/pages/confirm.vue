@@ -4,7 +4,7 @@ import { useCartStore } from '~~/store/cart'
 const cartStore = useCartStore()
 const router = useRouter()
 const route = useRoute()
-
+definePageMeta({ middleware: 'auth' })
 const orderId = route.query.orderid
 
 const order = ref(null)

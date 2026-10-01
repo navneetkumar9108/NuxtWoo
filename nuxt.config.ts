@@ -6,7 +6,13 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   app: {
     head: {
-      title: "Nuxt", // default fallback title
+      title: "Poshaak - Fashion & Clothing Store",
+      meta: [
+        {
+          name: "description",
+          content: "Shop the latest fashion trends at Poshaak",
+        },
+      ],
       htmlAttrs: {
         lang: "en",
       },

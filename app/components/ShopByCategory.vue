@@ -2,8 +2,8 @@
 const { data: categories } = await useLazyFetch("/api/categories");
 
 const categoryImages = {
-  "men-t-shirts": "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/OCTOBER/22/d5iooF1V_ca6b33d03c764ad7be28e767777eb528.jpg",
-  "women-t-shirts": "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/FEBRUARY/28/c7VJsmwL_a7e4277a0e354a2886c966fa60193123.jpg",
+  "t-shirts": "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/OCTOBER/22/d5iooF1V_ca6b33d03c764ad7be28e767777eb528.jpg",
+  // "women-t-shirts": "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/FEBRUARY/28/c7VJsmwL_a7e4277a0e354a2886c966fa60193123.jpg",
   "joggers": "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2026/JANUARY/20/2OlsqHGB_3c14b18e166e462693e7998497108637.jpg",
   "jeans": "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/35411364/2025/8/1/ec7a9e5e-8049-4576-a77a-fdd4dbde9c1c1754041658636-MANGO-Women-Flared-Pure-Cotton-Mid-Rise-Light-Fade-Jeans-982-1.jpg",
   "dresses": "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/JULY/28/IuLqBY1K_022901b64fd54e01abb8cd2df5b33753.jpg",

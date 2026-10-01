@@ -5,6 +5,7 @@ import { useCartStore } from '~~/store/cart'
 const wishlistStore = useWishlistStore()
 const cartStore = useCartStore()
 const toast = useToast()
+definePageMeta({ middleware: 'auth' })
 
 const sizeModalOpen = ref(false)
 const activeItem = ref(null)

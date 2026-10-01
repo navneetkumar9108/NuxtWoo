@@ -3,7 +3,7 @@ import { useAddressStore } from '~~/store/address'
 import { useCartStore } from '~~/store/cart'
 import { z } from 'zod'
 
-
+definePageMeta({ middleware: 'auth' })
 const addressStore = useAddressStore()
 const cartStore = useCartStore()
 
@@ -103,7 +103,7 @@ async function onSubmit() {
                                     <p class="text-sm text-neutral-600 text-balance">
                                         {{ address.addressLine1 }}<span v-if="address.addressLine2">, {{
                                             address.addressLine2
-                                        }}</span><span v-if="address.landmark">, near {{ address.landmark
+                                            }}</span><span v-if="address.landmark">, near {{ address.landmark
                                             }}</span>,<br>
                                         {{ address.city }} - {{ address.pincode }}, <br> {{ address.state }} </p>
                                     <p class="text-sm text-neutral-500 mt-1">Mobile: {{ address.phone }}</p>

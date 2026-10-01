@@ -4,6 +4,7 @@ import { useAuthStore } from '~~/store/auth'
 
 const authStore = useAuthStore()
 const toast = useToast()
+definePageMeta({ middleware: 'auth' })
 
 const isEditing = ref(false)
 
@@ -34,7 +35,6 @@ const genderOptions = [
 const loading = ref(false)
 
 async function onSubmit(event) {
-    console.log("form submit");
     loading.value = true
     try {
         authStore.updateProfile(event.data)
@@ -71,7 +71,7 @@ async function onSubmit(event) {
             <div class="flex lg:flex-row flex-col py-3">
                 <span class="w-40 text-sm text-neutral-500">Gender</span>
                 <span class="text-sm font-medium capitalize">{{ authStore.user?.gender || '- not added -'
-                }}</span>
+                    }}</span>
             </div>
             <div class="flex lg:flex-row flex-col py-3">
                 <span class="w-40 text-sm text-neutral-500">Date of Birth</span>
@@ -99,7 +99,7 @@ async function onSubmit(event) {
             <UFormField label="Email" name="email" :ui="{
                 label: 'text-red-400'
             }">
-                <UInput v-model="state.email" type="email" class="w-full"
+                <UInput v-model="state.email" type="email" disabled class="w-full"
                     :ui="{ base: 'bg-white  focus-visible:ring-1 ring-neutral-200 focus-visible:ring-neutral-200 text-red-400 rounded-xs' }" />
             </UFormField>
             <UFormField label="Phone" name="phone" :ui="{

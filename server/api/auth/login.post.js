@@ -24,9 +24,13 @@ export default defineEventHandler(async (event) => {
     };
   }
 
-  const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-    expiresIn: "7d",
-  });
+  const token = jwt.sign(
+    { userId: user._id, role: user.role },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: "7d",
+    },
+  );
 
   setCookie(event, "auth_token", token, {
     httpOnly: true,

@@ -8,6 +8,7 @@ const paymentMethod = ref('upi')
 const upiId = ref('')
 const noteOpen = ref(true)
 const orderNote = ref('')
+definePageMeta({ middleware: 'auth' })
 
 const cartStore = useCartStore() // ~~/store/cart
 const auth = useAuthStore()

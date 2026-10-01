@@ -8,9 +8,7 @@ const wishlistStore = useWishlistStore()
 
 
 
-const { data: product, pending, } = await useFetch(
-  `/api/products/${route.params.slug}`,
-);
+const { data: product, pending, } = await useLazyFetch(`/api/products/${route.params.slug}`);
 
 
 const selectedColor = ref(route.query.color || "");
@@ -157,7 +155,8 @@ async function handleAddToWishlist() {
       <!-- Left: Images -->
 
       <UPageGrid v-if="pending" class="hidden sm:grid sm:grid-cols-2 lg:grid-cols-2 gap-2">
-        <USkeleton v-for="i in 4" :key="i" class="w-full aspect-square rounded-xs" />
+        <CardProductSkeleton v-for="(image, index) in selectedColorData?.images || []" :key="index"
+          class="w-full aspect-square rounded-xs" />
       </UPageGrid>
       <UPageGrid v-else class="hidden sm:grid sm:grid-cols-2 lg:grid-cols-2 gap-2">
         <div class="overflow-hidden " v-for="(image, index) in selectedColorData?.images || []" :key="index">

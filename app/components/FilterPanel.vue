@@ -15,7 +15,14 @@ const selectedGenders = defineModel("selectedGenders");
 
   }">
     <template #body="{ item }">
-      <div v-if="item.label === 'Category'" class="space-y-3 ">
+      <div v-if="item.label === 'Gender'" class="space-y-3">
+        <UCheckboxGroup size="xl" :items="genderItems" v-model="selectedGenders" :ui="{
+          label: 'text-black font-normal',
+          base: ' ring-2 ring-gray-800 p-1',
+          indicator: 'rounded-sm bg-red-400  ',
+        }" />
+      </div>
+      <div v-else-if="item.label === 'Category'" class="space-y-3 ">
         <UCheckboxGroup size="xl" :items="categoryItems" v-model="selectedCategories" :ui="{
           label: 'text-black font-normal',
           base: ' ring-2 ring-gray-800 p-1',
@@ -25,13 +32,6 @@ const selectedGenders = defineModel("selectedGenders");
 
       <div v-else-if="item.label === 'Brands'" class="space-y-3 ">
         <UCheckboxGroup size="xl" :items="brandItems" v-model="selectedBrands" :ui="{
-          label: 'text-black font-normal',
-          base: ' ring-2 ring-gray-800 p-1',
-          indicator: 'rounded-sm bg-red-400  ',
-        }" />
-      </div>
-      <div v-else-if="item.label === 'Gender'" class="space-y-3">
-        <UCheckboxGroup size="xl" :items="genderItems" v-model="selectedGenders" :ui="{
           label: 'text-black font-normal',
           base: ' ring-2 ring-gray-800 p-1',
           indicator: 'rounded-sm bg-red-400  ',

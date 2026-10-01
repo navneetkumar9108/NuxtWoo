@@ -1,7 +1,7 @@
 <script setup>
 const route = useRoute()
 const orderId = route.params.orderId
-
+definePageMeta({ middleware: 'auth' })
 const { data: orderRes, pending, refresh } = await useLazyFetch(`/api/orders/${orderId}`)
 
 const order = computed(() => orderRes.value?.data || null)
