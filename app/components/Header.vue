@@ -147,11 +147,23 @@ function handleSearch() {
       <ButtonUButton icon="i-lucide-menu" color="neutral" variant="ghost"
         class="lg:hidden text-gray-800 flex-1 active:bg-white" @click="isMobileMenuOpen = true" />
 
-      <NuxtLink to="/"
+      <!-- <NuxtLink to="/"
         class="flex items-center gap-2 font-bold text-sm md:text-lg shrink-0  flex-1 justify-center lg:justify-start">
         <img src="/icons/logo.svg" alt="Poshaak" class="h-8 w-auto" />
         <span class="hidden md:block">Poshaak</span>
-      </NuxtLink>
+      </NuxtLink> -->
+
+<NuxtLink to="/"
+      class="flex items-center gap-2 shrink-0 flex-1 justify-center lg:flex-1 lg:justify-start">
+      <NuxtImg
+        src="/images/Poshaak.png"
+        alt="Poshaak"
+        width="140"
+        height="40"
+        class="h-9 md:h-10 w-auto bg-white/50"
+        loading="eager"
+      />
+    </NuxtLink>
 
       <UNavigationMenu :items="desktopNavItems" class="px-4" trailingIcon="false" :ui="{
         root: 'hidden lg:flex',

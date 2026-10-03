@@ -1,6 +1,7 @@
 <script setup>
 definePageMeta({
     middleware: 'admin',
+    title: 'Add Product'
 })
 
 const router = useRouter()

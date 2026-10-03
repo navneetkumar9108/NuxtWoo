@@ -1,6 +1,7 @@
 <script setup>
 definePageMeta({
     middleware: 'admin',
+    title: 'Edit Product'
 })
 
 const route = useRoute()

@@ -2,7 +2,7 @@
 const orders = ref([])
 const pending = ref(true)
 const updatingId = ref(null)
-definePageMeta({ middleware: 'admin' })
+definePageMeta({ middleware: 'admin', title: 'Orders' })
 const statusOptions = ['placed', 'confirmed', 'shipped', 'delivered', 'cancelled']
 
 const statusConfig = {

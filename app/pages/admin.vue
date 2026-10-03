@@ -6,6 +6,7 @@ definePageMeta({
 
 const route = useRoute()
 
+
 const links = [
     [
         { label: 'Dashboard', icon: 'i-lucide-layout-dashboard', to: '/admin', exact: true },
@@ -14,14 +15,13 @@ const links = [
     ],
 ]
 
-const open = ref(false)
 </script>
 
 <template>
     <UDashboardGroup>
-        <UDashboardSidebar v-model:open="open" collapsible resizable :ui="{ footer: 'border-t border-default' }">
+        <UDashboardSidebar collapsible resizable :ui="{ footer: 'border-t border-default' }">
             <template #header>
-                <span class="font-bold text-lg px-2">Admin Panel</span>
+                <span class="font-bold text-lg px-2">Poshaak Admin Panel</span>
             </template>
 
             <UNavigationMenu :items="links" orientation="vertical" />
@@ -34,7 +34,11 @@ const open = ref(false)
 
         <UDashboardPanel>
             <template #header>
-                <UDashboardNavbar :title="route.meta.title || 'Admin'" />
+                <UDashboardNavbar :title="route.meta.title || 'Admin'">
+                    <template #leading>
+                        <UDashboardSidebarCollapse />
+                    </template>
+                </UDashboardNavbar>
             </template>
 
             <template #body>
