@@ -19,10 +19,15 @@ const links = [
 
 <template>
     <UDashboardGroup>
-        <UDashboardSidebar collapsible resizable :ui="{ footer: 'border-t border-default' }">
+        <UDashboardSidebar collapsible resizable
+            :ui="{ header: 'border-b border-default', footer: 'border-t border-default' }">
             <template #header>
                 <span class="font-bold text-lg px-2">Poshaak Admin Panel</span>
             </template>
+
+            <!-- <template #header>
+                <Logo class="h-5 w-auto" />
+            </template> -->
 
             <UNavigationMenu :items="links" orientation="vertical" />
 

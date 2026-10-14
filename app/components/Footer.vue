@@ -63,11 +63,11 @@ function subscribe() {
           <div class="max-w-md">
             <div class="flex items-center gap-2 font-bold text-lg mb-4">
               <NuxtImg src="/icons/logo.svg" alt="Logo" class="h-8 w-auto" />
-              <span>WooNuxt</span>
+              <span>Poshaak</span>
             </div>
 
             <p class="text-sm text-gray-600 mb-6 text-balance leading-relaxed">
-              WooNuxt is unmatched when it comes to performance and scalability.
+              Poshaak is unmatched when it comes to performance and scalability.
               Reap the benefits of an online store that outperforms all of your
               competitors.
             </p>
@@ -110,7 +110,7 @@ function subscribe() {
     <template #bottom>
       <UContainer>
         <div class="flex flex-col md:flex-row items-center justify-between gap-4 py-6 border-t border-gray-200">
-          <span class="text-sm text-gray-500">© {{ new Date().getFullYear() }} WooNuxt. All rights reserved.</span>
+          <span class="text-sm text-gray-500">© {{ new Date().getFullYear() }} Poshaak. All rights reserved.</span>
 
           <div class="flex gap-2">
             <ButtonUButton v-for="social in socialLinks" :key="social.icon" :icon="social.icon" :to="social.href"

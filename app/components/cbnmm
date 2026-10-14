@@ -363,3 +363,124 @@
         </label>
     </UInput>
 </template>
+
+
+<!-- Header Component -->
+const { data: categories } = await useFetch("/api/categories");
+
+const megaMenus = {
+men: [
+{
+groups: [
+{ title: "Topwear", links: ["T-Shirts", "Casual Shirts", "Formal Shirts", "Sweatshirts", "Sweaters", "Jackets", "Blazers
+& Coats", "Suits", "Rain Jackets"] },
+{ title: "Indian & Festive Wear", links: ["Kurtas & Kurta Sets", "Sherwanis", "Nehru Jackets", "Dhotis"] },
+],
+},
+{
+groups: [
+{ title: "Bottomwear", links: ["Jeans", "Casual Trousers", "Formal Trousers", "Shorts", "Track Pants & Joggers"] },
+{ title: "Innerwear & Sleepwear", links: ["Briefs & Trunks", "Boxers", "Vests", "Sleepwear & Loungewear", "Thermals"] },
+{ title: "Plus Size", links: [] },
+],
+},
+{
+groups: [
+{ title: "Footwear", links: ["Casual Shoes", "Sports Shoes", "Formal Shoes", "Sneakers", "Sandals & Floaters", "Flip
+Flops", "Socks"] },
+{ title: "Personal Care & Grooming", links: [] },
+{ title: "Sunglasses & Frames", links: [] },
+{ title: "Watches", links: [] },
+],
+},
+{
+groups: [
+{ title: "Sports & Active Wear", links: ["Sports Shoes", "Sports Sandals", "Active T-Shirts", "Track Pants & Shorts",
+"Tracksuits", "Jackets & Sweatshirts", "Sports Accessories", "Swimwear"] },
+{ title: "Gadgets", links: ["Smart Wearables", "Fitness Gadgets", "Headphones", "Speakers"] },
+],
+},
+{
+groups: [
+{ title: "Fashion Accessories", links: ["Wallets", "Belts", "Perfumes & Body Mists", "Trimmers", "Deodorants", "Ties,
+Cufflinks & Pocket Squares", "Accessory Gift Sets", "Caps & Hats", "Mufflers, Scarves & Gloves", "Phone Cases", "Rings &
+Wristwear", "Helmets"] },
+{ title: "Bags & Backpacks", links: [] },
+{ title: "Luggages & Trolleys", links: [] },
+],
+},
+],
+// women, kids, etc. same structure banao
+}
+const categoryItems = computed(() =>
+(categories.value?.data || []).map((category) => ({
+label: category.name,
+to: `/products?category=${category.slug}`,
+})),
+);
+
+// const items = computed(() => [
+// { label: "Home", to: "/" },
+// { label: "Men", slot: "mega", value: "men", to: "/products?gender=men" },
+// { label: "Women", slot: "mega", value: "women", to: "/products?gender=women" },
+// {
+// label: "Products", to: "/products", children: [{ label: "Men", type: "label" }, ...categoryItems.value, { label:
+"Women", type: "label" }, ...categoryItems.value],
+// },
+// { label: "Contact", to: "/contact" },
+// { label: "Account", to: authStore.user ? "/account" : "/login" },
+// ]);
+
+
+// const accountMenuItems = computed(() => [
+// [
+// { label: 'Orders', icon: 'i-lucide-package', to: '/account/orders' },
+// { label: 'Wishlist', icon: 'i-lucide-heart', to: '/wishlist' }
+// ],
+// [
+// { label: 'Profile', icon: 'i-lucide-user-pen', to: '/account', exact: true },
+// { label: 'Logout', icon: 'i-lucide-log-out', onSelect: () => authStore.logout() }
+// ]
+// ])
+
+// function submitSearch() {
+// if (!searchQuery.value.trim()) return
+// navigateTo({ path: '/products', query: { search: searchQuery.value } })
+// isSearchOpen.value = false
+// }
+
+<!-- <UNavigationMenu :items="desktopNavItems" class="px-4" :ui="{
+        root: 'hidden lg:flex',
+        list: 'flex items-center justify-between gap-6 px-4',
+        item: '',
+        strategy: 'override',
+        linkTrailing: 'hidden',
+        link: 'cursor-pointer font-normal p-0 hover:text-gray-500 hover:before:bg-transparent text-gray-800 before:bg-transparent hover:border-b',
+        linkActive: 'font-semibold !bg-transparent',
+        linkTrailingIcon: 'hidden',
+        viewportWrapper: 'fixed inset-x-0 top-14 flex justify-center',
+        viewport: 'rounded-xs w-full max-w-7xl shadow-lg ',
+      }">
+        <template #mega-content="{ item }">
+          <UPageGrid class="lg:grid-cols-5 p-6 ">
+            <div v-for="(col, i) in megaMenus[item.value]" :key="i" class="space-y-6">
+              <div v-for="group in col.groups" :key="group.title">
+                <h3 class="text-primary font-semibold text-sm mb-2">{{ group.title }}</h3>
+                <ul class="space-y-1.5">
+                  <li v-for="link in group.links" :key="link">
+                    <ULink class="text-sm text-gray-700 hover:text-primary">{{ link }}</ULink>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </UPageGrid>
+        </template>
+</UNavigationMenu> -->
+
+<NuxtLink to="/" class="flex items-center gap-2 shrink-0 flex-1 justify-center lg:flex-1 lg:justify-start">
+    <NuxtImg src="/images/Poshaak.png" alt="Poshaak" width="140" height="40" class="h-9 md:h-10 w-auto bg-white/50"
+        loading="eager" />
+</NuxtLink>
+<!-- <ButtonUButton v-if="deliveryAddress" :label="deliveryAddress?.city"
+          class=" text-gray-800 active:bg-white hover:bg-white" icon="i-lsicon-location-outline" color="neutral"
+          variant="ghost" /> -->

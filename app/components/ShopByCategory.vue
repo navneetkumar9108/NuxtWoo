@@ -7,6 +7,7 @@ const categoryImages = {
   "joggers": "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2026/JANUARY/20/2OlsqHGB_3c14b18e166e462693e7998497108637.jpg",
   "jeans": "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/35411364/2025/8/1/ec7a9e5e-8049-4576-a77a-fdd4dbde9c1c1754041658636-MANGO-Women-Flared-Pure-Cotton-Mid-Rise-Light-Fade-Jeans-982-1.jpg",
   "dresses": "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/JULY/28/IuLqBY1K_022901b64fd54e01abb8cd2df5b33753.jpg",
+  "shirts": "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/27373958/2024/2/6/cebb29cc-f375-487a-9237-102abe5d852d1707205082220MISCHIEFMONKEYMenClassicTailoredFitOpaqueCasualShirt1.jpg"
 }
 </script>
 

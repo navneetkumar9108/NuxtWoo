@@ -250,10 +250,10 @@ function formatDate(date) {
 
         <!-- Orders List -->
         <div v-else class="space-y-4">
-            <div class="p-4 bg-neutral-100 rounded-xs">
+            <div class="p-4 bg-white border border-neutral-200 rounded-xs">
                 <h2 class="text-xl font-bold text-gray-800">My Orders</h2>
                 <p class="text-sm text-neutral-500 mt-1">{{ orders.length }} {{ orders.length === 1 ? 'order' : 'orders'
-                }}</p>
+                    }}</p>
             </div>
 
             <UCard v-for="order in orders" :key="order._id"
