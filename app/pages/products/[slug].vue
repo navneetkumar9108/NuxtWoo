@@ -8,8 +8,11 @@ const wishlistStore = useWishlistStore()
 
 
 
-const { data: product, pending, } = await useLazyFetch(`/api/products/${route.params.slug}`);
-
+//const { data: product, pending, } = await useLazyFetch(`/api/products/${route.params.slug}`);
+const { data: product, pending } = await useFetch(
+  () => `/api/products/${route.params.slug}`,
+  { key: `product-${route.params.slug}` }
+)
 
 const selectedColor = ref(route.query.color || "");
 

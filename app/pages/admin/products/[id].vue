@@ -34,7 +34,7 @@ async function handleSubmit(formData) {
 </script>
 
 <template>
-    <UContainer class="py-8 ">
+    <div >
         <h1 class="text-2xl font-bold mb-6">Edit Product</h1>
 
         <USkeleton v-if="pending" class="h-96 w-full rounded-xs" />
@@ -42,5 +42,5 @@ async function handleSubmit(formData) {
         <AdminProductForm v-else-if="productRes?.data" :initial-data="productRes.data" @submit="handleSubmit" />
 
         <div v-else class="text-center py-16 text-neutral-500">Product not found</div>
-    </UContainer>
+    </div>
 </template>

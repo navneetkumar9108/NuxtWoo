@@ -33,8 +33,8 @@ async function handleSubmit(formData) {
 </script>
 
 <template>
-    <UContainer class="py-8">
+    <div class="">
         <h1 class="text-2xl font-bold mb-6">Add New Product</h1>
         <AdminProductForm @submit="handleSubmit" />
-    </UContainer>
+    </div>
 </template>
